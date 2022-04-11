@@ -434,6 +434,12 @@ render st = HH.div [HU.classProp "ui-wrapper"] [
       LogFit -> "p-info"
       DecFit -> "p-warning"
       QuadFit -> "p-danger"
+    recomendedLabel = case _ of
+      LinFit -> " recomended!"
+      ExpFit -> ""
+      LogFit -> ""
+      DecFit -> ""
+      QuadFit -> ""
     modelPicker = fold [
         [ HH.h3_ [HH.text "Analysis"]
         , HH.ul [HU.classProp "model-picker-list"] $ D3.allModelFit <#> \mfit ->
@@ -446,7 +452,7 @@ render st = HH.div [HU.classProp "ui-wrapper"] [
                   ]
                 , HH.div [HU.classProp $ "state " <> modelColor mfit] [
                   HH.label_ [
-                    HH.text (D3.modelFitLabel mfit)
+                    HH.text (D3.modelFitLabel mfit <> recomendedLabel mfit)
                   ]
                 ]
               ]

@@ -107,24 +107,47 @@ modelFitParams
     -> LinReg Number
     -> O.Object D3.SomeValue
 modelFitParams = case _ of
-    LinFit -> \lr -> O.singleton "Daily Change" (D3.someValue lr.beta)
+    LinFit -> \lr -> O.fromFoldable [
+        Tuple "Daily Change"
+              (D3.someValue lr.beta)
+      -- new
+      , Tuple "Alpha"
+              (D3.someValue lr.alpha)
+      , Tuple "Beta"
+              (D3.someValue lr.beta)
+      ]
     ExpFit -> \lr -> O.fromFoldable [
         Tuple "Daily % Growth"
               (D3.someValue (D3.Percent (M.exp lr.beta - 1.0)))
       , Tuple "Doubling Time (Days)"
               (D3.someValue (D3.Days (round (M.log 2.0 / lr.beta))))
+      -- new
+      , Tuple "Alpha"
+              (D3.someValue lr.alpha)
+      , Tuple "Beta"
+              (D3.someValue lr.beta)
       ]
     DecFit -> \lr -> O.fromFoldable [
         Tuple "Halving Time"
               (D3.someValue (D3.Days (round $ M.abs (M.log 2.0 / lr.beta))))
       , Tuple "95% Date"
               (D3.someValue (reDate ((M.log 0.05 - lr.alpha) / lr.beta)))
+      -- new
+      , Tuple "Alpha"
+              (D3.someValue lr.alpha)
+      , Tuple "Beta"
+              (D3.someValue lr.beta)
       ]
     LogFit -> \lr -> O.fromFoldable [
         Tuple "Date of Peak"
               (D3.someValue (reDate (-lr.alpha / lr.beta)))
       , Tuple "95% Date"
               (D3.someValue (reDate ((M.log (0.05/0.95) - lr.alpha) / lr.beta)))
+      -- new
+      , Tuple "Alpha"
+              (D3.someValue lr.alpha)
+      , Tuple "Beta"
+              (D3.someValue lr.beta)
       ]
     QuadFit -> \lr -> O.fromFoldable
       let { accLabel, vertLabel } =
@@ -133,6 +156,9 @@ modelFitParams = case _ of
               else { accLabel: "Deceleration", vertLabel: "End Date" }
       in [ Tuple accLabel  (D3.someValue lr.beta)
          , Tuple vertLabel (D3.someValue (reDate (-lr.alpha / lr.beta)))
+         -- new
+        , Tuple "Alpha" (D3.someValue lr.alpha)
+        , Tuple "Beta" (D3.someValue lr.beta)
          ]
   where
     reDate :: Number -> MJD.Day
