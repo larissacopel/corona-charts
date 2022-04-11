@@ -64,7 +64,7 @@ main = shakeArgs opts $ do
     -- parcel
     "_site/index.html" %> \_ -> do
       need [indexFile, "dist/app.js"]
-      cmd "parcel build" indexFile "-d _site"
+      cmd "parcel build" indexFile + "site/*/*"
 
     -- sass
     "_site/css//*.css" %> \fp -> do
