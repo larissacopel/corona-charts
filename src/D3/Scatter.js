@@ -44,7 +44,6 @@ const timedSeries = series => function(t,keeplast) {
 }
 
 const r2format = d3.format(".3f");
-
 // { axis: {x,y,z,t : { scale : Scale, label : String} }
 // , series : [{ name : String, values: [SeriesData]}]
 // }
@@ -622,7 +621,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
                 }
                 const r2str = r2format(Math.sqrt(r2sum/r2count));
                 footlabel.text(modelFitLabel(closest.fit) + " (r²=" + r2str + ")");
-
+ 
                 // generate modeltip
                 modeltip.selectAll("text").remove();
                 const modellinex = margin.left + 10 + 5;

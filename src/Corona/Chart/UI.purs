@@ -210,6 +210,23 @@ initialRegions = case _ of
       , "Italy"
       , "South Korea"
       , "Russia"
+      , "Brazil"
+      ]
+    Corona.SouthAmerica -> S.fromFoldable [
+        "Brazil"
+      , "Colombia"
+      , "Argentina"
+      , "Peru"
+      , "Venezuela"
+      , "Chile"
+      , "Ecuador"
+      , "Bolivia"
+      , "Paraguay"
+      , "Uruguay"
+      , "Guyana"
+      , "Suriname"
+      , "French Guiana"
+      , "Falkland Islands (Malvinas)"
       ]
     Corona.USData -> S.fromFoldable [
         "California"
@@ -423,10 +440,11 @@ render st = HH.div [HU.classProp "ui-wrapper"] [
   where
     title = Projection.outLabel st.axis.y <> " vs. " <> Projection.outLabel st.axis.x
     hw = { height: 666.6, width: 1000.0 }
-    allDatasets = [ Corona.WorldData, Corona.USData ]
+    allDatasets = [ Corona.WorldData, Corona.USData, Corona.SouthAmerica ]
     datasetLabel = case _ of
       Corona.WorldData -> "World"
       Corona.USData -> "United States"
+      Corona.SouthAmerica -> "South America"
     anyModelsActive = any (\mfit -> st.modelStates ^. modelFitLens mfit) D3.allModelFit
     modelColor = case _ of
       LinFit -> "p-primary"

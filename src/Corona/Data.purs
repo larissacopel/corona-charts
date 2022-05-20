@@ -33,7 +33,7 @@ import Corona.Data.Type
 import Corona.Data.JHU as JHU
 import Corona.Data.NYT as NYT
 
-data Dataset = WorldData | USData
+data Dataset = WorldData | USData | SouthAmerica
 
 derive instance eqDataset :: Eq Dataset
 derive instance ordDataset :: Ord Dataset
@@ -42,4 +42,5 @@ fetchDataset :: Dataset -> Aff (Either String CoronaData)
 fetchDataset = case _ of
     WorldData -> JHU.fetchCoronaData
     USData    -> NYT.fetchCoronaData
+    SouthAmerica -> JHU.fetchCoronaData
 

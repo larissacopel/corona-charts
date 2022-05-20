@@ -1,31 +1,31 @@
 
 module Corona.Marshal where
 
-import Prelude
-
 import Corona.Chart
-import Corona.Data as Corona
 import D3.Scatter.Type
-import Data.Array as A
 import Data.Either
 import Data.Exists
 import Data.Int
 import Data.Int.Parse
 import Data.Maybe
-import Data.ModifiedJulianDay as MJD
 import Data.Newtype
-import Data.String as String
-import Global as G
-import Text.Parsing.StringParser as P
-import Text.Parsing.StringParser.CodeUnits as P
-import Text.Parsing.StringParser.Combinators as P
+import Prelude
 import Type.Ap
-import Type.Chain as C
 import Type.DProd
 import Type.DSum
 import Type.Equiv
 import Type.GCompare
 import Undefined
+
+import Corona.Data as Corona
+import Data.Array as A
+import Data.ModifiedJulianDay as MJD
+import Data.String as String
+import Global as G
+import Text.Parsing.StringParser as P
+import Text.Parsing.StringParser.CodeUnits as P
+import Text.Parsing.StringParser.Combinators as P
+import Type.Chain as C
 
 class Marshal a where
     serialize :: a -> String
@@ -116,11 +116,13 @@ instance marDataset :: Marshal Corona.Dataset where
     serialize = case _ of
       Corona.WorldData -> "w"
       Corona.USData    -> "u"
+      Corona.SouthAmerica    -> "x"
     parse = do
       c <- P.anyChar
       case c of
         'w' -> pure Corona.WorldData
         'u' -> pure Corona.USData
+        'x' -> pure Corona.SouthAmerica
         _   -> P.fail $ "invalid dataset: " <> show c
 
 
