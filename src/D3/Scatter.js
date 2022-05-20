@@ -923,7 +923,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
 
         const playdata = (function () {
             const playtime = 15000;
-            const delay = 50;
+            const delay = 200;
             const numSteps = playtime / delay;
             const minT = t(extentt[0])
             const maxT = t(extentt[1])

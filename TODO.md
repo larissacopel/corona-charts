@@ -1,7 +1,7 @@
 
 # Features
 
-*   [] other datasets: australia, china, etc. **
+*   [x] other datasets: australia, china, etc. **
 *   fullscreen
 
 # Fixes
