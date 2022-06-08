@@ -872,7 +872,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
                     .style("cursor", validTimeScale ? "pointer" : "not-allowed")
                     .style('pointer-events','all');
 
-        const drawButton = function(g,isPlaying,callback) {
+        const drawButton = function(g,isPlaying,callback,velocity) {
             g.selectAll("*").remove();
             g.on("click",null)
                 .on("click",callback);
@@ -882,8 +882,8 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
                 .attr("rx",3)
                 .style("fill",validTimeScale ? d3.schemeDark2[1] : "#999")
                 .append("title")
-                .text(isPlaying ? "Pause" : "Play");
-            if (isPlaying) {
+                .text(isPlaying && velocity == 2 ? "Pause" : (velocity == 1 ? "Play faster" : "Play"));
+            if (isPlaying && velocity == 2) {
                 g.append("rect")
                     .attr("width",6)
                     .attr("height",18)
@@ -902,7 +902,14 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
                     .style("fill","white")
                     .append("title")
                     .text("Pause");
-            } else {
+            } else if(velocity == 1){
+                g.append("path")
+                    .attr("d","M9 6 L9 24 L21 15 Z M15 6 L15 24 L27 15 Z")
+                    .style("fill","white")
+                    .append("title")
+                    .text("Play faster");
+            }
+            else {
                 g.append("path")
                     .attr("d","M9 6 L9 24 L21 15 Z")
                     .style("fill","white")
@@ -938,11 +945,17 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
         })();
 
         const play_start = function () {
-            button.call(drawButton,true,play_stop);
+            button.call(drawButton,true,play_faster,1);
             timer = setInterval(play_tick,playdata.delay);
         }
+        const play_faster = function () {
+            button.call(drawButton,true,play_stop,2);
+            clearInterval(timer);
+            timer = null;
+            timer = setInterval(play_tick,playdata.delay/2);
+        }
         const play_stop = function () {
-            button.call(drawButton,false,play_start);
+            button.call(drawButton,false,play_start,0);
             clearInterval(timer);
             timer = null;
         }
@@ -966,7 +979,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
         // window.sliderino = sliderino;
         // window.tt = t;
 
-        button.call(drawButton,false,play_start);
+        button.call(drawButton,false,play_start,0);
 
         moveSetSlider(extentt[1]);
 
