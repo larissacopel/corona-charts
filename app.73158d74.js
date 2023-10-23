@@ -117,25 +117,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"pBGv":[function(require,module,exports) {
+})({"c3ax":[function(require,module,exports) {
 
 // shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
 // don't break things.  But we need to wrap it in a try catch in case it is
 // wrapped in strict mode code which doesn't define any globals.  It's inside a
 // function because try/catches deoptimize in certain engines.
 
 var cachedSetTimeout;
 var cachedClearTimeout;
-
 function defaultSetTimout() {
   throw new Error('setTimeout has not been defined');
 }
-
 function defaultClearTimeout() {
   throw new Error('clearTimeout has not been defined');
 }
-
 (function () {
   try {
     if (typeof setTimeout === 'function') {
@@ -146,7 +145,6 @@ function defaultClearTimeout() {
   } catch (e) {
     cachedSetTimeout = defaultSetTimout;
   }
-
   try {
     if (typeof clearTimeout === 'function') {
       cachedClearTimeout = clearTimeout;
@@ -157,19 +155,16 @@ function defaultClearTimeout() {
     cachedClearTimeout = defaultClearTimeout;
   }
 })();
-
 function runTimeout(fun) {
   if (cachedSetTimeout === setTimeout) {
     //normal enviroments in sane situations
     return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
+  }
+  // if setTimeout wasn't available but was latter defined
   if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
     cachedSetTimeout = setTimeout;
     return setTimeout(fun, 0);
   }
-
   try {
     // when when somebody has screwed with setTimeout but no I.E. maddness
     return cachedSetTimeout(fun, 0);
@@ -183,19 +178,16 @@ function runTimeout(fun) {
     }
   }
 }
-
 function runClearTimeout(marker) {
   if (cachedClearTimeout === clearTimeout) {
     //normal enviroments in sane situations
     return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
+  }
+  // if clearTimeout wasn't available but was latter defined
   if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
     cachedClearTimeout = clearTimeout;
     return clearTimeout(marker);
   }
-
   try {
     // when when somebody has screwed with setTimeout but no I.E. maddness
     return cachedClearTimeout(marker);
@@ -210,93 +202,73 @@ function runClearTimeout(marker) {
     }
   }
 }
-
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
-
 function cleanUpNextTick() {
   if (!draining || !currentQueue) {
     return;
   }
-
   draining = false;
-
   if (currentQueue.length) {
     queue = currentQueue.concat(queue);
   } else {
     queueIndex = -1;
   }
-
   if (queue.length) {
     drainQueue();
   }
 }
-
 function drainQueue() {
   if (draining) {
     return;
   }
-
   var timeout = runTimeout(cleanUpNextTick);
   draining = true;
   var len = queue.length;
-
   while (len) {
     currentQueue = queue;
     queue = [];
-
     while (++queueIndex < len) {
       if (currentQueue) {
         currentQueue[queueIndex].run();
       }
     }
-
     queueIndex = -1;
     len = queue.length;
   }
-
   currentQueue = null;
   draining = false;
   runClearTimeout(timeout);
 }
-
 process.nextTick = function (fun) {
   var args = new Array(arguments.length - 1);
-
   if (arguments.length > 1) {
     for (var i = 1; i < arguments.length; i++) {
       args[i - 1] = arguments[i];
     }
   }
-
   queue.push(new Item(fun, args));
-
   if (queue.length === 1 && !draining) {
     runTimeout(drainQueue);
   }
-}; // v8 likes predictible objects
+};
 
-
+// v8 likes predictible objects
 function Item(fun, array) {
   this.fun = fun;
   this.array = array;
 }
-
 Item.prototype.run = function () {
   this.fun.apply(null, this.array);
 };
-
 process.title = 'browser';
 process.env = {};
 process.argv = [];
 process.version = ''; // empty string to avoid regexp issues
-
 process.versions = {};
-
 function noop() {}
-
 process.on = noop;
 process.addListener = noop;
 process.once = noop;
@@ -306,60 +278,45 @@ process.removeAllListeners = noop;
 process.emit = noop;
 process.prependListener = noop;
 process.prependOnceListener = noop;
-
 process.listeners = function (name) {
   return [];
 };
-
 process.binding = function (name) {
   throw new Error('process.binding is not supported');
 };
-
 process.cwd = function () {
   return '/';
 };
-
 process.chdir = function (dir) {
   throw new Error('process.chdir is not supported');
 };
-
 process.umask = function () {
   return 0;
 };
 },{}],"EcpK":[function(require,module,exports) {
 var process = require("process");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 // Generated by purs bundle 0.13.8
 var PS = {};
-
 (function (exports) {
   /* global XMLHttpRequest */
-
   /* global process */
   "use strict";
 
   exports._ajax = function () {
     var platformSpecific = {};
-
     if (typeof module !== "undefined" && module.require && !(typeof process !== "undefined" && process.versions["electron"])) {
       // We are on node.js
       platformSpecific.newXHR = function () {
         var XHR = module.require("xhr2");
-
         return new XHR();
       };
-
       platformSpecific.fixupUrl = function (url, xhr) {
         if (xhr.nodejsBaseUrl === null) {
           var urllib = module.require("url");
-
           var u = urllib.parse(url);
           u.protocol = u.protocol || "http:";
           u.hostname = u.hostname || "localhost";
@@ -368,7 +325,6 @@ var PS = {};
           return url || "/";
         }
       };
-
       platformSpecific.getResponse = function (xhr) {
         return xhr.response;
       };
@@ -377,22 +333,18 @@ var PS = {};
       platformSpecific.newXHR = function () {
         return new XMLHttpRequest();
       };
-
       platformSpecific.fixupUrl = function (url) {
         return url || "/";
       };
-
       platformSpecific.getResponse = function (xhr) {
         return xhr.response;
       };
     }
-
     return function (mkHeader, options) {
       return function (errback, callback) {
         var xhr = platformSpecific.newXHR();
         var fixedUrl = platformSpecific.fixupUrl(options.url, xhr);
         xhr.open(options.method || "GET", fixedUrl, true, options.username, options.password);
-
         if (options.headers) {
           try {
             for (var i = 0, header; (header = options.headers[i]) != null; i++) {
@@ -402,16 +354,13 @@ var PS = {};
             errback(e);
           }
         }
-
         var onerror = function onerror(msg) {
           return function () {
             errback(new Error(msg + ": " + options.method + " " + options.url));
           };
         };
-
         xhr.onerror = onerror("AJAX request failed");
         xhr.ontimeout = onerror("AJAX request timed out");
-
         xhr.onload = function () {
           callback({
             status: xhr.status,
@@ -425,7 +374,6 @@ var PS = {};
             body: platformSpecific.getResponse(xhr)
           });
         };
-
         xhr.responseType = options.responseType;
         xhr.withCredentials = options.withCredentials;
         xhr.send(options.content);
@@ -435,49 +383,40 @@ var PS = {};
           } catch (e) {
             return cancelErrback(e);
           }
-
           return cancelCallback();
         };
       };
     };
   }();
 })(PS["Affjax"] = PS["Affjax"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Alt"] = $PS["Control.Alt"] || {};
   var exports = $PS["Control.Alt"];
-
   var Alt = function Alt(Functor0, alt) {
     this.Functor0 = Functor0;
     this.alt = alt;
   };
-
   var alt = function alt(dict) {
     return dict.alt;
   };
-
   exports["Alt"] = Alt;
   exports["alt"] = alt;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Alternative"] = $PS["Control.Alternative"] || {};
   var exports = $PS["Control.Alternative"];
-
   var Alternative = function Alternative(Applicative0, Plus1) {
     this.Applicative0 = Applicative0;
     this.Plus1 = Plus1;
   };
-
   exports["Alternative"] = Alternative;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -487,31 +426,25 @@ var PS = {};
       var k = xs.length;
       var result = new Array(l * k);
       var n = 0;
-
       for (var i = 0; i < l; i++) {
         var f = fs[i];
-
         for (var j = 0; j < k; j++) {
           result[n++] = f(xs[j]);
         }
       }
-
       return result;
     };
   };
 })(PS["Control.Apply"] = PS["Control.Apply"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Semigroupoid"] = $PS["Control.Semigroupoid"] || {};
   var exports = $PS["Control.Semigroupoid"];
-
   var Semigroupoid = function Semigroupoid(compose) {
     this.compose = compose;
   };
-
   var semigroupoidFn = new Semigroupoid(function (f) {
     return function (g) {
       return function (x) {
@@ -519,15 +452,12 @@ var PS = {};
       };
     };
   });
-
   var compose = function compose(dict) {
     return dict.compose;
   };
-
   exports["compose"] = compose;
   exports["semigroupoidFn"] = semigroupoidFn;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -535,16 +465,13 @@ var PS = {};
   $PS["Control.Category"] = $PS["Control.Category"] || {};
   var exports = $PS["Control.Category"];
   var Control_Semigroupoid = $PS["Control.Semigroupoid"];
-
   var Category = function Category(Semigroupoid0, identity) {
     this.Semigroupoid0 = Semigroupoid0;
     this.identity = identity;
   };
-
   var identity = function identity(dict) {
     return dict.identity;
   };
-
   var categoryFn = new Category(function () {
     return Control_Semigroupoid.semigroupoidFn;
   }, function (x) {
@@ -553,14 +480,12 @@ var PS = {};
   exports["identity"] = identity;
   exports["categoryFn"] = categoryFn;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Data.Function"] = $PS["Data.Function"] || {};
   var exports = $PS["Data.Function"];
-
   var on = function on(f) {
     return function (g) {
       return function (x) {
@@ -570,7 +495,6 @@ var PS = {};
       };
     };
   };
-
   var flip = function flip(f) {
     return function (b) {
       return function (a) {
@@ -578,25 +502,21 @@ var PS = {};
       };
     };
   };
-
   var $$const = function $$const(a) {
     return function (v) {
       return a;
     };
   };
-
   var apply = function apply(f) {
     return function (x) {
       return f(x);
     };
   };
-
   exports["flip"] = flip;
   exports["const"] = $$const;
   exports["apply"] = apply;
   exports["on"] = on;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -604,22 +524,18 @@ var PS = {};
     return function (arr) {
       var l = arr.length;
       var result = new Array(l);
-
       for (var i = 0; i < l; i++) {
         result[i] = f(arr[i]);
       }
-
       return result;
     };
   };
 })(PS["Data.Functor"] = PS["Data.Functor"] || {});
-
 (function (exports) {
   "use strict";
 
   exports.unit = {};
 })(PS["Data.Unit"] = PS["Data.Unit"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -629,7 +545,6 @@ var PS = {};
   var $foreign = $PS["Data.Unit"];
   exports["unit"] = $foreign.unit;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -640,15 +555,12 @@ var PS = {};
   var Control_Semigroupoid = $PS["Control.Semigroupoid"];
   var Data_Function = $PS["Data.Function"];
   var Data_Unit = $PS["Data.Unit"];
-
   var Functor = function Functor(map) {
     this.map = map;
   };
-
   var map = function map(dict) {
     return dict.map;
   };
-
   var mapFlipped = function mapFlipped(dictFunctor) {
     return function (fa) {
       return function (f) {
@@ -656,11 +568,9 @@ var PS = {};
       };
     };
   };
-
   var $$void = function $$void(dictFunctor) {
     return map(dictFunctor)(Data_Function["const"](Data_Unit.unit));
   };
-
   var voidLeft = function voidLeft(dictFunctor) {
     return function (f) {
       return function (x) {
@@ -668,13 +578,11 @@ var PS = {};
       };
     };
   };
-
   var voidRight = function voidRight(dictFunctor) {
     return function (x) {
       return map(dictFunctor)(Data_Function["const"](x));
     };
   };
-
   var functorFn = new Functor(Control_Semigroupoid.compose(Control_Semigroupoid.semigroupoidFn));
   var functorArray = new Functor($foreign.arrayMap);
   exports["Functor"] = Functor;
@@ -686,7 +594,6 @@ var PS = {};
   exports["functorFn"] = functorFn;
   exports["functorArray"] = functorArray;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -697,20 +604,16 @@ var PS = {};
   var Control_Category = $PS["Control.Category"];
   var Data_Function = $PS["Data.Function"];
   var Data_Functor = $PS["Data.Functor"];
-
   var Apply = function Apply(Functor0, apply) {
     this.Functor0 = Functor0;
     this.apply = apply;
   };
-
   var applyArray = new Apply(function () {
     return Data_Functor.functorArray;
   }, $foreign.arrayApply);
-
   var apply = function apply(dict) {
     return dict.apply;
   };
-
   var applySecond = function applySecond(dictApply) {
     return function (a) {
       return function (b) {
@@ -718,7 +621,6 @@ var PS = {};
       };
     };
   };
-
   var lift2 = function lift2(dictApply) {
     return function (f) {
       return function (a) {
@@ -728,7 +630,6 @@ var PS = {};
       };
     };
   };
-
   var lift4 = function lift4(dictApply) {
     return function (f) {
       return function (a) {
@@ -742,7 +643,6 @@ var PS = {};
       };
     };
   };
-
   exports["Apply"] = Apply;
   exports["apply"] = apply;
   exports["applySecond"] = applySecond;
@@ -750,7 +650,6 @@ var PS = {};
   exports["lift4"] = lift4;
   exports["applyArray"] = applyArray;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -759,54 +658,43 @@ var PS = {};
   var exports = $PS["Control.Applicative"];
   var Control_Apply = $PS["Control.Apply"];
   var Data_Unit = $PS["Data.Unit"];
-
   var Applicative = function Applicative(Apply0, pure) {
     this.Apply0 = Apply0;
     this.pure = pure;
   };
-
   var pure = function pure(dict) {
     return dict.pure;
   };
-
   var unless = function unless(dictApplicative) {
     return function (v) {
       return function (v1) {
         if (!v) {
           return v1;
         }
-
         ;
-
         if (v) {
           return pure(dictApplicative)(Data_Unit.unit);
         }
-
         ;
         throw new Error("Failed pattern match at Control.Applicative (line 62, column 1 - line 62, column 65): " + [v.constructor.name, v1.constructor.name]);
       };
     };
   };
-
   var when = function when(dictApplicative) {
     return function (v) {
       return function (v1) {
         if (v) {
           return v1;
         }
-
         ;
-
         if (!v) {
           return pure(dictApplicative)(Data_Unit.unit);
         }
-
         ;
         throw new Error("Failed pattern match at Control.Applicative (line 57, column 1 - line 57, column 63): " + [v.constructor.name, v1.constructor.name]);
       };
     };
   };
-
   var liftA1 = function liftA1(dictApplicative) {
     return function (f) {
       return function (a) {
@@ -814,30 +702,25 @@ var PS = {};
       };
     };
   };
-
   exports["Applicative"] = Applicative;
   exports["pure"] = pure;
   exports["liftA1"] = liftA1;
   exports["unless"] = unless;
   exports["when"] = when;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.arrayBind = function (arr) {
     return function (f) {
       var result = [];
-
       for (var i = 0, l = arr.length; i < l; i++) {
         Array.prototype.push.apply(result, f(arr[i]));
       }
-
       return result;
     };
   };
 })(PS["Control.Bind"] = PS["Control.Bind"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -847,32 +730,25 @@ var PS = {};
   var $foreign = $PS["Control.Bind"];
   var Control_Apply = $PS["Control.Apply"];
   var Data_Function = $PS["Data.Function"];
-
   var Discard = function Discard(discard) {
     this.discard = discard;
   };
-
   var Bind = function Bind(Apply0, bind) {
     this.Apply0 = Apply0;
     this.bind = bind;
   };
-
   var discard = function discard(dict) {
     return dict.discard;
   };
-
   var bindArray = new Bind(function () {
     return Control_Apply.applyArray;
   }, $foreign.arrayBind);
-
   var bind = function bind(dict) {
     return dict.bind;
   };
-
   var bindFlipped = function bindFlipped(dictBind) {
     return Data_Function.flip(bind(dictBind));
   };
-
   var composeKleisliFlipped = function composeKleisliFlipped(dictBind) {
     return function (f) {
       return function (g) {
@@ -882,7 +758,6 @@ var PS = {};
       };
     };
   };
-
   var composeKleisli = function composeKleisli(dictBind) {
     return function (f) {
       return function (g) {
@@ -892,7 +767,6 @@ var PS = {};
       };
     };
   };
-
   var discardUnit = new Discard(function (dictBind) {
     return bind(dictBind);
   });
@@ -905,7 +779,6 @@ var PS = {};
   exports["bindArray"] = bindArray;
   exports["discardUnit"] = discardUnit;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -914,12 +787,10 @@ var PS = {};
   var exports = $PS["Control.Monad"];
   var Control_Applicative = $PS["Control.Applicative"];
   var Control_Bind = $PS["Control.Bind"];
-
   var Monad = function Monad(Applicative0, Bind1) {
     this.Applicative0 = Applicative0;
     this.Bind1 = Bind1;
   };
-
   var unlessM = function unlessM(dictMonad) {
     return function (mb) {
       return function (m) {
@@ -929,7 +800,6 @@ var PS = {};
       };
     };
   };
-
   var liftM1 = function liftM1(dictMonad) {
     return function (f) {
       return function (a) {
@@ -939,7 +809,6 @@ var PS = {};
       };
     };
   };
-
   var ap = function ap(dictMonad) {
     return function (f) {
       return function (a) {
@@ -951,33 +820,27 @@ var PS = {};
       };
     };
   };
-
   exports["Monad"] = Monad;
   exports["liftM1"] = liftM1;
   exports["ap"] = ap;
   exports["unlessM"] = unlessM;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Plus"] = $PS["Control.Plus"] || {};
   var exports = $PS["Control.Plus"];
-
   var Plus = function Plus(Alt0, empty) {
     this.Alt0 = Alt0;
     this.empty = empty;
   };
-
   var empty = function empty(dict) {
     return dict.empty;
   };
-
   exports["Plus"] = Plus;
   exports["empty"] = empty;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -987,33 +850,26 @@ var PS = {};
   var Control_Applicative = $PS["Control.Applicative"];
   var Control_Plus = $PS["Control.Plus"];
   var Data_Unit = $PS["Data.Unit"];
-
   var MonadZero = function MonadZero(Alternative1, Monad0) {
     this.Alternative1 = Alternative1;
     this.Monad0 = Monad0;
   };
-
   var guard = function guard(dictMonadZero) {
     return function (v) {
       if (v) {
         return Control_Applicative.pure(dictMonadZero.Alternative1().Applicative0())(Data_Unit.unit);
       }
-
       ;
-
       if (!v) {
         return Control_Plus.empty(dictMonadZero.Alternative1().Plus1());
       }
-
       ;
       throw new Error("Failed pattern match at Control.MonadZero (line 54, column 1 - line 54, column 52): " + [v.constructor.name]);
     };
   };
-
   exports["MonadZero"] = MonadZero;
   exports["guard"] = guard;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -1022,42 +878,34 @@ var PS = {};
       return r1 === r2;
     };
   };
-
   exports.eqBooleanImpl = refEq;
   exports.eqIntImpl = refEq;
   exports.eqNumberImpl = refEq;
   exports.eqCharImpl = refEq;
   exports.eqStringImpl = refEq;
 })(PS["Data.Eq"] = PS["Data.Eq"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Data.Symbol"] = $PS["Data.Symbol"] || {};
   var exports = $PS["Data.Symbol"];
-
   var SProxy = function () {
     function SProxy() {}
-
     ;
     SProxy.value = new SProxy();
     return SProxy;
   }();
-
   var IsSymbol = function IsSymbol(reflectSymbol) {
     this.reflectSymbol = reflectSymbol;
   };
-
   var reflectSymbol = function reflectSymbol(dict) {
     return dict.reflectSymbol;
   };
-
   exports["IsSymbol"] = IsSymbol;
   exports["reflectSymbol"] = reflectSymbol;
   exports["SProxy"] = SProxy;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -1066,25 +914,21 @@ var PS = {};
       return rec[label];
     };
   };
-
   exports.unsafeSet = function (label) {
     return function (value) {
       return function (rec) {
         var copy = {};
-
         for (var key in rec) {
           if ({}.hasOwnProperty.call(rec, key)) {
             copy[key] = rec[key];
           }
         }
-
         copy[label] = value;
         return copy;
       };
     };
   };
 })(PS["Record.Unsafe"] = PS["Record.Unsafe"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1095,25 +939,20 @@ var PS = {};
   exports["unsafeGet"] = $foreign.unsafeGet;
   exports["unsafeSet"] = $foreign.unsafeSet;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Type.Data.RowList"] = $PS["Type.Data.RowList"] || {};
   var exports = $PS["Type.Data.RowList"];
-
   var RLProxy = function () {
     function RLProxy() {}
-
     ;
     RLProxy.value = new RLProxy();
     return RLProxy;
   }();
-
   exports["RLProxy"] = RLProxy;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1124,15 +963,12 @@ var PS = {};
   var Data_Symbol = $PS["Data.Symbol"];
   var Record_Unsafe = $PS["Record.Unsafe"];
   var Type_Data_RowList = $PS["Type.Data.RowList"];
-
   var EqRecord = function EqRecord(eqRecord) {
     this.eqRecord = eqRecord;
   };
-
   var Eq = function Eq(eq) {
     this.eq = eq;
   };
-
   var eqUnit = new Eq(function (v) {
     return function (v1) {
       return true;
@@ -1146,26 +982,21 @@ var PS = {};
       };
     };
   });
-
   var eqRecord = function eqRecord(dict) {
     return dict.eqRecord;
   };
-
   var eqRec = function eqRec(dictRowToList) {
     return function (dictEqRecord) {
       return new Eq(eqRecord(dictEqRecord)(Type_Data_RowList.RLProxy.value));
     };
   };
-
   var eqNumber = new Eq($foreign.eqNumberImpl);
   var eqInt = new Eq($foreign.eqIntImpl);
   var eqChar = new Eq($foreign.eqCharImpl);
   var eqBoolean = new Eq($foreign.eqBooleanImpl);
-
   var eq = function eq(dict) {
     return dict.eq;
   };
-
   var eqRowCons = function eqRowCons(dictEqRecord) {
     return function (dictCons) {
       return function (dictIsSymbol) {
@@ -1184,7 +1015,6 @@ var PS = {};
       };
     };
   };
-
   var notEq = function notEq(dictEq) {
     return function (x) {
       return function (y) {
@@ -1192,7 +1022,6 @@ var PS = {};
       };
     };
   };
-
   exports["Eq"] = Eq;
   exports["eq"] = eq;
   exports["notEq"] = notEq;
@@ -1206,7 +1035,6 @@ var PS = {};
   exports["eqRowNil"] = eqRowNil;
   exports["eqRowCons"] = eqRowCons;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -1215,7 +1043,6 @@ var PS = {};
       return s1 + s2;
     };
   };
-
   exports.concatArray = function (xs) {
     return function (ys) {
       if (xs.length === 0) return ys;
@@ -1224,7 +1051,6 @@ var PS = {};
     };
   };
 })(PS["Data.Semigroup"] = PS["Data.Semigroup"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1232,24 +1058,19 @@ var PS = {};
   $PS["Data.Semigroup"] = $PS["Data.Semigroup"] || {};
   var exports = $PS["Data.Semigroup"];
   var $foreign = $PS["Data.Semigroup"];
-
   var Semigroup = function Semigroup(append) {
     this.append = append;
   };
-
   var semigroupString = new Semigroup($foreign.concatString);
   var semigroupArray = new Semigroup($foreign.concatArray);
-
   var append = function append(dict) {
     return dict.append;
   };
-
   exports["Semigroup"] = Semigroup;
   exports["append"] = append;
   exports["semigroupString"] = semigroupString;
   exports["semigroupArray"] = semigroupArray;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1257,29 +1078,24 @@ var PS = {};
   $PS["Data.Monoid"] = $PS["Data.Monoid"] || {};
   var exports = $PS["Data.Monoid"];
   var Data_Semigroup = $PS["Data.Semigroup"];
-
   var Monoid = function Monoid(Semigroup0, mempty) {
     this.Semigroup0 = Semigroup0;
     this.mempty = mempty;
   };
-
   var monoidString = new Monoid(function () {
     return Data_Semigroup.semigroupString;
   }, "");
   var monoidArray = new Monoid(function () {
     return Data_Semigroup.semigroupArray;
   }, []);
-
   var mempty = function mempty(dict) {
     return dict.mempty;
   };
-
   exports["Monoid"] = Monoid;
   exports["mempty"] = mempty;
   exports["monoidString"] = monoidString;
   exports["monoidArray"] = monoidArray;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -1294,13 +1110,11 @@ var PS = {};
       };
     };
   };
-
   exports.ordIntImpl = unsafeCompareImpl;
   exports.ordNumberImpl = unsafeCompareImpl;
   exports.ordStringImpl = unsafeCompareImpl;
   exports.ordCharImpl = unsafeCompareImpl;
 })(PS["Data.Ord"] = PS["Data.Ord"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1308,49 +1122,37 @@ var PS = {};
   $PS["Data.Ordering"] = $PS["Data.Ordering"] || {};
   var exports = $PS["Data.Ordering"];
   var Data_Eq = $PS["Data.Eq"];
-
   var LT = function () {
     function LT() {}
-
     ;
     LT.value = new LT();
     return LT;
   }();
-
   var GT = function () {
     function GT() {}
-
     ;
     GT.value = new GT();
     return GT;
   }();
-
   var EQ = function () {
     function EQ() {}
-
     ;
     EQ.value = new EQ();
     return EQ;
   }();
-
   var eqOrdering = new Data_Eq.Eq(function (v) {
     return function (v1) {
       if (v instanceof LT && v1 instanceof LT) {
         return true;
       }
-
       ;
-
       if (v instanceof GT && v1 instanceof GT) {
         return true;
       }
-
       ;
-
       if (v instanceof EQ && v1 instanceof EQ) {
         return true;
       }
-
       ;
       return false;
     };
@@ -1360,7 +1162,6 @@ var PS = {};
   exports["EQ"] = EQ;
   exports["eqOrdering"] = eqOrdering;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -1370,14 +1171,12 @@ var PS = {};
       return x - y | 0;
     };
   };
-
   exports.numSub = function (n1) {
     return function (n2) {
       return n1 - n2;
     };
   };
 })(PS["Data.Ring"] = PS["Data.Ring"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -1387,27 +1186,23 @@ var PS = {};
       return x + y | 0;
     };
   };
-
   exports.intMul = function (x) {
     return function (y) {
       /* jshint bitwise: false */
       return x * y | 0;
     };
   };
-
   exports.numAdd = function (n1) {
     return function (n2) {
       return n1 + n2;
     };
   };
-
   exports.numMul = function (n1) {
     return function (n2) {
       return n1 * n2;
     };
   };
 })(PS["Data.Semiring"] = PS["Data.Semiring"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1415,29 +1210,23 @@ var PS = {};
   $PS["Data.Semiring"] = $PS["Data.Semiring"] || {};
   var exports = $PS["Data.Semiring"];
   var $foreign = $PS["Data.Semiring"];
-
   var Semiring = function Semiring(add, mul, one, zero) {
     this.add = add;
     this.mul = mul;
     this.one = one;
     this.zero = zero;
   };
-
   var zero = function zero(dict) {
     return dict.zero;
   };
-
   var semiringNumber = new Semiring($foreign.numAdd, $foreign.numMul, 1.0, 0.0);
   var semiringInt = new Semiring($foreign.intAdd, $foreign.intMul, 1, 0);
-
   var mul = function mul(dict) {
     return dict.mul;
   };
-
   var add = function add(dict) {
     return dict.add;
   };
-
   exports["Semiring"] = Semiring;
   exports["add"] = add;
   exports["zero"] = zero;
@@ -1445,7 +1234,6 @@ var PS = {};
   exports["semiringInt"] = semiringInt;
   exports["semiringNumber"] = semiringNumber;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1454,36 +1242,30 @@ var PS = {};
   var exports = $PS["Data.Ring"];
   var $foreign = $PS["Data.Ring"];
   var Data_Semiring = $PS["Data.Semiring"];
-
   var Ring = function Ring(Semiring0, sub) {
     this.Semiring0 = Semiring0;
     this.sub = sub;
   };
-
   var sub = function sub(dict) {
     return dict.sub;
   };
-
   var ringNumber = new Ring(function () {
     return Data_Semiring.semiringNumber;
   }, $foreign.numSub);
   var ringInt = new Ring(function () {
     return Data_Semiring.semiringInt;
   }, $foreign.intSub);
-
   var negate = function negate(dictRing) {
     return function (a) {
       return sub(dictRing)(Data_Semiring.zero(dictRing.Semiring0()))(a);
     };
   };
-
   exports["Ring"] = Ring;
   exports["sub"] = sub;
   exports["negate"] = negate;
   exports["ringInt"] = ringInt;
   exports["ringNumber"] = ringNumber;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1498,17 +1280,14 @@ var PS = {};
   var Data_Symbol = $PS["Data.Symbol"];
   var Record_Unsafe = $PS["Record.Unsafe"];
   var Type_Data_RowList = $PS["Type.Data.RowList"];
-
   var OrdRecord = function OrdRecord(EqRecord0, compareRecord) {
     this.EqRecord0 = EqRecord0;
     this.compareRecord = compareRecord;
   };
-
   var Ord = function Ord(Eq0, compare) {
     this.Eq0 = Eq0;
     this.compare = compare;
   };
-
   var ordUnit = new Ord(function () {
     return Data_Eq.eqUnit;
   }, function (v) {
@@ -1537,11 +1316,9 @@ var PS = {};
   var ordChar = new Ord(function () {
     return Data_Eq.eqChar;
   }, $foreign.ordCharImpl(Data_Ordering.LT.value)(Data_Ordering.EQ.value)(Data_Ordering.GT.value));
-
   var compareRecord = function compareRecord(dict) {
     return dict.compareRecord;
   };
-
   var ordRecord = function ordRecord(dictRowToList) {
     return function (dictOrdRecord) {
       return new Ord(function () {
@@ -1549,83 +1326,65 @@ var PS = {};
       }, compareRecord(dictOrdRecord)(Type_Data_RowList.RLProxy.value));
     };
   };
-
   var compare = function compare(dict) {
     return dict.compare;
   };
-
   var greaterThan = function greaterThan(dictOrd) {
     return function (a1) {
       return function (a2) {
         var v = compare(dictOrd)(a1)(a2);
-
         if (v instanceof Data_Ordering.GT) {
           return true;
         }
-
         ;
         return false;
       };
     };
   };
-
   var greaterThanOrEq = function greaterThanOrEq(dictOrd) {
     return function (a1) {
       return function (a2) {
         var v = compare(dictOrd)(a1)(a2);
-
         if (v instanceof Data_Ordering.LT) {
           return false;
         }
-
         ;
         return true;
       };
     };
   };
-
   var lessThan = function lessThan(dictOrd) {
     return function (a1) {
       return function (a2) {
         var v = compare(dictOrd)(a1)(a2);
-
         if (v instanceof Data_Ordering.LT) {
           return true;
         }
-
         ;
         return false;
       };
     };
   };
-
   var max = function max(dictOrd) {
     return function (x) {
       return function (y) {
         var v = compare(dictOrd)(x)(y);
-
         if (v instanceof Data_Ordering.LT) {
           return y;
         }
-
         ;
-
         if (v instanceof Data_Ordering.EQ) {
           return x;
         }
-
         ;
-
         if (v instanceof Data_Ordering.GT) {
           return x;
         }
-
         ;
         throw new Error("Failed pattern match at Data.Ord (line 167, column 3 - line 170, column 12): " + [v.constructor.name]);
       };
     };
   };
-
   var ordRecordCons = function ordRecordCons(dictOrdRecord) {
     return function (dictCons) {
       return function (dictIsSymbol) {
@@ -1638,11 +1397,9 @@ var PS = {};
                 var key = Data_Symbol.reflectSymbol(dictIsSymbol)(Data_Symbol.SProxy.value);
                 var left = compare(dictOrd)(Record_Unsafe.unsafeGet(key)(ra))(Record_Unsafe.unsafeGet(key)(rb));
                 var $49 = Data_Eq.notEq(Data_Ordering.eqOrdering)(left)(Data_Ordering.EQ.value);
-
                 if ($49) {
                   return left;
                 }
-
                 ;
                 return compareRecord(dictOrdRecord)(Type_Data_RowList.RLProxy.value)(ra)(rb);
               };
@@ -1652,7 +1409,6 @@ var PS = {};
       };
     };
   };
-
   var between = function between(dictOrd) {
     return function (low) {
       return function (hi) {
@@ -1660,35 +1416,28 @@ var PS = {};
           if (lessThan(dictOrd)(x)(low)) {
             return false;
           }
-
           ;
-
           if (greaterThan(dictOrd)(x)(hi)) {
             return false;
           }
-
           ;
           return true;
         };
       };
     };
   };
-
   var abs = function abs(dictOrd) {
     return function (dictRing) {
       return function (x) {
         var $53 = greaterThanOrEq(dictOrd)(x)(Data_Semiring.zero(dictRing.Semiring0()));
-
         if ($53) {
           return x;
         }
-
         ;
         return Data_Ring.negate(dictRing)(x);
       };
     };
   };
-
   exports["Ord"] = Ord;
   exports["compare"] = compare;
   exports["greaterThan"] = greaterThan;
@@ -1704,7 +1453,6 @@ var PS = {};
   exports["ordRecordCons"] = ordRecordCons;
   exports["ordRecord"] = ordRecord;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1727,79 +1475,61 @@ var PS = {};
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
   var Data_Semigroup = $PS["Data.Semigroup"];
-
   var Nothing = function () {
     function Nothing() {}
-
     ;
     Nothing.value = new Nothing();
     return Nothing;
   }();
-
   var Just = function () {
     function Just(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Just.create = function (value0) {
       return new Just(value0);
     };
-
     return Just;
   }();
-
   var semigroupMaybe = function semigroupMaybe(dictSemigroup) {
     return new Data_Semigroup.Semigroup(function (v) {
       return function (v1) {
         if (v instanceof Nothing) {
           return v1;
         }
-
         ;
-
         if (v1 instanceof Nothing) {
           return v;
         }
-
         ;
-
         if (v instanceof Just && v1 instanceof Just) {
           return new Just(Data_Semigroup.append(dictSemigroup)(v.value0)(v1.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Data.Maybe (line 174, column 1 - line 177, column 43): " + [v.constructor.name, v1.constructor.name]);
       };
     });
   };
-
   var monoidMaybe = function monoidMaybe(dictSemigroup) {
     return new Data_Monoid.Monoid(function () {
       return semigroupMaybe(dictSemigroup);
     }, Nothing.value);
   };
-
   var maybe = function maybe(v) {
     return function (v1) {
       return function (v2) {
         if (v2 instanceof Nothing) {
           return v;
         }
-
         ;
-
         if (v2 instanceof Just) {
           return v1(v2.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Data.Maybe (line 217, column 1 - line 217, column 51): " + [v.constructor.name, v1.constructor.name, v2.constructor.name]);
       };
     };
   };
-
   var isNothing = maybe(true)(Data_Function["const"](false));
   var isJust = maybe(false)(Data_Function["const"](true));
   var functorMaybe = new Data_Functor.Functor(function (v) {
@@ -1807,46 +1537,37 @@ var PS = {};
       if (v1 instanceof Just) {
         return new Just(v(v1.value0));
       }
-
       ;
       return Nothing.value;
     };
   });
-
   var fromMaybe = function fromMaybe(a) {
     return maybe(a)(Control_Category.identity(Control_Category.categoryFn));
   };
-
   var fromJust = function fromJust(dictPartial) {
     return function (v) {
       if (v instanceof Just) {
         return v.value0;
       }
-
       ;
       throw new Error("Failed pattern match at Data.Maybe (line 268, column 1 - line 268, column 46): " + [v.constructor.name]);
     };
   };
-
   var eqMaybe = function eqMaybe(dictEq) {
     return new Data_Eq.Eq(function (x) {
       return function (y) {
         if (x instanceof Nothing && y instanceof Nothing) {
           return true;
         }
-
         ;
-
         if (x instanceof Just && y instanceof Just) {
           return Data_Eq.eq(dictEq)(x.value0)(y.value0);
         }
-
         ;
         return false;
       };
     });
   };
-
   var ordMaybe = function ordMaybe(dictOrd) {
     return new Data_Ord.Ord(function () {
       return eqMaybe(dictOrd.Eq0());
@@ -1855,31 +1576,23 @@ var PS = {};
         if (x instanceof Nothing && y instanceof Nothing) {
           return Data_Ordering.EQ.value;
         }
-
         ;
-
         if (x instanceof Nothing) {
           return Data_Ordering.LT.value;
         }
-
         ;
-
         if (y instanceof Nothing) {
           return Data_Ordering.GT.value;
         }
-
         ;
-
         if (x instanceof Just && y instanceof Just) {
           return Data_Ord.compare(dictOrd)(x.value0)(y.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Data.Maybe (line 194, column 1 - line 194, column 51): " + [x.constructor.name, y.constructor.name]);
       };
     });
   };
-
   var applyMaybe = new Control_Apply.Apply(function () {
     return functorMaybe;
   }, function (v) {
@@ -1887,13 +1600,10 @@ var PS = {};
       if (v instanceof Just) {
         return Data_Functor.map(functorMaybe)(v.value0)(v1);
       }
-
       ;
-
       if (v instanceof Nothing) {
         return Nothing.value;
       }
-
       ;
       throw new Error("Failed pattern match at Data.Maybe (line 67, column 1 - line 69, column 30): " + [v.constructor.name, v1.constructor.name]);
     };
@@ -1905,13 +1615,10 @@ var PS = {};
       if (v instanceof Just) {
         return v1(v.value0);
       }
-
       ;
-
       if (v instanceof Nothing) {
         return Nothing.value;
       }
-
       ;
       throw new Error("Failed pattern match at Data.Maybe (line 125, column 1 - line 127, column 28): " + [v.constructor.name, v1.constructor.name]);
     };
@@ -1931,7 +1638,6 @@ var PS = {};
       if (v instanceof Nothing) {
         return v1;
       }
-
       ;
       return v;
     };
@@ -1965,7 +1671,6 @@ var PS = {};
   exports["eqMaybe"] = eqMaybe;
   exports["ordMaybe"] = ordMaybe;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1977,7 +1682,6 @@ var PS = {};
   exports["applicationFormURLEncoded"] = applicationFormURLEncoded;
   exports["applicationJSON"] = applicationJSON;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -1986,120 +1690,87 @@ var PS = {};
   var exports = $PS["Affjax.RequestBody"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_MediaType_Common = $PS["Data.MediaType.Common"];
-
   var ArrayView = function () {
     function ArrayView(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ArrayView.create = function (value0) {
       return new ArrayView(value0);
     };
-
     return ArrayView;
   }();
-
   var Blob = function () {
     function Blob(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Blob.create = function (value0) {
       return new Blob(value0);
     };
-
     return Blob;
   }();
-
   var Document = function () {
     function Document(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Document.create = function (value0) {
       return new Document(value0);
     };
-
     return Document;
   }();
-
   var $$String = function () {
     function $$String(value0) {
       this.value0 = value0;
     }
-
     ;
-
     $$String.create = function (value0) {
       return new $$String(value0);
     };
-
     return $$String;
   }();
-
   var FormData = function () {
     function FormData(value0) {
       this.value0 = value0;
     }
-
     ;
-
     FormData.create = function (value0) {
       return new FormData(value0);
     };
-
     return FormData;
   }();
-
   var FormURLEncoded = function () {
     function FormURLEncoded(value0) {
       this.value0 = value0;
     }
-
     ;
-
     FormURLEncoded.create = function (value0) {
       return new FormURLEncoded(value0);
     };
-
     return FormURLEncoded;
   }();
-
   var Json = function () {
     function Json(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Json.create = function (value0) {
       return new Json(value0);
     };
-
     return Json;
   }();
-
   var toMediaType = function toMediaType(v) {
     if (v instanceof FormURLEncoded) {
       return new Data_Maybe.Just(Data_MediaType_Common.applicationFormURLEncoded);
     }
-
     ;
-
     if (v instanceof Json) {
       return new Data_Maybe.Just(Data_MediaType_Common.applicationJSON);
     }
-
     ;
     return Data_Maybe.Nothing.value;
   };
-
   exports["ArrayView"] = ArrayView;
   exports["Blob"] = Blob;
   exports["Document"] = Document;
@@ -2109,7 +1780,6 @@ var PS = {};
   exports["Json"] = Json;
   exports["toMediaType"] = toMediaType;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -2118,18 +1788,15 @@ var PS = {};
       return b1 && b2;
     };
   };
-
   exports.boolDisj = function (b1) {
     return function (b2) {
       return b1 || b2;
     };
   };
-
   exports.boolNot = function (b) {
     return !b;
   };
 })(PS["Data.HeytingAlgebra"] = PS["Data.HeytingAlgebra"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2137,7 +1804,6 @@ var PS = {};
   $PS["Data.HeytingAlgebra"] = $PS["Data.HeytingAlgebra"] || {};
   var exports = $PS["Data.HeytingAlgebra"];
   var $foreign = $PS["Data.HeytingAlgebra"];
-
   var HeytingAlgebra = function HeytingAlgebra(conj, disj, ff, implies, not, tt) {
     this.conj = conj;
     this.disj = disj;
@@ -2146,37 +1812,29 @@ var PS = {};
     this.not = not;
     this.tt = tt;
   };
-
   var tt = function tt(dict) {
     return dict.tt;
   };
-
   var not = function not(dict) {
     return dict.not;
   };
-
   var implies = function implies(dict) {
     return dict.implies;
   };
-
   var ff = function ff(dict) {
     return dict.ff;
   };
-
   var disj = function disj(dict) {
     return dict.disj;
   };
-
   var heytingAlgebraBoolean = new HeytingAlgebra($foreign.boolConj, $foreign.boolDisj, false, function (a) {
     return function (b) {
       return disj(heytingAlgebraBoolean)(not(heytingAlgebraBoolean)(a))(b);
     };
   }, $foreign.boolNot, true);
-
   var conj = function conj(dict) {
     return dict.conj;
   };
-
   var heytingAlgebraFunction = function heytingAlgebraFunction(dictHeytingAlgebra) {
     return new HeytingAlgebra(function (f) {
       return function (g) {
@@ -2206,7 +1864,6 @@ var PS = {};
       return tt(dictHeytingAlgebra);
     });
   };
-
   exports["tt"] = tt;
   exports["ff"] = ff;
   exports["conj"] = conj;
@@ -2215,7 +1872,6 @@ var PS = {};
   exports["heytingAlgebraBoolean"] = heytingAlgebraBoolean;
   exports["heytingAlgebraFunction"] = heytingAlgebraFunction;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2225,11 +1881,9 @@ var PS = {};
   var Data_HeytingAlgebra = $PS["Data.HeytingAlgebra"];
   var Data_Monoid = $PS["Data.Monoid"];
   var Data_Semigroup = $PS["Data.Semigroup"];
-
   var Conj = function Conj(x) {
     return x;
   };
-
   var semigroupConj = function semigroupConj(dictHeytingAlgebra) {
     return new Data_Semigroup.Semigroup(function (v) {
       return function (v1) {
@@ -2237,17 +1891,14 @@ var PS = {};
       };
     });
   };
-
   var monoidConj = function monoidConj(dictHeytingAlgebra) {
     return new Data_Monoid.Monoid(function () {
       return semigroupConj(dictHeytingAlgebra);
     }, Data_HeytingAlgebra.tt(dictHeytingAlgebra));
   };
-
   exports["Conj"] = Conj;
   exports["monoidConj"] = monoidConj;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2257,11 +1908,9 @@ var PS = {};
   var Data_HeytingAlgebra = $PS["Data.HeytingAlgebra"];
   var Data_Monoid = $PS["Data.Monoid"];
   var Data_Semigroup = $PS["Data.Semigroup"];
-
   var Disj = function Disj(x) {
     return x;
   };
-
   var semigroupDisj = function semigroupDisj(dictHeytingAlgebra) {
     return new Data_Semigroup.Semigroup(function (v) {
       return function (v1) {
@@ -2269,17 +1918,14 @@ var PS = {};
       };
     });
   };
-
   var monoidDisj = function monoidDisj(dictHeytingAlgebra) {
     return new Data_Monoid.Monoid(function () {
       return semigroupDisj(dictHeytingAlgebra);
     }, Data_HeytingAlgebra.ff(dictHeytingAlgebra));
   };
-
   exports["Disj"] = Disj;
   exports["monoidDisj"] = monoidDisj;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2289,20 +1935,16 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Monoid_Conj = $PS["Data.Monoid.Conj"];
   var Data_Monoid_Disj = $PS["Data.Monoid.Disj"];
-
   var Newtype = function Newtype(unwrap, wrap) {
     this.unwrap = unwrap;
     this.wrap = wrap;
   };
-
   var wrap = function wrap(dict) {
     return dict.wrap;
   };
-
   var unwrap = function unwrap(dict) {
     return dict.unwrap;
   };
-
   var over = function over(dictNewtype) {
     return function (dictNewtype1) {
       return function (v) {
@@ -2316,14 +1958,12 @@ var PS = {};
       };
     };
   };
-
   var newtypeDisj = new Newtype(function (v) {
     return v;
   }, Data_Monoid_Disj.Disj);
   var newtypeConj = new Newtype(function (v) {
     return v;
   }, Data_Monoid_Conj.Conj);
-
   var alaF = function alaF(dictFunctor) {
     return function (dictFunctor1) {
       return function (dictNewtype) {
@@ -2341,7 +1981,6 @@ var PS = {};
       };
     };
   };
-
   exports["unwrap"] = unwrap;
   exports["Newtype"] = Newtype;
   exports["alaF"] = alaF;
@@ -2349,7 +1988,6 @@ var PS = {};
   exports["newtypeConj"] = newtypeConj;
   exports["newtypeDisj"] = newtypeDisj;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2357,17 +1995,14 @@ var PS = {};
   $PS["Data.MediaType"] = $PS["Data.MediaType"] || {};
   var exports = $PS["Data.MediaType"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var MediaType = function MediaType(x) {
     return x;
   };
-
   var newtypeMediaType = new Data_Newtype.Newtype(function (n) {
     return n;
   }, MediaType);
   exports["newtypeMediaType"] = newtypeMediaType;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2376,100 +2011,74 @@ var PS = {};
   var exports = $PS["Affjax.RequestHeader"];
   var Data_MediaType = $PS["Data.MediaType"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var Accept = function () {
     function Accept(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Accept.create = function (value0) {
       return new Accept(value0);
     };
-
     return Accept;
   }();
-
   var ContentType = function () {
     function ContentType(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ContentType.create = function (value0) {
       return new ContentType(value0);
     };
-
     return ContentType;
   }();
-
   var RequestHeader = function () {
     function RequestHeader(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     RequestHeader.create = function (value0) {
       return function (value1) {
         return new RequestHeader(value0, value1);
       };
     };
-
     return RequestHeader;
   }();
-
   var value = function value(v) {
     if (v instanceof Accept) {
       return Data_Newtype.unwrap(Data_MediaType.newtypeMediaType)(v.value0);
     }
-
     ;
-
     if (v instanceof ContentType) {
       return Data_Newtype.unwrap(Data_MediaType.newtypeMediaType)(v.value0);
     }
-
     ;
-
     if (v instanceof RequestHeader) {
       return v.value1;
     }
-
     ;
     throw new Error("Failed pattern match at Affjax.RequestHeader (line 26, column 1 - line 26, column 33): " + [v.constructor.name]);
   };
-
   var name = function name(v) {
     if (v instanceof Accept) {
       return "Accept";
     }
-
     ;
-
     if (v instanceof ContentType) {
       return "Content-Type";
     }
-
     ;
-
     if (v instanceof RequestHeader) {
       return v.value0;
     }
-
     ;
     throw new Error("Failed pattern match at Affjax.RequestHeader (line 21, column 1 - line 21, column 32): " + [v.constructor.name]);
   };
-
   exports["Accept"] = Accept;
   exports["ContentType"] = ContentType;
   exports["name"] = name;
   exports["value"] = value;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2479,139 +2088,100 @@ var PS = {};
   var Control_Category = $PS["Control.Category"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_MediaType_Common = $PS["Data.MediaType.Common"];
-
   var $$ArrayBuffer = function () {
     function $$ArrayBuffer(value0) {
       this.value0 = value0;
     }
-
     ;
-
     $$ArrayBuffer.create = function (value0) {
       return new $$ArrayBuffer(value0);
     };
-
     return $$ArrayBuffer;
   }();
-
   var Blob = function () {
     function Blob(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Blob.create = function (value0) {
       return new Blob(value0);
     };
-
     return Blob;
   }();
-
   var Document = function () {
     function Document(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Document.create = function (value0) {
       return new Document(value0);
     };
-
     return Document;
   }();
-
   var Json = function () {
     function Json(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Json.create = function (value0) {
       return new Json(value0);
     };
-
     return Json;
   }();
-
   var $$String = function () {
     function $$String(value0) {
       this.value0 = value0;
     }
-
     ;
-
     $$String.create = function (value0) {
       return new $$String(value0);
     };
-
     return $$String;
   }();
-
   var Ignore = function () {
     function Ignore(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Ignore.create = function (value0) {
       return new Ignore(value0);
     };
-
     return Ignore;
   }();
-
   var toResponseType = function toResponseType(v) {
     if (v instanceof $$ArrayBuffer) {
       return "arraybuffer";
     }
-
     ;
-
     if (v instanceof Blob) {
       return "blob";
     }
-
     ;
-
     if (v instanceof Document) {
       return "document";
     }
-
     ;
-
     if (v instanceof Json) {
       return "text";
     }
-
     ;
-
     if (v instanceof $$String) {
       return "text";
     }
-
     ;
-
     if (v instanceof Ignore) {
       return "";
     }
-
     ;
     throw new Error("Failed pattern match at Affjax.ResponseFormat (line 46, column 3 - line 52, column 19): " + [v.constructor.name]);
   };
-
   var toMediaType = function toMediaType(v) {
     if (v instanceof Json) {
       return new Data_Maybe.Just(Data_MediaType_Common.applicationJSON);
     }
-
     ;
     return Data_Maybe.Nothing.value;
   };
-
   var string = new $$String(Control_Category.identity(Control_Category.categoryFn));
   var ignore = new Ignore(Control_Category.identity(Control_Category.categoryFn));
   exports["ArrayBuffer"] = $$ArrayBuffer;
@@ -2625,34 +2195,27 @@ var PS = {};
   exports["toResponseType"] = toResponseType;
   exports["toMediaType"] = toMediaType;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Affjax.ResponseHeader"] = $PS["Affjax.ResponseHeader"] || {};
   var exports = $PS["Affjax.ResponseHeader"];
-
   var ResponseHeader = function () {
     function ResponseHeader(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     ResponseHeader.create = function (value0) {
       return function (value1) {
         return new ResponseHeader(value0, value1);
       };
     };
-
     return ResponseHeader;
   }();
-
   exports["ResponseHeader"] = ResponseHeader;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2660,31 +2223,25 @@ var PS = {};
   $PS["Data.Bifunctor"] = $PS["Data.Bifunctor"] || {};
   var exports = $PS["Data.Bifunctor"];
   var Control_Category = $PS["Control.Category"];
-
   var Bifunctor = function Bifunctor(bimap) {
     this.bimap = bimap;
   };
-
   var bimap = function bimap(dict) {
     return dict.bimap;
   };
-
   var lmap = function lmap(dictBifunctor) {
     return function (f) {
       return bimap(dictBifunctor)(f)(Control_Category.identity(Control_Category.categoryFn));
     };
   };
-
   var rmap = function rmap(dictBifunctor) {
     return bimap(dictBifunctor)(Control_Category.identity(Control_Category.categoryFn));
   };
-
   exports["bimap"] = bimap;
   exports["Bifunctor"] = Bifunctor;
   exports["lmap"] = lmap;
   exports["rmap"] = rmap;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2698,88 +2255,67 @@ var PS = {};
   var Data_Bifunctor = $PS["Data.Bifunctor"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Maybe = $PS["Data.Maybe"];
-
   var Left = function () {
     function Left(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Left.create = function (value0) {
       return new Left(value0);
     };
-
     return Left;
   }();
-
   var Right = function () {
     function Right(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Right.create = function (value0) {
       return new Right(value0);
     };
-
     return Right;
   }();
-
   var note = function note(a) {
     return Data_Maybe.maybe(new Left(a))(Right.create);
   };
-
   var functorEither = new Data_Functor.Functor(function (f) {
     return function (m) {
       if (m instanceof Left) {
         return new Left(m.value0);
       }
-
       ;
-
       if (m instanceof Right) {
         return new Right(f(m.value0));
       }
-
       ;
       throw new Error("Failed pattern match at Data.Either (line 38, column 1 - line 38, column 52): " + [m.constructor.name]);
     };
   });
-
   var either = function either(v) {
     return function (v1) {
       return function (v2) {
         if (v2 instanceof Left) {
           return v(v2.value0);
         }
-
         ;
-
         if (v2 instanceof Right) {
           return v1(v2.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Data.Either (line 238, column 1 - line 238, column 64): " + [v.constructor.name, v1.constructor.name, v2.constructor.name]);
       };
     };
   };
-
   var bifunctorEither = new Data_Bifunctor.Bifunctor(function (v) {
     return function (v1) {
       return function (v2) {
         if (v2 instanceof Left) {
           return new Left(v(v2.value0));
         }
-
         ;
-
         if (v2 instanceof Right) {
           return new Right(v1(v2.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Data.Either (line 46, column 1 - line 48, column 36): " + [v.constructor.name, v1.constructor.name, v2.constructor.name]);
       };
@@ -2792,13 +2328,10 @@ var PS = {};
       if (v instanceof Left) {
         return new Left(v.value0);
       }
-
       ;
-
       if (v instanceof Right) {
         return Data_Functor.map(functorEither)(v.value0)(v1);
       }
-
       ;
       throw new Error("Failed pattern match at Data.Either (line 82, column 1 - line 84, column 30): " + [v.constructor.name, v1.constructor.name]);
     };
@@ -2833,7 +2366,6 @@ var PS = {};
   exports["bindEither"] = bindEither;
   exports["monadEither"] = monadEither;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2843,25 +2375,20 @@ var PS = {};
   var Control_Applicative = $PS["Control.Applicative"];
   var Data_Either = $PS["Data.Either"];
   var Data_Functor = $PS["Data.Functor"];
-
   var MonadThrow = function MonadThrow(Monad0, throwError) {
     this.Monad0 = Monad0;
     this.throwError = throwError;
   };
-
   var MonadError = function MonadError(MonadThrow0, catchError) {
     this.MonadThrow0 = MonadThrow0;
     this.catchError = catchError;
   };
-
   var throwError = function throwError(dict) {
     return dict.throwError;
   };
-
   var catchError = function catchError(dict) {
     return dict.catchError;
   };
-
   var $$try = function $$try(dictMonadError) {
     return function (a) {
       return catchError(dictMonadError)(Data_Functor.map(dictMonadError.MonadThrow0().Monad0().Bind1().Apply0().Functor0())(Data_Either.Right.create)(a))(function () {
@@ -2872,32 +2399,26 @@ var PS = {};
       }());
     };
   };
-
   exports["throwError"] = throwError;
   exports["MonadThrow"] = MonadThrow;
   exports["MonadError"] = MonadError;
   exports["try"] = $$try;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Monad.Trans.Class"] = $PS["Control.Monad.Trans.Class"] || {};
   var exports = $PS["Control.Monad.Trans.Class"];
-
   var MonadTrans = function MonadTrans(lift) {
     this.lift = lift;
   };
-
   var lift = function lift(dict) {
     return dict.lift;
   };
-
   exports["lift"] = lift;
   exports["MonadTrans"] = MonadTrans;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -2912,15 +2433,12 @@ var PS = {};
   var Control_Monad_Trans_Class = $PS["Control.Monad.Trans.Class"];
   var Data_Either = $PS["Data.Either"];
   var Data_Functor = $PS["Data.Functor"];
-
   var ExceptT = function ExceptT(x) {
     return x;
   };
-
   var runExceptT = function runExceptT(v) {
     return v;
   };
-
   var monadTransExceptT = new Control_Monad_Trans_Class.MonadTrans(function (dictMonad) {
     return function (m) {
       return Control_Bind.bind(dictMonad.Bind1())(m)(function (a) {
@@ -2928,19 +2446,16 @@ var PS = {};
       });
     };
   });
-
   var mapExceptT = function mapExceptT(f) {
     return function (v) {
       return f(v);
     };
   };
-
   var functorExceptT = function functorExceptT(dictFunctor) {
     return new Data_Functor.Functor(function (f) {
       return mapExceptT(Data_Functor.map(dictFunctor)(Data_Functor.map(Data_Either.functorEither)(f)));
     });
   };
-
   var monadExceptT = function monadExceptT(dictMonad) {
     return new Control_Monad.Monad(function () {
       return applicativeExceptT(dictMonad);
@@ -2948,7 +2463,6 @@ var PS = {};
       return bindExceptT(dictMonad);
     });
   };
-
   var bindExceptT = function bindExceptT(dictMonad) {
     return new Control_Bind.Bind(function () {
       return applyExceptT(dictMonad);
@@ -2966,13 +2480,11 @@ var PS = {};
       };
     });
   };
-
   var applyExceptT = function applyExceptT(dictMonad) {
     return new Control_Apply.Apply(function () {
       return functorExceptT(dictMonad.Bind1().Apply0().Functor0());
     }, Control_Monad.ap(monadExceptT(dictMonad)));
   };
-
   var applicativeExceptT = function applicativeExceptT(dictMonad) {
     return new Control_Applicative.Applicative(function () {
       return applyExceptT(dictMonad);
@@ -2983,7 +2495,6 @@ var PS = {};
       };
     }());
   };
-
   var monadThrowExceptT = function monadThrowExceptT(dictMonad) {
     return new Control_Monad_Error_Class.MonadThrow(function () {
       return monadExceptT(dictMonad);
@@ -2994,7 +2505,6 @@ var PS = {};
       };
     }());
   };
-
   exports["ExceptT"] = ExceptT;
   exports["runExceptT"] = runExceptT;
   exports["mapExceptT"] = mapExceptT;
@@ -3003,7 +2513,6 @@ var PS = {};
   exports["monadTransExceptT"] = monadTransExceptT;
   exports["monadThrowExceptT"] = monadThrowExceptT;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3016,11 +2525,9 @@ var PS = {};
   var Control_Monad = $PS["Control.Monad"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var Identity = function Identity(x) {
     return x;
   };
-
   var newtypeIdentity = new Data_Newtype.Newtype(function (n) {
     return n;
   }, Identity);
@@ -3058,7 +2565,6 @@ var PS = {};
   exports["bindIdentity"] = bindIdentity;
   exports["monadIdentity"] = monadIdentity;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3068,14 +2574,12 @@ var PS = {};
   var Control_Monad_Except_Trans = $PS["Control.Monad.Except.Trans"];
   var Data_Identity = $PS["Data.Identity"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var runExcept = function () {
     var $0 = Data_Newtype.unwrap(Data_Identity.newtypeIdentity);
     return function ($1) {
       return $0(Control_Monad_Except_Trans.runExceptT($1));
     };
   }();
-
   var mapExcept = function mapExcept(f) {
     return Control_Monad_Except_Trans.mapExceptT(function () {
       var $2 = Data_Newtype.unwrap(Data_Identity.newtypeIdentity);
@@ -3084,131 +2588,104 @@ var PS = {};
       };
     }());
   };
-
   exports["runExcept"] = runExcept;
   exports["mapExcept"] = mapExcept;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   function id(x) {
     return x;
   }
-
   exports.fromObject = id;
-
   exports.stringify = function (j) {
     return JSON.stringify(j);
   };
-
   function isArray(a) {
     return Object.prototype.toString.call(a) === "[object Array]";
   }
 })(PS["Data.Argonaut.Core"] = PS["Data.Argonaut.Core"] || {});
-
 (function (exports) {
   "use strict";
 
   exports._copyST = function (m) {
     return function () {
       var r = {};
-
       for (var k in m) {
         if (hasOwnProperty.call(m, k)) {
           r[k] = m[k];
         }
       }
-
       return r;
     };
   };
-
   exports.empty = {};
-
   exports.runST = function (f) {
     return f();
   };
-
   exports._fmapObject = function (m0, f) {
     var m = {};
-
     for (var k in m0) {
       if (hasOwnProperty.call(m0, k)) {
         m[k] = f(m0[k]);
       }
     }
-
     return m;
   };
-
   exports._mapWithKey = function (m0, f) {
     var m = {};
-
     for (var k in m0) {
       if (hasOwnProperty.call(m0, k)) {
         m[k] = f(k)(m0[k]);
       }
     }
-
     return m;
   };
-
   exports._foldM = function (bind) {
     return function (f) {
       return function (mz) {
         return function (m) {
           var acc = mz;
-
           function g(k) {
             return function (z) {
               return f(z)(k)(m[k]);
             };
           }
-
           for (var k in m) {
             if (hasOwnProperty.call(m, k)) {
               acc = bind(acc)(g(k));
             }
           }
-
           return acc;
         };
       };
     };
   };
-
   exports._lookup = function (no, yes, k, m) {
     return k in m ? yes(m[k]) : no;
   };
-
   exports._lookupST = function (no, yes, k, m) {
     return function () {
       return k in m ? yes(m[k]) : no;
     };
   };
-
   function toArrayWithKey(f) {
     return function (m) {
       var r = [];
-
       for (var k in m) {
         if (hasOwnProperty.call(m, k)) {
           r.push(f(k)(m[k]));
         }
       }
-
       return r;
     };
   }
-
   exports.keys = Object.keys || toArrayWithKey(function (k) {
     return function () {
       return k;
     };
   });
 })(PS["Foreign.Object"] = PS["Foreign.Object"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -3219,13 +2696,11 @@ var PS = {};
       };
     };
   };
-
   exports.pure_ = function (a) {
     return function () {
       return a;
     };
   };
-
   exports.bind_ = function (a) {
     return function (f) {
       return function () {
@@ -3233,7 +2708,6 @@ var PS = {};
       };
     };
   };
-
   exports.foreach = function (as) {
     return function (f) {
       return function () {
@@ -3244,7 +2718,6 @@ var PS = {};
     };
   };
 })(PS["Control.Monad.ST.Internal"] = PS["Control.Monad.ST.Internal"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3278,116 +2751,104 @@ var PS = {};
   exports["monadST"] = monadST;
   exports["foreach"] = $foreign.foreach;
 })(PS);
-
 (function (exports) {
-  "use strict"; //------------------------------------------------------------------------------
+  "use strict";
+
+  //------------------------------------------------------------------------------
   // Array creation --------------------------------------------------------------
   //------------------------------------------------------------------------------
-
   exports.range = function (start) {
     return function (end) {
       var step = start > end ? -1 : 1;
       var result = new Array(step * (end - start) + 1);
       var i = start,
-          n = 0;
-
+        n = 0;
       while (i !== end) {
         result[n++] = i;
         i += step;
       }
-
       result[n] = i;
       return result;
     };
   };
-
   var replicateFill = function replicateFill(count) {
     return function (value) {
       if (count < 1) {
         return [];
       }
-
       var result = new Array(count);
       return result.fill(value);
     };
   };
-
   var replicatePolyfill = function replicatePolyfill(count) {
     return function (value) {
       var result = [];
       var n = 0;
-
       for (var i = 0; i < count; i++) {
         result[n++] = value;
       }
-
       return result;
     };
-  }; // In browsers that have Array.prototype.fill we use it, as it's faster.
+  };
 
-
+  // In browsers that have Array.prototype.fill we use it, as it's faster.
   exports.replicate = typeof Array.prototype.fill === "function" ? replicateFill : replicatePolyfill;
-
   exports.fromFoldableImpl = function () {
     function Cons(head, tail) {
       this.head = head;
       this.tail = tail;
     }
-
     var emptyList = {};
-
     function curryCons(head) {
       return function (tail) {
         return new Cons(head, tail);
       };
     }
-
     function listToArray(list) {
       var result = [];
       var count = 0;
       var xs = list;
-
       while (xs !== emptyList) {
         result[count++] = xs.head;
         xs = xs.tail;
       }
-
       return result;
     }
-
     return function (foldr) {
       return function (xs) {
         return listToArray(foldr(curryCons)(emptyList)(xs));
       };
     };
-  }(); //------------------------------------------------------------------------------
+  }();
+
+  //------------------------------------------------------------------------------
   // Array size ------------------------------------------------------------------
   //------------------------------------------------------------------------------
 
-
   exports.length = function (xs) {
     return xs.length;
-  }; //------------------------------------------------------------------------------
+  };
+
+  //------------------------------------------------------------------------------
   // Extending arrays ------------------------------------------------------------
   //------------------------------------------------------------------------------
-
 
   exports.cons = function (e) {
     return function (l) {
       return [e].concat(l);
     };
   };
-
   exports.snoc = function (l) {
     return function (e) {
       var l1 = l.slice();
       l1.push(e);
       return l1;
     };
-  }; //------------------------------------------------------------------------------
+  };
+
+  //------------------------------------------------------------------------------
   // Non-indexed reads -----------------------------------------------------------
   //------------------------------------------------------------------------------
-
 
   exports["uncons'"] = function (empty) {
     return function (next) {
@@ -3395,10 +2856,11 @@ var PS = {};
         return xs.length === 0 ? empty({}) : next(xs[0])(xs.slice(1));
       };
     };
-  }; //------------------------------------------------------------------------------
+  };
+
+  //------------------------------------------------------------------------------
   // Indexed operations ----------------------------------------------------------
   //------------------------------------------------------------------------------
-
 
   exports.indexImpl = function (just) {
     return function (nothing) {
@@ -3409,7 +2871,6 @@ var PS = {};
       };
     };
   };
-
   exports.findIndexImpl = function (just) {
     return function (nothing) {
       return function (f) {
@@ -3417,13 +2878,11 @@ var PS = {};
           for (var i = 0, l = xs.length; i < l; i++) {
             if (f(xs[i])) return just(i);
           }
-
           return nothing;
         };
       };
     };
   };
-
   exports.findLastIndexImpl = function (just) {
     return function (nothing) {
       return function (f) {
@@ -3431,15 +2890,15 @@ var PS = {};
           for (var i = xs.length - 1; i >= 0; i--) {
             if (f(xs[i])) return just(i);
           }
-
           return nothing;
         };
       };
     };
-  }; //------------------------------------------------------------------------------
+  };
+
+  //------------------------------------------------------------------------------
   // Subarrays -------------------------------------------------------------------
   //------------------------------------------------------------------------------
-
 
   exports.slice = function (s) {
     return function (e) {
@@ -3448,39 +2907,37 @@ var PS = {};
       };
     };
   };
-
   exports.take = function (n) {
     return function (l) {
       return n < 1 ? [] : l.slice(0, n);
     };
   };
-
   exports.drop = function (n) {
     return function (l) {
       return n < 1 ? l : l.slice(n);
     };
-  }; //------------------------------------------------------------------------------
+  };
+
+  //------------------------------------------------------------------------------
   // Zipping ---------------------------------------------------------------------
   //------------------------------------------------------------------------------
-
 
   exports.zipWith = function (f) {
     return function (xs) {
       return function (ys) {
         var l = xs.length < ys.length ? xs.length : ys.length;
         var result = new Array(l);
-
         for (var i = 0; i < l; i++) {
           result[i] = f(xs[i])(ys[i]);
         }
-
         return result;
       };
     };
-  }; //------------------------------------------------------------------------------
+  };
+
+  //------------------------------------------------------------------------------
   // Partial ---------------------------------------------------------------------
   //------------------------------------------------------------------------------
-
 
   exports.unsafeIndexImpl = function (xs) {
     return function (n) {
@@ -3488,7 +2945,6 @@ var PS = {};
     };
   };
 })(PS["Data.Array"] = PS["Data.Array"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -3497,32 +2953,26 @@ var PS = {};
       return function (xs) {
         var acc = init;
         var len = xs.length;
-
         for (var i = len - 1; i >= 0; i--) {
           acc = f(xs[i])(acc);
         }
-
         return acc;
       };
     };
   };
-
   exports.foldlArray = function (f) {
     return function (init) {
       return function (xs) {
         var acc = init;
         var len = xs.length;
-
         for (var i = 0; i < len; i++) {
           acc = f(acc)(xs[i]);
         }
-
         return acc;
       };
     };
   };
 })(PS["Data.Foldable"] = PS["Data.Foldable"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3543,17 +2993,14 @@ var PS = {};
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Semiring = $PS["Data.Semiring"];
   var Data_Unit = $PS["Data.Unit"];
-
   var Foldable = function Foldable(foldMap, foldl, foldr) {
     this.foldMap = foldMap;
     this.foldl = foldl;
     this.foldr = foldr;
   };
-
   var foldr = function foldr(dict) {
     return dict.foldr;
   };
-
   var $$null = function $$null(dictFoldable) {
     return foldr(dictFoldable)(function (v) {
       return function (v1) {
@@ -3561,7 +3008,6 @@ var PS = {};
       };
     })(true);
   };
-
   var traverse_ = function traverse_(dictApplicative) {
     return function (dictFoldable) {
       return function (f) {
@@ -3574,36 +3020,29 @@ var PS = {};
       };
     };
   };
-
   var for_ = function for_(dictApplicative) {
     return function (dictFoldable) {
       return Data_Function.flip(traverse_(dictApplicative)(dictFoldable));
     };
   };
-
   var foldl = function foldl(dict) {
     return dict.foldl;
   };
-
   var sum = function sum(dictFoldable) {
     return function (dictSemiring) {
       return foldl(dictFoldable)(Data_Semiring.add(dictSemiring))(Data_Semiring.zero(dictSemiring));
     };
   };
-
   var foldableMaybe = new Foldable(function (dictMonoid) {
     return function (f) {
       return function (v) {
         if (v instanceof Data_Maybe.Nothing) {
           return Data_Monoid.mempty(dictMonoid);
         }
-
         ;
-
         if (v instanceof Data_Maybe.Just) {
           return f(v.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Data.Foldable (line 129, column 1 - line 135, column 27): " + [f.constructor.name, v.constructor.name]);
       };
@@ -3614,13 +3053,10 @@ var PS = {};
         if (v1 instanceof Data_Maybe.Nothing) {
           return z;
         }
-
         ;
-
         if (v1 instanceof Data_Maybe.Just) {
           return v(z)(v1.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Data.Foldable (line 129, column 1 - line 135, column 27): " + [v.constructor.name, z.constructor.name, v1.constructor.name]);
       };
@@ -3631,19 +3067,15 @@ var PS = {};
         if (v1 instanceof Data_Maybe.Nothing) {
           return z;
         }
-
         ;
-
         if (v1 instanceof Data_Maybe.Just) {
           return v(v1.value0)(z);
         }
-
         ;
         throw new Error("Failed pattern match at Data.Foldable (line 129, column 1 - line 135, column 27): " + [v.constructor.name, z.constructor.name, v1.constructor.name]);
       };
     };
   });
-
   var foldMapDefaultR = function foldMapDefaultR(dictFoldable) {
     return function (dictMonoid) {
       return function (f) {
@@ -3655,45 +3087,37 @@ var PS = {};
       };
     };
   };
-
   var foldableArray = new Foldable(function (dictMonoid) {
     return foldMapDefaultR(foldableArray)(dictMonoid);
   }, $foreign.foldlArray, $foreign.foldrArray);
-
   var foldMap = function foldMap(dict) {
     return dict.foldMap;
   };
-
   var fold = function fold(dictFoldable) {
     return function (dictMonoid) {
       return foldMap(dictFoldable)(dictMonoid)(Control_Category.identity(Control_Category.categoryFn));
     };
   };
-
   var any = function any(dictFoldable) {
     return function (dictHeytingAlgebra) {
       return Data_Newtype.alaF(Data_Functor.functorFn)(Data_Functor.functorFn)(Data_Newtype.newtypeDisj)(Data_Newtype.newtypeDisj)(Data_Monoid_Disj.Disj)(foldMap(dictFoldable)(Data_Monoid_Disj.monoidDisj(dictHeytingAlgebra)));
     };
   };
-
   var or = function or(dictFoldable) {
     return function (dictHeytingAlgebra) {
       return any(dictFoldable)(dictHeytingAlgebra)(Control_Category.identity(Control_Category.categoryFn));
     };
   };
-
   var all = function all(dictFoldable) {
     return function (dictHeytingAlgebra) {
       return Data_Newtype.alaF(Data_Functor.functorFn)(Data_Functor.functorFn)(Data_Newtype.newtypeConj)(Data_Newtype.newtypeConj)(Data_Monoid_Conj.Conj)(foldMap(dictFoldable)(Data_Monoid_Conj.monoidConj(dictHeytingAlgebra)));
     };
   };
-
   var and = function and(dictFoldable) {
     return function (dictHeytingAlgebra) {
       return all(dictFoldable)(dictHeytingAlgebra)(Control_Category.identity(Control_Category.categoryFn));
     };
   };
-
   exports["Foldable"] = Foldable;
   exports["foldr"] = foldr;
   exports["foldl"] = foldl;
@@ -3709,7 +3133,6 @@ var PS = {};
   exports["foldableArray"] = foldableArray;
   exports["foldableMaybe"] = foldableMaybe;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3722,11 +3145,9 @@ var PS = {};
   var Data_Foldable = $PS["Data.Foldable"];
   var Data_Function = $PS["Data.Function"];
   var Data_Maybe = $PS["Data.Maybe"];
-
   var unsafeIndex = function unsafeIndex(dictPartial) {
     return $foreign.unsafeIndexImpl;
   };
-
   var uncons = $foreign["uncons'"](Data_Function["const"](Data_Maybe.Nothing.value))(function (x) {
     return function (xs) {
       return new Data_Maybe.Just({
@@ -3735,45 +3156,35 @@ var PS = {};
       });
     };
   });
-
   var takeEnd = function takeEnd(n) {
     return function (xs) {
       return $foreign.drop($foreign.length(xs) - n | 0)(xs);
     };
   };
-
   var singleton = function singleton(a) {
     return [a];
   };
-
   var $$null = function $$null(xs) {
     return $foreign.length(xs) === 0;
   };
-
   var mapWithIndex = function mapWithIndex(f) {
     return function (xs) {
       return $foreign.zipWith(f)($foreign.range(0)($foreign.length(xs) - 1 | 0))(xs);
     };
   };
-
   var index = $foreign.indexImpl(Data_Maybe.Just.create)(Data_Maybe.Nothing.value);
-
   var last = function last(xs) {
     return index(xs)($foreign.length(xs) - 1 | 0);
   };
-
   var head = function head(xs) {
     return index(xs)(0);
   };
-
   var fromFoldable = function fromFoldable(dictFoldable) {
     return $foreign.fromFoldableImpl(Data_Foldable.foldr(dictFoldable));
   };
-
   var findLastIndex = $foreign.findLastIndexImpl(Data_Maybe.Just.create)(Data_Maybe.Nothing.value);
   var findIndex = $foreign.findIndexImpl(Data_Maybe.Just.create)(Data_Maybe.Nothing.value);
   var concatMap = Data_Function.flip(Control_Bind.bind(Control_Bind.bindArray));
-
   var mapMaybe = function mapMaybe(f) {
     return concatMap(function () {
       var $94 = Data_Maybe.maybe([])(singleton);
@@ -3782,7 +3193,6 @@ var PS = {};
       };
     }());
   };
-
   var catMaybes = mapMaybe(Control_Category.identity(Control_Category.categoryFn));
   exports["fromFoldable"] = fromFoldable;
   exports["singleton"] = singleton;
@@ -3808,7 +3218,6 @@ var PS = {};
   exports["drop"] = $foreign.drop;
   exports["zipWith"] = $foreign.zipWith;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -3819,7 +3228,6 @@ var PS = {};
       };
     };
   };
-
   exports.runFn3 = function (fn) {
     return function (a) {
       return function (b) {
@@ -3829,7 +3237,6 @@ var PS = {};
       };
     };
   };
-
   exports.runFn4 = function (fn) {
     return function (a) {
       return function (b) {
@@ -3841,7 +3248,6 @@ var PS = {};
       };
     };
   };
-
   exports.runFn5 = function (fn) {
     return function (a) {
       return function (b) {
@@ -3855,7 +3261,6 @@ var PS = {};
       };
     };
   };
-
   exports.runFn9 = function (fn) {
     return function (a) {
       return function (b) {
@@ -3878,7 +3283,6 @@ var PS = {};
     };
   };
 })(PS["Data.Function.Uncurried"] = PS["Data.Function.Uncurried"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3892,7 +3296,6 @@ var PS = {};
   exports["runFn5"] = $foreign.runFn5;
   exports["runFn9"] = $foreign.runFn9;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -3900,16 +3303,13 @@ var PS = {};
     return function (xs) {
       var l = xs.length;
       var result = Array(l);
-
       for (var i = 0; i < l; i++) {
         result[i] = f(i)(xs[i]);
       }
-
       return result;
     };
   };
 })(PS["Data.FunctorWithIndex"] = PS["Data.FunctorWithIndex"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3918,16 +3318,13 @@ var PS = {};
   var exports = $PS["Data.FunctorWithIndex"];
   var $foreign = $PS["Data.FunctorWithIndex"];
   var Data_Functor = $PS["Data.Functor"];
-
   var FunctorWithIndex = function FunctorWithIndex(Functor0, mapWithIndex) {
     this.Functor0 = Functor0;
     this.mapWithIndex = mapWithIndex;
   };
-
   var mapWithIndex = function mapWithIndex(dict) {
     return dict.mapWithIndex;
   };
-
   var functorWithIndexArray = new FunctorWithIndex(function () {
     return Data_Functor.functorArray;
   }, $foreign.mapWithIndexArray);
@@ -3935,14 +3332,12 @@ var PS = {};
   exports["mapWithIndex"] = mapWithIndex;
   exports["functorWithIndexArray"] = functorWithIndexArray;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports["new"] = function () {
     return {};
   };
-
   exports.poke = function (k) {
     return function (v) {
       return function (m) {
@@ -3953,7 +3348,6 @@ var PS = {};
       };
     };
   };
-
   exports["delete"] = function (k) {
     return function (m) {
       return function () {
@@ -3963,7 +3357,6 @@ var PS = {};
     };
   };
 })(PS["Foreign.Object.ST"] = PS["Foreign.Object.ST"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3975,7 +3368,6 @@ var PS = {};
   exports["poke"] = $foreign.poke;
   exports["delete"] = $foreign["delete"];
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -3995,13 +3387,11 @@ var PS = {};
   var Data_Maybe = $PS["Data.Maybe"];
   var Foreign_Object_ST = $PS["Foreign.Object.ST"];
   var thawST = $foreign["_copyST"];
-
   var singleton = function singleton(k) {
     return function (v) {
       return $foreign.runST(Control_Bind.bindFlipped(Control_Monad_ST_Internal.bindST)(Foreign_Object_ST.poke(k)(v))(Foreign_Object_ST["new"]));
     };
   };
-
   var mutate = function mutate(f) {
     return function (m) {
       return $foreign.runST(function __do() {
@@ -4011,21 +3401,17 @@ var PS = {};
       });
     };
   };
-
   var mapWithKey = function mapWithKey(f) {
     return function (m) {
       return $foreign["_mapWithKey"](m, f);
     };
   };
-
   var lookup = Data_Function_Uncurried.runFn4($foreign["_lookup"])(Data_Maybe.Nothing.value)(Data_Maybe.Just.create);
-
   var insert = function insert(k) {
     return function (v) {
       return mutate(Foreign_Object_ST.poke(k)(v));
     };
   };
-
   var functorObject = new Data_Functor.Functor(function (f) {
     return function (m) {
       return $foreign["_fmapObject"](m, f);
@@ -4034,7 +3420,6 @@ var PS = {};
   var functorWithIndexObject = new Data_FunctorWithIndex.FunctorWithIndex(function () {
     return functorObject;
   }, mapWithKey);
-
   var fromFoldableWith = function fromFoldableWith(dictFoldable) {
     return function (f) {
       return function (l) {
@@ -4051,7 +3436,6 @@ var PS = {};
       };
     };
   };
-
   var fromFoldable = function fromFoldable(dictFoldable) {
     return function (l) {
       return $foreign.runST(function __do() {
@@ -4063,7 +3447,6 @@ var PS = {};
       });
     };
   };
-
   var foldM = function foldM(dictMonad) {
     return function (f) {
       return function (z) {
@@ -4071,7 +3454,6 @@ var PS = {};
       };
     };
   };
-
   var union = function union(m) {
     return mutate(function (s) {
       return foldM(Control_Monad_ST_Internal.monadST)(function (s$prime) {
@@ -4083,7 +3465,6 @@ var PS = {};
       })(s)(m);
     });
   };
-
   var filterWithKey = function filterWithKey(predicate) {
     return function (m) {
       var go = function () {
@@ -4091,35 +3472,28 @@ var PS = {};
           return function (k) {
             return function (v) {
               var $33 = predicate(k)(v);
-
               if ($33) {
                 return Foreign_Object_ST.poke(k)(v)(acc);
               }
-
               ;
               return Control_Applicative.pure(Control_Monad_ST_Internal.applicativeST)(acc);
             };
           };
         };
-
         return function __do() {
           var m$prime = Foreign_Object_ST["new"]();
           return foldM(Control_Monad_ST_Internal.monadST)(step)(m$prime)(m)();
         };
       }();
-
       return $foreign.runST(go);
     };
   };
-
   var filter = function filter(predicate) {
     return filterWithKey(Data_Function["const"](predicate));
   };
-
   var $$delete = function $$delete(k) {
     return mutate(Foreign_Object_ST["delete"](k));
   };
-
   exports["singleton"] = singleton;
   exports["insert"] = insert;
   exports["lookup"] = lookup;
@@ -4133,7 +3507,6 @@ var PS = {};
   exports["empty"] = $foreign.empty;
   exports["keys"] = $foreign.keys;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4146,7 +3519,6 @@ var PS = {};
   exports["jsonEmptyObject"] = jsonEmptyObject;
   exports["stringify"] = $foreign.stringify;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -4158,7 +3530,6 @@ var PS = {};
     }
   };
 })(PS["Data.Argonaut.Parser"] = PS["Data.Argonaut.Parser"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4167,14 +3538,11 @@ var PS = {};
   var exports = $PS["Data.Argonaut.Parser"];
   var $foreign = $PS["Data.Argonaut.Parser"];
   var Data_Either = $PS["Data.Either"];
-
   var jsonParser = function jsonParser(j) {
     return $foreign["_jsonParser"](Data_Either.Left.create, Data_Either.Right.create, j);
   };
-
   exports["jsonParser"] = jsonParser;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -4183,14 +3551,12 @@ var PS = {};
       return s.split(sep);
     };
   };
-
   exports.joinWith = function (s) {
     return function (xs) {
       return xs.join(s);
     };
   };
 })(PS["Data.String.Common"] = PS["Data.String.Common"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4198,30 +3564,26 @@ var PS = {};
   $PS["Data.String.Common"] = $PS["Data.String.Common"] || {};
   var exports = $PS["Data.String.Common"];
   var $foreign = $PS["Data.String.Common"];
-
   var $$null = function $$null(s) {
     return s === "";
   };
-
   exports["null"] = $$null;
   exports["split"] = $foreign.split;
   exports["joinWith"] = $foreign.joinWith;
 })(PS);
-
 (function (exports) {
-  "use strict"; // jshint maxparams: 3
+  "use strict";
 
+  // jshint maxparams: 3
   exports.traverseArrayImpl = function () {
     function array1(a) {
       return [a];
     }
-
     function array2(a) {
       return function (b) {
         return [a, b];
       };
     }
-
     function array3(a) {
       return function (b) {
         return function (c) {
@@ -4229,13 +3591,11 @@ var PS = {};
         };
       };
     }
-
     function concat2(xs) {
       return function (ys) {
         return xs.concat(ys);
       };
     }
-
     return function (apply) {
       return function (map) {
         return function (pure) {
@@ -4245,16 +3605,12 @@ var PS = {};
                 switch (top - bot) {
                   case 0:
                     return pure([]);
-
                   case 1:
                     return map(array1)(f(array[bot]));
-
                   case 2:
                     return apply(map(array2)(f(array[bot])))(f(array[bot + 1]));
-
                   case 3:
                     return apply(apply(map(array3)(f(array[bot])))(f(array[bot + 1])))(f(array[bot + 2]));
-
                   default:
                     // This slightly tricky pivot selection aims to produce two
                     // even-length partitions where possible.
@@ -4262,7 +3618,6 @@ var PS = {};
                     return apply(map(concat2)(go(bot, pivot)))(go(pivot, top));
                 }
               }
-
               return go(0, array.length);
             };
           };
@@ -4271,7 +3626,6 @@ var PS = {};
     };
   }();
 })(PS["Data.Traversable"] = PS["Data.Traversable"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4281,11 +3635,9 @@ var PS = {};
   var Control_Applicative = $PS["Control.Applicative"];
   var Control_Apply = $PS["Control.Apply"];
   var Data_Functor = $PS["Data.Functor"];
-
   var stateL = function stateL(v) {
     return v;
   };
-
   var functorStateL = new Data_Functor.Functor(function (f) {
     return function (k) {
       return function (s) {
@@ -4324,7 +3676,6 @@ var PS = {};
   exports["stateL"] = stateL;
   exports["applicativeStateL"] = applicativeStateL;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4339,18 +3690,15 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Traversable_Accum_Internal = $PS["Data.Traversable.Accum.Internal"];
-
   var Traversable = function Traversable(Foldable1, Functor0, sequence, traverse) {
     this.Foldable1 = Foldable1;
     this.Functor0 = Functor0;
     this.sequence = sequence;
     this.traverse = traverse;
   };
-
   var traverse = function traverse(dict) {
     return dict.traverse;
   };
-
   var traversableMaybe = new Traversable(function () {
     return Data_Foldable.foldableMaybe;
   }, function () {
@@ -4360,13 +3708,10 @@ var PS = {};
       if (v instanceof Data_Maybe.Nothing) {
         return Control_Applicative.pure(dictApplicative)(Data_Maybe.Nothing.value);
       }
-
       ;
-
       if (v instanceof Data_Maybe.Just) {
         return Data_Functor.map(dictApplicative.Apply0().Functor0())(Data_Maybe.Just.create)(v.value0);
       }
-
       ;
       throw new Error("Failed pattern match at Data.Traversable (line 86, column 1 - line 90, column 33): " + [v.constructor.name]);
     };
@@ -4376,25 +3721,20 @@ var PS = {};
         if (v1 instanceof Data_Maybe.Nothing) {
           return Control_Applicative.pure(dictApplicative)(Data_Maybe.Nothing.value);
         }
-
         ;
-
         if (v1 instanceof Data_Maybe.Just) {
           return Data_Functor.map(dictApplicative.Apply0().Functor0())(Data_Maybe.Just.create)(v(v1.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Data.Traversable (line 86, column 1 - line 90, column 33): " + [v.constructor.name, v1.constructor.name]);
       };
     };
   });
-
   var sequenceDefault = function sequenceDefault(dictTraversable) {
     return function (dictApplicative) {
       return traverse(dictTraversable)(dictApplicative)(Control_Category.identity(Control_Category.categoryFn));
     };
   };
-
   var traversableArray = new Traversable(function () {
     return Data_Foldable.foldableArray;
   }, function () {
@@ -4404,7 +3744,6 @@ var PS = {};
   }, function (dictApplicative) {
     return $foreign.traverseArrayImpl(Control_Apply.apply(dictApplicative.Apply0()))(Data_Functor.map(dictApplicative.Apply0().Functor0()))(Control_Applicative.pure(dictApplicative));
   });
-
   var mapAccumL = function mapAccumL(dictTraversable) {
     return function (f) {
       return function (s0) {
@@ -4418,7 +3757,6 @@ var PS = {};
       };
     };
   };
-
   var scanl = function scanl(dictTraversable) {
     return function (f) {
       return function (b0) {
@@ -4436,7 +3774,6 @@ var PS = {};
       };
     };
   };
-
   var $$for = function $$for(dictApplicative) {
     return function (dictTraversable) {
       return function (x) {
@@ -4446,7 +3783,6 @@ var PS = {};
       };
     };
   };
-
   exports["Traversable"] = Traversable;
   exports["traverse"] = traverse;
   exports["for"] = $$for;
@@ -4454,7 +3790,6 @@ var PS = {};
   exports["traversableArray"] = traversableArray;
   exports["traversableMaybe"] = traversableMaybe;
 })(PS);
-
 (function (exports) {
   /* globals exports */
   "use strict";
@@ -4464,7 +3799,6 @@ var PS = {};
   exports.infinity = Infinity;
   exports.isFinite = isFinite;
   exports.readFloat = parseFloat;
-
   var formatNumber = function formatNumber(format) {
     return function (fail, succ, digits, n) {
       try {
@@ -4474,9 +3808,7 @@ var PS = {};
       }
     };
   };
-
   exports._toFixed = formatNumber("toFixed");
-
   var encdecURI = function encdecURI(encdec) {
     return function (fail, succ, s) {
       try {
@@ -4486,10 +3818,8 @@ var PS = {};
       }
     };
   };
-
   exports._encodeURIComponent = encdecURI(encodeURIComponent);
 })(PS["Global"] = PS["Global"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4499,17 +3829,14 @@ var PS = {};
   var $foreign = $PS["Global"];
   var Data_Function = $PS["Data.Function"];
   var Data_Maybe = $PS["Data.Maybe"];
-
   var toFixed = function toFixed(digits) {
     return function (n) {
       return $foreign["_toFixed"](Data_Function["const"](Data_Maybe.Nothing.value), Data_Maybe.Just.create, digits, n);
     };
   };
-
   var $$encodeURIComponent = function $$encodeURIComponent(s) {
     return $foreign["_encodeURIComponent"](Data_Function["const"](Data_Maybe.Nothing.value), Data_Maybe.Just.create, s);
   };
-
   exports["toFixed"] = toFixed;
   exports["encodeURIComponent"] = $$encodeURIComponent;
   exports["nan"] = $foreign.nan;
@@ -4518,7 +3845,6 @@ var PS = {};
   exports["isFinite"] = $foreign["isFinite"];
   exports["readFloat"] = $foreign.readFloat;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4531,19 +3857,15 @@ var PS = {};
   var Data_String_Common = $PS["Data.String.Common"];
   var Data_Traversable = $PS["Data.Traversable"];
   var Global = $PS["Global"];
-
   var toArray = function toArray(v) {
     return v;
   };
-
   var encode = function () {
     var encodePart = function encodePart(v) {
       if (v.value1 instanceof Data_Maybe.Nothing) {
         return Global["encodeURIComponent"](v.value0);
       }
-
       ;
-
       if (v.value1 instanceof Data_Maybe.Just) {
         return Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(function (key) {
           return function (val) {
@@ -4551,104 +3873,80 @@ var PS = {};
           };
         })(Global["encodeURIComponent"](v.value0)))(Global["encodeURIComponent"](v.value1.value0));
       }
-
       ;
       throw new Error("Failed pattern match at Data.FormURLEncoded (line 37, column 18 - line 39, column 108): " + [v.constructor.name]);
     };
-
     var $19 = Data_Functor.map(Data_Maybe.functorMaybe)(Data_String_Common.joinWith("&"));
     var $20 = Data_Traversable.traverse(Data_Traversable.traversableArray)(Data_Maybe.applicativeMaybe)(encodePart);
     return function ($21) {
       return $19($20(toArray($21)));
     };
   }();
-
   exports["encode"] = encode;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.showIntImpl = function (n) {
     return n.toString();
   };
-
   exports.showNumberImpl = function (n) {
     var str = n.toString();
     return isNaN(str + ".0") ? str : str + ".0";
   };
-
   exports.showCharImpl = function (c) {
     var code = c.charCodeAt(0);
-
     if (code < 0x20 || code === 0x7F) {
       switch (c) {
         case "\x07":
           return "'\\a'";
-
         case "\b":
           return "'\\b'";
-
         case "\f":
           return "'\\f'";
-
         case "\n":
           return "'\\n'";
-
         case "\r":
           return "'\\r'";
-
         case "\t":
           return "'\\t'";
-
         case "\v":
           return "'\\v'";
       }
-
       return "'\\" + code.toString(10) + "'";
     }
-
     return c === "'" || c === "\\" ? "'\\" + c + "'" : "'" + c + "'";
   };
-
   exports.showStringImpl = function (s) {
     var l = s.length;
-    return "\"" + s.replace(/[\0-\x1F\x7F"\\]/g, // eslint-disable-line no-control-regex
+    return "\"" + s.replace(/[\0-\x1F\x7F"\\]/g,
+    // eslint-disable-line no-control-regex
     function (c, i) {
       switch (c) {
         case "\"":
         case "\\":
           return "\\" + c;
-
         case "\x07":
           return "\\a";
-
         case "\b":
           return "\\b";
-
         case "\f":
           return "\\f";
-
         case "\n":
           return "\\n";
-
         case "\r":
           return "\\r";
-
         case "\t":
           return "\\t";
-
         case "\v":
           return "\\v";
       }
-
       var k = i + 1;
       var empty = k < l && s[k] >= "0" && s[k] <= "9" ? "\\&" : "";
       return "\\" + c.charCodeAt(0).toString(10) + empty;
     }) + "\"";
   };
 })(PS["Data.Show"] = PS["Data.Show"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4656,20 +3954,16 @@ var PS = {};
   $PS["Data.Show"] = $PS["Data.Show"] || {};
   var exports = $PS["Data.Show"];
   var $foreign = $PS["Data.Show"];
-
   var Show = function Show(show) {
     this.show = show;
   };
-
   var showString = new Show($foreign.showStringImpl);
   var showNumber = new Show($foreign.showNumberImpl);
   var showInt = new Show($foreign.showIntImpl);
   var showChar = new Show($foreign.showCharImpl);
-
   var show = function show(dict) {
     return dict.show;
   };
-
   exports["Show"] = Show;
   exports["show"] = show;
   exports["showInt"] = showInt;
@@ -4677,7 +3971,6 @@ var PS = {};
   exports["showChar"] = showChar;
   exports["showString"] = showString;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4686,234 +3979,169 @@ var PS = {};
   var exports = $PS["Data.HTTP.Method"];
   var Data_Either = $PS["Data.Either"];
   var Data_Show = $PS["Data.Show"];
-
   var OPTIONS = function () {
     function OPTIONS() {}
-
     ;
     OPTIONS.value = new OPTIONS();
     return OPTIONS;
   }();
-
   var GET = function () {
     function GET() {}
-
     ;
     GET.value = new GET();
     return GET;
   }();
-
   var HEAD = function () {
     function HEAD() {}
-
     ;
     HEAD.value = new HEAD();
     return HEAD;
   }();
-
   var POST = function () {
     function POST() {}
-
     ;
     POST.value = new POST();
     return POST;
   }();
-
   var PUT = function () {
     function PUT() {}
-
     ;
     PUT.value = new PUT();
     return PUT;
   }();
-
   var DELETE = function () {
     function DELETE() {}
-
     ;
     DELETE.value = new DELETE();
     return DELETE;
   }();
-
   var TRACE = function () {
     function TRACE() {}
-
     ;
     TRACE.value = new TRACE();
     return TRACE;
   }();
-
   var CONNECT = function () {
     function CONNECT() {}
-
     ;
     CONNECT.value = new CONNECT();
     return CONNECT;
   }();
-
   var PROPFIND = function () {
     function PROPFIND() {}
-
     ;
     PROPFIND.value = new PROPFIND();
     return PROPFIND;
   }();
-
   var PROPPATCH = function () {
     function PROPPATCH() {}
-
     ;
     PROPPATCH.value = new PROPPATCH();
     return PROPPATCH;
   }();
-
   var MKCOL = function () {
     function MKCOL() {}
-
     ;
     MKCOL.value = new MKCOL();
     return MKCOL;
   }();
-
   var COPY = function () {
     function COPY() {}
-
     ;
     COPY.value = new COPY();
     return COPY;
   }();
-
   var MOVE = function () {
     function MOVE() {}
-
     ;
     MOVE.value = new MOVE();
     return MOVE;
   }();
-
   var LOCK = function () {
     function LOCK() {}
-
     ;
     LOCK.value = new LOCK();
     return LOCK;
   }();
-
   var UNLOCK = function () {
     function UNLOCK() {}
-
     ;
     UNLOCK.value = new UNLOCK();
     return UNLOCK;
   }();
-
   var PATCH = function () {
     function PATCH() {}
-
     ;
     PATCH.value = new PATCH();
     return PATCH;
   }();
-
   var unCustomMethod = function unCustomMethod(v) {
     return v;
   };
-
   var showMethod = new Data_Show.Show(function (v) {
     if (v instanceof OPTIONS) {
       return "OPTIONS";
     }
-
     ;
-
     if (v instanceof GET) {
       return "GET";
     }
-
     ;
-
     if (v instanceof HEAD) {
       return "HEAD";
     }
-
     ;
-
     if (v instanceof POST) {
       return "POST";
     }
-
     ;
-
     if (v instanceof PUT) {
       return "PUT";
     }
-
     ;
-
     if (v instanceof DELETE) {
       return "DELETE";
     }
-
     ;
-
     if (v instanceof TRACE) {
       return "TRACE";
     }
-
     ;
-
     if (v instanceof CONNECT) {
       return "CONNECT";
     }
-
     ;
-
     if (v instanceof PROPFIND) {
       return "PROPFIND";
     }
-
     ;
-
     if (v instanceof PROPPATCH) {
       return "PROPPATCH";
     }
-
     ;
-
     if (v instanceof MKCOL) {
       return "MKCOL";
     }
-
     ;
-
     if (v instanceof COPY) {
       return "COPY";
     }
-
     ;
-
     if (v instanceof MOVE) {
       return "MOVE";
     }
-
     ;
-
     if (v instanceof LOCK) {
       return "LOCK";
     }
-
     ;
-
     if (v instanceof UNLOCK) {
       return "UNLOCK";
     }
-
     ;
-
     if (v instanceof PATCH) {
       return "PATCH";
     }
-
     ;
     throw new Error("Failed pattern match at Data.HTTP.Method (line 40, column 1 - line 56, column 23): " + [v.constructor.name]);
   });
@@ -4921,28 +4149,23 @@ var PS = {};
   exports["GET"] = GET;
   exports["print"] = print;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Data.Semigroup.Foldable"] = $PS["Data.Semigroup.Foldable"] || {};
   var exports = $PS["Data.Semigroup.Foldable"];
-
   var Foldable1 = function Foldable1(Foldable0, fold1, foldMap1) {
     this.Foldable0 = Foldable0;
     this.fold1 = fold1;
     this.foldMap1 = foldMap1;
   };
-
   var foldMap1 = function foldMap1(dict) {
     return dict.foldMap1;
   };
-
   exports["Foldable1"] = Foldable1;
   exports["foldMap1"] = foldMap1;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -4954,30 +4177,24 @@ var PS = {};
   var Data_Foldable = $PS["Data.Foldable"];
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Semigroup_Foldable = $PS["Data.Semigroup.Foldable"];
-
   var NonEmpty = function () {
     function NonEmpty(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     NonEmpty.create = function (value0) {
       return function (value1) {
         return new NonEmpty(value0, value1);
       };
     };
-
     return NonEmpty;
   }();
-
   var singleton = function singleton(dictPlus) {
     return function (a) {
       return new NonEmpty(a, Control_Plus.empty(dictPlus));
     };
   };
-
   var foldableNonEmpty = function foldableNonEmpty(dictFoldable) {
     return new Data_Foldable.Foldable(function (dictMonoid) {
       return function (f) {
@@ -4999,7 +4216,6 @@ var PS = {};
       };
     });
   };
-
   var foldable1NonEmpty = function foldable1NonEmpty(dictFoldable) {
     return new Data_Semigroup_Foldable.Foldable1(function () {
       return foldableNonEmpty(dictFoldable);
@@ -5017,13 +4233,11 @@ var PS = {};
       };
     });
   };
-
   exports["NonEmpty"] = NonEmpty;
   exports["singleton"] = singleton;
   exports["foldableNonEmpty"] = foldableNonEmpty;
   exports["foldable1NonEmpty"] = foldable1NonEmpty;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -5035,7 +4249,6 @@ var PS = {};
             return function (b) {
               var result = [];
               var value = b;
-
               while (true) {
                 // eslint-disable-line no-constant-condition
                 var maybe = f(value);
@@ -5051,7 +4264,6 @@ var PS = {};
     };
   };
 })(PS["Data.Unfoldable"] = PS["Data.Unfoldable"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -5062,38 +4274,30 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
-
   var Tuple = function () {
     function Tuple(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Tuple.create = function (value0) {
       return function (value1) {
         return new Tuple(value0, value1);
       };
     };
-
     return Tuple;
   }();
-
   var snd = function snd(v) {
     return v.value1;
   };
-
   var functorTuple = new Data_Functor.Functor(function (f) {
     return function (m) {
       return new Tuple(m.value0, f(m.value1));
     };
   });
-
   var fst = function fst(v) {
     return v.value0;
   };
-
   var eqTuple = function eqTuple(dictEq) {
     return function (dictEq1) {
       return new Data_Eq.Eq(function (x) {
@@ -5103,7 +4307,6 @@ var PS = {};
       });
     };
   };
-
   var ordTuple = function ordTuple(dictOrd) {
     return function (dictOrd1) {
       return new Data_Ord.Ord(function () {
@@ -5111,31 +4314,25 @@ var PS = {};
       }, function (x) {
         return function (y) {
           var v = Data_Ord.compare(dictOrd)(x.value0)(y.value0);
-
           if (v instanceof Data_Ordering.LT) {
             return Data_Ordering.LT.value;
           }
-
           ;
-
           if (v instanceof Data_Ordering.GT) {
             return Data_Ordering.GT.value;
           }
-
           ;
           return Data_Ord.compare(dictOrd1)(x.value1)(y.value1);
         };
       });
     };
   };
-
   exports["Tuple"] = Tuple;
   exports["fst"] = fst;
   exports["snd"] = snd;
   exports["ordTuple"] = ordTuple;
   exports["functorTuple"] = functorTuple;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -5147,7 +4344,6 @@ var PS = {};
             return function (b) {
               var result = [];
               var value = b;
-
               while (true) {
                 // eslint-disable-line no-constant-condition
                 var tuple = f(value);
@@ -5163,7 +4359,6 @@ var PS = {};
     };
   };
 })(PS["Data.Unfoldable1"] = PS["Data.Unfoldable1"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -5173,16 +4368,13 @@ var PS = {};
   var $foreign = $PS["Data.Unfoldable1"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var Unfoldable1 = function Unfoldable1(unfoldr1) {
     this.unfoldr1 = unfoldr1;
   };
-
   var unfoldable1Array = new Unfoldable1($foreign.unfoldr1ArrayImpl(Data_Maybe.isNothing)(Data_Maybe.fromJust())(Data_Tuple.fst)(Data_Tuple.snd));
   exports["Unfoldable1"] = Unfoldable1;
   exports["unfoldable1Array"] = unfoldable1Array;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -5193,16 +4385,13 @@ var PS = {};
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unfoldable1 = $PS["Data.Unfoldable1"];
-
   var Unfoldable = function Unfoldable(Unfoldable10, unfoldr) {
     this.Unfoldable10 = Unfoldable10;
     this.unfoldr = unfoldr;
   };
-
   var unfoldr = function unfoldr(dict) {
     return dict.unfoldr;
   };
-
   var unfoldableArray = new Unfoldable(function () {
     return Data_Unfoldable1.unfoldable1Array;
   }, $foreign.unfoldrArrayImpl(Data_Maybe.isNothing)(Data_Maybe.fromJust())(Data_Tuple.fst)(Data_Tuple.snd));
@@ -5210,7 +4399,6 @@ var PS = {};
   exports["unfoldr"] = unfoldr;
   exports["unfoldableArray"] = unfoldableArray;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -5232,114 +4420,88 @@ var PS = {};
   var Data_Traversable = $PS["Data.Traversable"];
   var Data_Unfoldable = $PS["Data.Unfoldable"];
   var Data_Unfoldable1 = $PS["Data.Unfoldable1"];
-
   var Nil = function () {
     function Nil() {}
-
     ;
     Nil.value = new Nil();
     return Nil;
   }();
-
   var Cons = function () {
     function Cons(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Cons.create = function (value0) {
       return function (value1) {
         return new Cons(value0, value1);
       };
     };
-
     return Cons;
   }();
-
   var NonEmptyList = function NonEmptyList(x) {
     return x;
   };
-
   var listMap = function listMap(f) {
     var chunkedRevMap = function chunkedRevMap($copy_chunksAcc) {
       return function ($copy_v) {
         var $tco_var_chunksAcc = $copy_chunksAcc;
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(chunksAcc, v) {
           if (v instanceof Cons && v.value1 instanceof Cons && v.value1.value1 instanceof Cons) {
             $tco_var_chunksAcc = new Cons(v, chunksAcc);
             $copy_v = v.value1.value1.value1;
             return;
           }
-
           ;
-
           var unrolledMap = function unrolledMap(v1) {
             if (v1 instanceof Cons && v1.value1 instanceof Cons && v1.value1.value1 instanceof Nil) {
               return new Cons(f(v1.value0), new Cons(f(v1.value1.value0), Nil.value));
             }
-
             ;
-
             if (v1 instanceof Cons && v1.value1 instanceof Nil) {
               return new Cons(f(v1.value0), Nil.value);
             }
-
             ;
             return Nil.value;
           };
-
           var reverseUnrolledMap = function reverseUnrolledMap($copy_v1) {
             return function ($copy_acc) {
               var $tco_var_v1 = $copy_v1;
               var $tco_done = false;
               var $tco_result;
-
               function $tco_loop(v1, acc) {
                 if (v1 instanceof Cons && v1.value0 instanceof Cons && v1.value0.value1 instanceof Cons && v1.value0.value1.value1 instanceof Cons) {
                   $tco_var_v1 = v1.value1;
                   $copy_acc = new Cons(f(v1.value0.value0), new Cons(f(v1.value0.value1.value0), new Cons(f(v1.value0.value1.value1.value0), acc)));
                   return;
                 }
-
                 ;
                 $tco_done = true;
                 return acc;
               }
-
               ;
-
               while (!$tco_done) {
                 $tco_result = $tco_loop($tco_var_v1, $copy_acc);
               }
-
               ;
               return $tco_result;
             };
           };
-
           $tco_done = true;
           return reverseUnrolledMap(chunksAcc)(unrolledMap(v));
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($tco_var_chunksAcc, $copy_v);
         }
-
         ;
         return $tco_result;
       };
     };
-
     return chunkedRevMap(Nil.value);
   };
-
   var functorList = new Data_Functor.Functor(listMap);
   var foldableList = new Data_Foldable.Foldable(function (dictMonoid) {
     return function (f) {
@@ -5356,36 +4518,28 @@ var PS = {};
         var $tco_var_b = $copy_b;
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(b, v) {
           if (v instanceof Nil) {
             $tco_done = true;
             return b;
           }
-
           ;
-
           if (v instanceof Cons) {
             $tco_var_b = f(b)(v.value0);
             $copy_v = v.value1;
             return;
           }
-
           ;
           throw new Error("Failed pattern match at Data.List.Types (line 109, column 12 - line 111, column 30): " + [v.constructor.name]);
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($tco_var_b, $copy_v);
         }
-
         ;
         return $tco_result;
       };
     };
-
     return go;
   }, function (f) {
     return function (b) {
@@ -5429,38 +4583,29 @@ var PS = {};
           var $tco_var_source = $copy_source;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(source, memo) {
             var v = f(source);
-
             if (v.value1 instanceof Data_Maybe.Just) {
               $tco_var_source = v.value1.value0;
               $copy_memo = new Cons(v.value0, memo);
               return;
             }
-
             ;
-
             if (v.value1 instanceof Data_Maybe.Nothing) {
               $tco_done = true;
               return Data_Foldable.foldl(foldableList)(Data_Function.flip(Cons.create))(Nil.value)(new Cons(v.value0, memo));
             }
-
             ;
             throw new Error("Failed pattern match at Data.List.Types (line 133, column 22 - line 135, column 61): " + [v.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_source, $copy_memo);
           }
-
           ;
           return $tco_result;
         };
       };
-
       return go(b)(Nil.value);
     };
   });
@@ -5473,38 +4618,29 @@ var PS = {};
           var $tco_var_source = $copy_source;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(source, memo) {
             var v = f(source);
-
             if (v instanceof Data_Maybe.Nothing) {
               $tco_done = true;
               return Data_Foldable.foldl(foldableList)(Data_Function.flip(Cons.create))(Nil.value)(memo);
             }
-
             ;
-
             if (v instanceof Data_Maybe.Just) {
               $tco_var_source = v.value0.value1;
               $copy_memo = new Cons(v.value0.value0, memo);
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Data.List.Types (line 140, column 22 - line 142, column 52): " + [v.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_source, $copy_memo);
           }
-
           ;
           return $tco_result;
         };
       };
-
       return go(b)(Nil.value);
     };
   });
@@ -5515,13 +4651,10 @@ var PS = {};
       if (v instanceof Nil) {
         return Nil.value;
       }
-
       ;
-
       if (v instanceof Cons) {
         return Data_Semigroup.append(semigroupList)(Data_Functor.map(functorList)(v.value0)(v1))(Control_Apply.apply(applyList)(v.value1)(v1));
       }
-
       ;
       throw new Error("Failed pattern match at Data.List.Types (line 155, column 1 - line 157, column 48): " + [v.constructor.name, v1.constructor.name]);
     };
@@ -5549,7 +4682,6 @@ var PS = {};
   exports["plusList"] = plusList;
   exports["foldableNonEmptyList"] = foldableNonEmptyList;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -5558,43 +4690,35 @@ var PS = {};
   var exports = $PS["Data.List.NonEmpty"];
   var Data_List_Types = $PS["Data.List.Types"];
   var Data_NonEmpty = $PS["Data.NonEmpty"];
-
   var singleton = function () {
     var $168 = Data_NonEmpty.singleton(Data_List_Types.plusList);
     return function ($169) {
       return Data_List_Types.NonEmptyList($168($169));
     };
   }();
-
   var head = function head(v) {
     return v.value0;
   };
-
   var cons = function cons(y) {
     return function (v) {
       return new Data_NonEmpty.NonEmpty(y, new Data_List_Types.Cons(v.value0, v.value1));
     };
   };
-
   exports["singleton"] = singleton;
   exports["cons"] = cons;
   exports["head"] = head;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports["null"] = null;
-
   exports.nullable = function (a, r, f) {
     return a == null ? r : f(a);
   };
-
   exports.notNull = function (x) {
     return x;
   };
 })(PS["Data.Nullable"] = PS["Data.Nullable"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -5604,25 +4728,22 @@ var PS = {};
   var $foreign = $PS["Data.Nullable"];
   var Data_Maybe = $PS["Data.Maybe"];
   var toNullable = Data_Maybe.maybe($foreign["null"])($foreign.notNull);
-
   var toMaybe = function toMaybe(n) {
     return $foreign.nullable(n, Data_Maybe.Nothing.value, Data_Maybe.Just.create);
   };
-
   exports["toMaybe"] = toMaybe;
   exports["toNullable"] = toNullable;
   exports["null"] = $foreign["null"];
 })(PS);
-
 (function (exports) {
   /* globals setImmediate, clearImmediate, setTimeout, clearTimeout */
-
   /* jshint -W083, -W098, -W003 */
   "use strict";
 
   var Aff = function () {
     // A unique value for empty.
     var EMPTY = {};
+
     /*
     An awkward approximation. We elide evidence we would otherwise need in PS for
     efficiency sake.
@@ -5637,7 +4758,6 @@ var PS = {};
     | forall b. Fork Boolean (Aff eff b) ?(Fiber eff b -> a)
     | Sequential (ParAff aff a)
     */
-
     var PURE = "Pure";
     var THROW = "Throw";
     var CATCH = "Catch";
@@ -5647,6 +4767,7 @@ var PS = {};
     var BRACKET = "Bracket";
     var FORK = "Fork";
     var SEQ = "Sequential";
+
     /*
     data ParAff eff a
     = forall b. Map (b -> a) (ParAff eff b)
@@ -5654,25 +4775,18 @@ var PS = {};
     | Alt (ParAff eff a) (ParAff eff a)
     | ?Par (Aff eff a)
     */
-
     var MAP = "Map";
     var APPLY = "Apply";
-    var ALT = "Alt"; // Various constructors used in interpretation
+    var ALT = "Alt";
 
+    // Various constructors used in interpretation
     var CONS = "Cons"; // Cons-list, for stacks
-
     var RESUME = "Resume"; // Continue indiscriminately
-
     var RELEASE = "Release"; // Continue with bracket finalizers
-
     var FINALIZER = "Finalizer"; // A non-interruptible effect
-
     var FINALIZED = "Finalized"; // Marker for finalization
-
     var FORKED = "Forked"; // Reference to a forked fiber, with resumption stack
-
     var FIBER = "Fiber"; // Actual fiber reference
-
     var THUNK = "Thunk"; // Primed effect, ready to invoke
 
     function Aff(tag, _1, _2, _3) {
@@ -5681,20 +4795,16 @@ var PS = {};
       this._2 = _2;
       this._3 = _3;
     }
-
     function AffCtr(tag) {
       var fn = function fn(_1, _2, _3) {
         return new Aff(tag, _1, _2, _3);
       };
-
       fn.tag = tag;
       return fn;
     }
-
     function nonCanceler(error) {
       return new Aff(PURE, void 0);
     }
-
     function runEff(eff) {
       try {
         eff();
@@ -5704,7 +4814,6 @@ var PS = {};
         }, 0);
       }
     }
-
     function runSync(left, right, eff) {
       try {
         return right(eff());
@@ -5712,7 +4821,6 @@ var PS = {};
         return left(error);
       }
     }
-
     function runAsync(left, eff, k) {
       try {
         return eff(k)();
@@ -5721,18 +4829,15 @@ var PS = {};
         return nonCanceler;
       }
     }
-
     var Scheduler = function () {
       var limit = 1024;
       var size = 0;
       var ix = 0;
       var queue = new Array(limit);
       var draining = false;
-
       function drain() {
         var thunk;
         draining = true;
-
         while (size !== 0) {
           size--;
           thunk = queue[ix];
@@ -5740,33 +4845,27 @@ var PS = {};
           ix = (ix + 1) % limit;
           thunk();
         }
-
         draining = false;
       }
-
       return {
         isDraining: function isDraining() {
           return draining;
         },
         enqueue: function enqueue(cb) {
           var i, tmp;
-
           if (size === limit) {
             tmp = draining;
             drain();
             draining = tmp;
           }
-
           queue[(ix + size) % limit] = cb;
           size++;
-
           if (!draining) {
             drain();
           }
         }
       };
     }();
-
     function Supervisor(util) {
       var fibers = {};
       var fiberId = 0;
@@ -5794,36 +4893,30 @@ var PS = {};
             if (count === 0) {
               return cb();
             }
-
             var killCount = 0;
             var kills = {};
-
             function kill(fid) {
               kills[fid] = fibers[fid].kill(killError, function (result) {
                 return function () {
                   delete kills[fid];
                   killCount--;
-
                   if (util.isLeft(result) && util.fromLeft(result)) {
                     setTimeout(function () {
                       throw util.fromLeft(result);
                     }, 0);
                   }
-
                   if (killCount === 0) {
                     cb();
                   }
                 };
               })();
             }
-
             for (var k in fibers) {
               if (fibers.hasOwnProperty(k)) {
                 killCount++;
                 kill(k);
               }
             }
-
             fibers = {};
             fiberId = 0;
             count = 0;
@@ -5839,71 +4932,65 @@ var PS = {};
           };
         }
       };
-    } // Fiber state machine
+    }
 
-
+    // Fiber state machine
     var SUSPENDED = 0; // Suspended, pending a join.
-
     var CONTINUE = 1; // Interpret the next instruction.
-
     var STEP_BIND = 2; // Apply the next bind.
-
     var STEP_RESULT = 3; // Handle potential failure from a result.
-
     var PENDING = 4; // An async effect is running.
-
     var RETURN = 5; // The current stack has returned.
-
     var COMPLETED = 6; // The entire fiber has completed.
 
     function Fiber(util, supervisor, aff) {
       // Monotonically increasing tick, increased on each asynchronous turn.
-      var runTick = 0; // The current branch of the state machine.
+      var runTick = 0;
 
-      var status = SUSPENDED; // The current point of interest for the state machine branch.
+      // The current branch of the state machine.
+      var status = SUSPENDED;
 
+      // The current point of interest for the state machine branch.
       var step = aff; // Successful step
-
       var fail = null; // Failure step
-
       var interrupt = null; // Asynchronous interrupt
-      // Stack of continuations for the current fiber.
 
+      // Stack of continuations for the current fiber.
       var bhead = null;
-      var btail = null; // Stack of attempts and finalizers for error recovery. Every `Cons` is also
+      var btail = null;
+
+      // Stack of attempts and finalizers for error recovery. Every `Cons` is also
       // tagged with current `interrupt` state. We use this to track which items
       // should be ignored or evaluated as a result of a kill.
+      var attempts = null;
 
-      var attempts = null; // A special state is needed for Bracket, because it cannot be killed. When
+      // A special state is needed for Bracket, because it cannot be killed. When
       // we enter a bracket acquisition or finalizer, we increment the counter,
       // and then decrement once complete.
+      var bracketCount = 0;
 
-      var bracketCount = 0; // Each join gets a new id so they can be revoked.
-
+      // Each join gets a new id so they can be revoked.
       var joinId = 0;
       var joins = null;
-      var rethrow = true; // Each invocation of `run` requires a tick. When an asynchronous effect is
+      var rethrow = true;
+
+      // Each invocation of `run` requires a tick. When an asynchronous effect is
       // resolved, we must check that the local tick coincides with the fiber
       // tick before resuming. This prevents multiple async continuations from
       // accidentally resuming the same fiber. A common example may be invoking
       // the provided callback in `makeAff` more than once, but it may also be an
       // async effect resuming after the fiber was already cancelled.
-
       function _run(localRunTick) {
         var tmp, result, attempt;
-
         while (true) {
           tmp = null;
           result = null;
           attempt = null;
-
           switch (status) {
             case STEP_BIND:
               status = CONTINUE;
-
               try {
                 step = bhead(step);
-
                 if (btail === null) {
                   bhead = null;
                 } else {
@@ -5915,9 +5002,7 @@ var PS = {};
                 fail = util.left(e);
                 step = null;
               }
-
               break;
-
             case STEP_RESULT:
               if (util.isLeft(step)) {
                 status = RETURN;
@@ -5929,21 +5014,17 @@ var PS = {};
                 status = STEP_BIND;
                 step = util.fromRight(step);
               }
-
               break;
-
             case CONTINUE:
               switch (step.tag) {
                 case BIND:
                   if (bhead) {
                     btail = new Aff(CONS, bhead, btail);
                   }
-
                   bhead = step._2;
                   status = CONTINUE;
                   step = step._1;
                   break;
-
                 case PURE:
                   if (bhead === null) {
                     status = RETURN;
@@ -5952,14 +5033,11 @@ var PS = {};
                     status = STEP_BIND;
                     step = step._1;
                   }
-
                   break;
-
                 case SYNC:
                   status = STEP_RESULT;
                   step = runSync(util.left, util.right, step._1);
                   break;
-
                 case ASYNC:
                   status = PENDING;
                   step = runAsync(util.left, step._1, function (result) {
@@ -5967,7 +5045,6 @@ var PS = {};
                       if (runTick !== localRunTick) {
                         return;
                       }
-
                       runTick++;
                       Scheduler.enqueue(function () {
                         // It's possible to interrupt the fiber between enqueuing and
@@ -5976,83 +5053,70 @@ var PS = {};
                         if (runTick !== localRunTick + 1) {
                           return;
                         }
-
                         status = STEP_RESULT;
                         step = result;
-
                         _run(runTick);
                       });
                     };
                   });
                   return;
-
                 case THROW:
                   status = RETURN;
                   fail = util.left(step._1);
                   step = null;
                   break;
+
                 // Enqueue the Catch so that we can call the error handler later on
                 // in case of an exception.
-
                 case CATCH:
                   if (bhead === null) {
                     attempts = new Aff(CONS, step, attempts, interrupt);
                   } else {
                     attempts = new Aff(CONS, step, new Aff(CONS, new Aff(RESUME, bhead, btail), attempts, interrupt), interrupt);
                   }
-
                   bhead = null;
                   btail = null;
                   status = CONTINUE;
                   step = step._1;
                   break;
+
                 // Enqueue the Bracket so that we can call the appropriate handlers
                 // after resource acquisition.
-
                 case BRACKET:
                   bracketCount++;
-
                   if (bhead === null) {
                     attempts = new Aff(CONS, step, attempts, interrupt);
                   } else {
                     attempts = new Aff(CONS, step, new Aff(CONS, new Aff(RESUME, bhead, btail), attempts, interrupt), interrupt);
                   }
-
                   bhead = null;
                   btail = null;
                   status = CONTINUE;
                   step = step._1;
                   break;
-
                 case FORK:
                   status = STEP_RESULT;
                   tmp = Fiber(util, supervisor, step._2);
-
                   if (supervisor) {
                     supervisor.register(tmp);
                   }
-
                   if (step._1) {
                     tmp.run();
                   }
-
                   step = util.right(tmp);
                   break;
-
                 case SEQ:
                   status = CONTINUE;
                   step = sequential(util, supervisor, step._1);
                   break;
               }
-
               break;
-
             case RETURN:
               bhead = null;
-              btail = null; // If the current stack has returned, and we have no other stacks to
+              btail = null;
+              // If the current stack has returned, and we have no other stacks to
               // resume or finalizers to run, the fiber has halted and we can
               // invoke all join callbacks. Otherwise we need to resume.
-
               if (attempts === null) {
                 status = COMPLETED;
                 step = interrupt || fail || step;
@@ -6061,7 +5125,6 @@ var PS = {};
                 tmp = attempts._3;
                 attempt = attempts._1;
                 attempts = attempts._2;
-
                 switch (attempt.tag) {
                   // We cannot recover from an unmasked interrupt. Otherwise we should
                   // continue stepping, or run the exception handler if an exception
@@ -6077,10 +5140,9 @@ var PS = {};
                       step = attempt._2(util.fromLeft(fail));
                       fail = null;
                     }
-
                     break;
-                  // We cannot resume from an unmasked interrupt or exception.
 
+                  // We cannot resume from an unmasked interrupt or exception.
                   case RESUME:
                     // As with Catch, we only want to ignore in the case of an
                     // interrupt since enqueing the item.
@@ -6092,40 +5154,37 @@ var PS = {};
                       status = STEP_BIND;
                       step = util.fromRight(step);
                     }
-
                     break;
+
                   // If we have a bracket, we should enqueue the handlers,
                   // and continue with the success branch only if the fiber has
                   // not been interrupted. If the bracket acquisition failed, we
                   // should not run either.
-
                   case BRACKET:
                     bracketCount--;
-
                     if (fail === null) {
-                      result = util.fromRight(step); // We need to enqueue the Release with the same interrupt
+                      result = util.fromRight(step);
+                      // We need to enqueue the Release with the same interrupt
                       // status as the Bracket that is initiating it.
-
-                      attempts = new Aff(CONS, new Aff(RELEASE, attempt._2, result), attempts, tmp); // We should only coninue as long as the interrupt status has not changed or
+                      attempts = new Aff(CONS, new Aff(RELEASE, attempt._2, result), attempts, tmp);
+                      // We should only coninue as long as the interrupt status has not changed or
                       // we are currently within a non-interruptable finalizer.
-
                       if (interrupt === tmp || bracketCount > 0) {
                         status = CONTINUE;
                         step = attempt._3(result);
                       }
                     }
-
                     break;
+
                   // Enqueue the appropriate handler. We increase the bracket count
                   // because it should not be cancelled.
-
                   case RELEASE:
                     attempts = new Aff(CONS, new Aff(FINALIZED, step, fail), attempts, interrupt);
-                    status = CONTINUE; // It has only been killed if the interrupt status has changed
+                    status = CONTINUE;
+                    // It has only been killed if the interrupt status has changed
                     // since we enqueued the item, and the bracket count is 0. If the
                     // bracket count is non-zero then we are in a masked state so it's
                     // impossible to be killed.
-
                     if (interrupt && interrupt !== tmp && bracketCount === 0) {
                       step = attempt._1.killed(util.fromLeft(interrupt))(attempt._2);
                     } else if (fail) {
@@ -6133,18 +5192,15 @@ var PS = {};
                     } else {
                       step = attempt._1.completed(util.fromRight(step))(attempt._2);
                     }
-
                     fail = null;
                     bracketCount++;
                     break;
-
                   case FINALIZER:
                     bracketCount++;
                     attempts = new Aff(CONS, new Aff(FINALIZED, step, fail), attempts, interrupt);
                     status = CONTINUE;
                     step = attempt._1;
                     break;
-
                   case FINALIZED:
                     bracketCount--;
                     status = RETURN;
@@ -6153,9 +5209,7 @@ var PS = {};
                     break;
                 }
               }
-
               break;
-
             case COMPLETED:
               for (var k in joins) {
                 if (joins.hasOwnProperty(k)) {
@@ -6163,14 +5217,14 @@ var PS = {};
                   runEff(joins[k].handler(step));
                 }
               }
-
-              joins = null; // If we have an interrupt and a fail, then the thread threw while
+              joins = null;
+              // If we have an interrupt and a fail, then the thread threw while
               // running finalizers. This should always rethrow in a fresh stack.
-
               if (interrupt && fail) {
                 setTimeout(function () {
                   throw util.fromLeft(fail);
-                }, 0); // If we have an unhandled exception, and no other fiber has joined
+                }, 0);
+                // If we have an unhandled exception, and no other fiber has joined
                 // then we need to throw the exception in a fresh stack.
               } else if (util.isLeft(step) && rethrow) {
                 setTimeout(function () {
@@ -6181,19 +5235,15 @@ var PS = {};
                   }
                 }, 0);
               }
-
               return;
-
             case SUSPENDED:
               status = CONTINUE;
               break;
-
             case PENDING:
               return;
           }
         }
       }
-
       function onComplete(join) {
         return function () {
           if (status === COMPLETED) {
@@ -6201,7 +5251,6 @@ var PS = {};
             join.handler(step)();
             return function () {};
           }
-
           var jid = joinId++;
           joins = joins || {};
           joins[jid] = join;
@@ -6212,84 +5261,65 @@ var PS = {};
           };
         };
       }
-
       function kill(error, cb) {
         return function () {
           if (status === COMPLETED) {
             cb(util.right(void 0))();
             return function () {};
           }
-
           var canceler = onComplete({
             rethrow: false,
-            handler: function
-              /* unused */
-            handler() {
+            handler: function handler( /* unused */
+            ) {
               return cb(util.right(void 0));
             }
           })();
-
           switch (status) {
             case SUSPENDED:
               interrupt = util.left(error);
               status = COMPLETED;
               step = interrupt;
-
               _run(runTick);
-
               break;
-
             case PENDING:
               if (interrupt === null) {
                 interrupt = util.left(error);
               }
-
               if (bracketCount === 0) {
                 if (status === PENDING) {
                   attempts = new Aff(CONS, new Aff(FINALIZER, step(error)), attempts, interrupt);
                 }
-
                 status = RETURN;
                 step = null;
                 fail = null;
-
                 _run(++runTick);
               }
-
               break;
-
             default:
               if (interrupt === null) {
                 interrupt = util.left(error);
               }
-
               if (bracketCount === 0) {
                 status = RETURN;
                 step = null;
                 fail = null;
               }
-
           }
-
           return canceler;
         };
       }
-
       function join(cb) {
         return function () {
           var canceler = onComplete({
             rethrow: false,
             handler: cb
           })();
-
           if (status === SUSPENDED) {
             _run(runTick);
           }
-
           return canceler;
         };
       }
-
       return {
         kill: kill,
         join: join,
@@ -6310,22 +5340,26 @@ var PS = {};
         }
       };
     }
-
     function runPar(util, supervisor, par, cb) {
       // Table of all forked fibers.
       var fiberId = 0;
-      var fibers = {}; // Table of currently running cancelers, as a product of `Alt` behavior.
+      var fibers = {};
 
+      // Table of currently running cancelers, as a product of `Alt` behavior.
       var killId = 0;
-      var kills = {}; // Error used for early cancelation on Alt branches.
+      var kills = {};
 
-      var early = new Error("[ParAff] Early exit"); // Error used to kill the entire tree.
+      // Error used for early cancelation on Alt branches.
+      var early = new Error("[ParAff] Early exit");
 
-      var interrupt = null; // The root pointer of the tree.
+      // Error used to kill the entire tree.
+      var interrupt = null;
 
-      var root = EMPTY; // Walks a tree, invoking all the cancelers. Returns the table of pending
+      // The root pointer of the tree.
+      var root = EMPTY;
+
+      // Walks a tree, invoking all the cancelers. Returns the table of pending
       // cancellation fibers.
-
       function kill(error, par, cb) {
         var step = par;
         var head = null;
@@ -6333,10 +5367,8 @@ var PS = {};
         var count = 0;
         var kills = {};
         var tmp, kid;
-
         loop: while (true) {
           tmp = null;
-
           switch (step.tag) {
             case FORKED:
               if (step._3 === EMPTY) {
@@ -6344,67 +5376,55 @@ var PS = {};
                 kills[count++] = tmp.kill(error, function (result) {
                   return function () {
                     count--;
-
                     if (count === 0) {
                       cb(result)();
                     }
                   };
                 });
-              } // Terminal case.
-
-
+              }
+              // Terminal case.
               if (head === null) {
                 break loop;
-              } // Go down the right side of the tree.
-
-
+              }
+              // Go down the right side of the tree.
               step = head._2;
-
               if (tail === null) {
                 head = null;
               } else {
                 head = tail._1;
                 tail = tail._2;
               }
-
               break;
-
             case MAP:
               step = step._2;
               break;
-
             case APPLY:
             case ALT:
               if (head) {
                 tail = new Aff(CONS, head, tail);
               }
-
               head = step;
               step = step._1;
               break;
           }
         }
-
         if (count === 0) {
           cb(util.right(void 0))();
         } else {
           // Run the cancelation effects. We alias `count` because it's mutable.
           kid = 0;
           tmp = count;
-
           for (; kid < tmp; kid++) {
             kills[kid] = kills[kid]();
           }
         }
-
         return kills;
-      } // When a fiber resolves, we need to bubble back up the tree with the
+      }
+
+      // When a fiber resolves, we need to bubble back up the tree with the
       // result, computing the applicative nodes.
-
-
       function join(result, head, tail) {
         var fail, step, lhs, rhs, tmp, kid;
-
         if (util.isLeft(result)) {
           fail = result;
           step = null;
@@ -6412,31 +5432,30 @@ var PS = {};
           step = result;
           fail = null;
         }
-
         loop: while (true) {
           lhs = null;
           rhs = null;
           tmp = null;
-          kid = null; // We should never continue if the entire tree has been interrupted.
+          kid = null;
 
+          // We should never continue if the entire tree has been interrupted.
           if (interrupt !== null) {
-            return;
-          } // We've made it all the way to the root of the tree, which means
-          // the tree has fully evaluated.
-
-
-          if (head === null) {
-            cb(fail || step)();
-            return;
-          } // The tree has already been computed, so we shouldn't try to do it
-          // again. This should never happen.
-          // TODO: Remove this?
-
-
-          if (head._3 !== EMPTY) {
             return;
           }
 
+          // We've made it all the way to the root of the tree, which means
+          // the tree has fully evaluated.
+          if (head === null) {
+            cb(fail || step)();
+            return;
+          }
+
+          // The tree has already been computed, so we shouldn't try to do it
+          // again. This should never happen.
+          // TODO: Remove this?
+          if (head._3 !== EMPTY) {
+            return;
+          }
           switch (head.tag) {
             case MAP:
               if (fail === null) {
@@ -6445,24 +5464,20 @@ var PS = {};
               } else {
                 head._3 = fail;
               }
-
               break;
-
             case APPLY:
               lhs = head._1._3;
-              rhs = head._2._3; // If we have a failure we should kill the other side because we
+              rhs = head._2._3;
+              // If we have a failure we should kill the other side because we
               // can't possible yield a result anymore.
-
               if (fail) {
                 head._3 = fail;
                 tmp = true;
                 kid = killId++;
-                kills[kid] = kill(early, fail === lhs ? head._2 : head._1, function
-                  /* unused */
+                kills[kid] = kill(early, fail === lhs ? head._2 : head._1, function /* unused */
                 () {
                   return function () {
                     delete kills[kid];
-
                     if (tmp) {
                       tmp = false;
                     } else if (tail === null) {
@@ -6472,7 +5487,6 @@ var PS = {};
                     }
                   };
                 });
-
                 if (tmp) {
                   tmp = false;
                   return;
@@ -6484,19 +5498,16 @@ var PS = {};
                 step = util.right(util.fromRight(lhs)(util.fromRight(rhs)));
                 head._3 = step;
               }
-
               break;
-
             case ALT:
               lhs = head._1._3;
-              rhs = head._2._3; // We can only proceed if both have resolved or we have a success
-
+              rhs = head._2._3;
+              // We can only proceed if both have resolved or we have a success
               if (lhs === EMPTY && util.isLeft(rhs) || rhs === EMPTY && util.isLeft(lhs)) {
                 return;
-              } // If both sides resolve with an error, we should continue with the
+              }
+              // If both sides resolve with an error, we should continue with the
               // first error
-
-
               if (lhs !== EMPTY && util.isLeft(lhs) && rhs !== EMPTY && util.isLeft(rhs)) {
                 fail = step === lhs ? rhs : lhs;
                 step = null;
@@ -6504,15 +5515,13 @@ var PS = {};
               } else {
                 head._3 = step;
                 tmp = true;
-                kid = killId++; // Once a side has resolved, we need to cancel the side that is still
+                kid = killId++;
+                // Once a side has resolved, we need to cancel the side that is still
                 // pending before we can continue.
-
-                kills[kid] = kill(early, step === lhs ? head._2 : head._1, function
-                  /* unused */
+                kills[kid] = kill(early, step === lhs ? head._2 : head._1, function /* unused */
                 () {
                   return function () {
                     delete kills[kid];
-
                     if (tmp) {
                       tmp = false;
                     } else if (tail === null) {
@@ -6522,16 +5531,13 @@ var PS = {};
                     }
                   };
                 });
-
                 if (tmp) {
                   tmp = false;
                   return;
                 }
               }
-
               break;
           }
-
           if (tail === null) {
             head = null;
           } else {
@@ -6540,7 +5546,6 @@ var PS = {};
           }
         }
       }
-
       function resolve(fiber) {
         return function (result) {
           return function () {
@@ -6549,25 +5554,23 @@ var PS = {};
             join(result, fiber._2._1, fiber._2._2);
           };
         };
-      } // Walks the applicative tree, substituting non-applicative nodes with
+      }
+
+      // Walks the applicative tree, substituting non-applicative nodes with
       // `FORKED` nodes. In this tree, all applicative nodes use the `_3` slot
       // as a mutable slot for memoization. In an unresolved state, the `_3`
       // slot is `EMPTY`. In the cases of `ALT` and `APPLY`, we always walk
       // the left side first, because both operations are left-associative. As
       // we `RETURN` from those branches, we then walk the right side.
-
-
       function run() {
         var status = CONTINUE;
         var step = par;
         var head = null;
         var tail = null;
         var tmp, fid;
-
         loop: while (true) {
           tmp = null;
           fid = null;
-
           switch (status) {
             case CONTINUE:
               switch (step.tag) {
@@ -6575,29 +5578,23 @@ var PS = {};
                   if (head) {
                     tail = new Aff(CONS, head, tail);
                   }
-
                   head = new Aff(MAP, step._1, EMPTY, EMPTY);
                   step = step._2;
                   break;
-
                 case APPLY:
                   if (head) {
                     tail = new Aff(CONS, head, tail);
                   }
-
                   head = new Aff(APPLY, EMPTY, step._2, EMPTY);
                   step = step._1;
                   break;
-
                 case ALT:
                   if (head) {
                     tail = new Aff(CONS, head, tail);
                   }
-
                   head = new Aff(ALT, EMPTY, step._2, EMPTY);
                   step = step._1;
                   break;
-
                 default:
                   // When we hit a leaf value, we suspend the stack in the `FORKED`.
                   // When the fiber resolves, it can bubble back up the tree.
@@ -6611,23 +5608,18 @@ var PS = {};
                     handler: resolve(step)
                   })();
                   fibers[fid] = tmp;
-
                   if (supervisor) {
                     supervisor.register(tmp);
                   }
-
               }
-
               break;
-
             case RETURN:
               // Terminal case, we are back at the root.
               if (head === null) {
                 break loop;
-              } // If we are done with the right side, we need to continue down the
+              }
+              // If we are done with the right side, we need to continue down the
               // left. Otherwise we should continue up the stack.
-
-
               if (head._1 === EMPTY) {
                 head._1 = step;
                 status = CONTINUE;
@@ -6636,7 +5628,6 @@ var PS = {};
               } else {
                 head._2 = step;
                 step = head;
-
                 if (tail === null) {
                   head = null;
                 } else {
@@ -6644,30 +5635,26 @@ var PS = {};
                   tail = tail._2;
                 }
               }
-
           }
-        } // Keep a reference to the tree root so it can be cancelled.
+        }
 
-
+        // Keep a reference to the tree root so it can be cancelled.
         root = step;
-
         for (fid = 0; fid < fiberId; fid++) {
           fibers[fid].run();
         }
-      } // Cancels the entire tree. If there are already subtrees being canceled,
+      }
+
+      // Cancels the entire tree. If there are already subtrees being canceled,
       // we need to first cancel those joins. We will then add fresh joins for
       // all pending branches including those that were in the process of being
       // canceled.
-
-
       function cancel(error, cb) {
         interrupt = util.left(error);
         var innerKills;
-
         for (var kid in kills) {
           if (kills.hasOwnProperty(kid)) {
             innerKills = kills[kid];
-
             for (kid in innerKills) {
               if (innerKills.hasOwnProperty(kid)) {
                 innerKills[kid]();
@@ -6675,7 +5662,6 @@ var PS = {};
             }
           }
         }
-
         kills = null;
         var newKills = kill(error, root, cb);
         return function (killError) {
@@ -6686,13 +5672,11 @@ var PS = {};
                   newKills[kid]();
                 }
               }
-
               return nonCanceler;
             };
           });
         };
       }
-
       run();
       return function (killError) {
         return new Aff(ASYNC, function (killCb) {
@@ -6702,7 +5686,6 @@ var PS = {};
         });
       };
     }
-
     function sequential(util, supervisor, par) {
       return new Aff(ASYNC, function (cb) {
         return function () {
@@ -6710,7 +5693,6 @@ var PS = {};
         };
       });
     }
-
     Aff.EMPTY = EMPTY;
     Aff.Pure = AffCtr(PURE);
     Aff.Throw = AffCtr(THROW);
@@ -6730,16 +5712,13 @@ var PS = {};
     Aff.nonCanceler = nonCanceler;
     return Aff;
   }();
-
   exports._pure = Aff.Pure;
   exports._throwError = Aff.Throw;
-
   exports._catchError = function (aff) {
     return function (k) {
       return Aff.Catch(aff, k);
     };
   };
-
   exports._map = function (f) {
     return function (aff) {
       if (aff.tag === Aff.Pure.tag) {
@@ -6751,35 +5730,28 @@ var PS = {};
       }
     };
   };
-
   exports._bind = function (aff) {
     return function (k) {
       return Aff.Bind(aff, k);
     };
   };
-
   exports._fork = function (immediate) {
     return function (aff) {
       return Aff.Fork(immediate, aff);
     };
   };
-
   exports._liftEffect = Aff.Sync;
-
   exports._parAffMap = function (f) {
     return function (aff) {
       return Aff.ParMap(f, aff);
     };
   };
-
   exports._parAffApply = function (aff1) {
     return function (aff2) {
       return Aff.ParApply(aff1, aff2);
     };
   };
-
   exports.makeAff = Aff.Async;
-
   exports.generalBracket = function (acquire) {
     return function (options) {
       return function (k) {
@@ -6787,16 +5759,13 @@ var PS = {};
       };
     };
   };
-
   exports._makeFiber = function (util, aff) {
     return function () {
       return Aff.Fiber(util, null, aff);
     };
   };
-
   exports._sequential = Aff.Seq;
 })(PS["Effect.Aff"] = PS["Effect.Aff"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -6805,7 +5774,6 @@ var PS = {};
       return a;
     };
   };
-
   exports.bindE = function (a) {
     return function (f) {
       return function () {
@@ -6814,7 +5782,6 @@ var PS = {};
     };
   };
 })(PS["Effect"] = PS["Effect"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -6847,7 +5814,6 @@ var PS = {};
   exports["bindEffect"] = bindEffect;
   exports["monadEffect"] = monadEffect;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -6858,13 +5824,11 @@ var PS = {};
       };
     };
   };
-
   exports.read = function (ref) {
     return function () {
       return ref.value;
     };
   };
-
   exports["modify'"] = function (f) {
     return function (ref) {
       return function () {
@@ -6874,7 +5838,6 @@ var PS = {};
       };
     };
   };
-
   exports.write = function (val) {
     return function (ref) {
       return function () {
@@ -6884,7 +5847,6 @@ var PS = {};
     };
   };
 })(PS["Effect.Ref"] = PS["Effect.Ref"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -6894,7 +5856,6 @@ var PS = {};
   var $foreign = $PS["Effect.Ref"];
   var Data_Functor = $PS["Data.Functor"];
   var Effect = $PS["Effect"];
-
   var modify = function modify(f) {
     return $foreign["modify'"](function (s) {
       var s$prime = f(s);
@@ -6904,20 +5865,17 @@ var PS = {};
       };
     });
   };
-
   var modify_ = function modify_(f) {
     return function (s) {
       return Data_Functor["void"](Effect.functorEffect)(modify(f)(s));
     };
   };
-
   exports["modify_"] = modify_;
   exports["new"] = $foreign["new"];
   exports["read"] = $foreign.read;
   exports["modify'"] = $foreign["modify'"];
   exports["write"] = $foreign.write;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -6930,81 +5888,61 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Effect = $PS["Effect"];
   var Effect_Ref = $PS["Effect.Ref"];
-
   var Loop = function () {
     function Loop(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Loop.create = function (value0) {
       return new Loop(value0);
     };
-
     return Loop;
   }();
-
   var Done = function () {
     function Done(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Done.create = function (value0) {
       return new Done(value0);
     };
-
     return Done;
   }();
-
   var MonadRec = function MonadRec(Monad0, tailRecM) {
     this.Monad0 = Monad0;
     this.tailRecM = tailRecM;
   };
-
   var tailRecM = function tailRecM(dict) {
     return dict.tailRecM;
   };
-
   var tailRec = function tailRec(f) {
     var go = function go($copy_v) {
       var $tco_done = false;
       var $tco_result;
-
       function $tco_loop(v) {
         if (v instanceof Loop) {
           $copy_v = f(v.value0);
           return;
         }
-
         ;
-
         if (v instanceof Done) {
           $tco_done = true;
           return v.value0;
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 93, column 3 - line 93, column 25): " + [v.constructor.name]);
       }
-
       ;
-
       while (!$tco_done) {
         $tco_result = $tco_loop($copy_v);
       }
-
       ;
       return $tco_result;
     };
-
     return function ($58) {
       return go(f($58));
     };
   };
-
   var monadRecEither = new MonadRec(function () {
     return Data_Either.monadEither;
   }, function (f) {
@@ -7013,23 +5951,17 @@ var PS = {};
         if (v instanceof Data_Either.Left) {
           return new Done(new Data_Either.Left(v.value0));
         }
-
         ;
-
         if (v instanceof Data_Either.Right && v.value0 instanceof Loop) {
           return new Loop(f(v.value0.value0));
         }
-
         ;
-
         if (v instanceof Data_Either.Right && v.value0 instanceof Done) {
           return new Done(new Data_Either.Right(v.value0.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 121, column 7 - line 121, column 33): " + [v.constructor.name]);
       };
-
       return tailRec(g)(f(a0));
     };
   });
@@ -7041,38 +5973,29 @@ var PS = {};
         if (v instanceof Done) {
           return v.value0;
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 113, column 30 - line 113, column 44): " + [v.constructor.name]);
       };
-
       return function __do() {
         var r = Control_Bind.bindFlipped(Effect.bindEffect)(Effect_Ref["new"])(f(a))();
-
         (function () {
           while (!function __do() {
             var v = Effect_Ref.read(r)();
-
             if (v instanceof Loop) {
               var e = f(v.value0)();
               Effect_Ref.write(e)(r)();
               return false;
             }
-
             ;
-
             if (v instanceof Done) {
               return true;
             }
-
             ;
             throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 104, column 22 - line 109, column 28): " + [v.constructor.name]);
           }()) {}
-
           ;
           return {};
         })();
-
         return Data_Functor.map(Effect.functorEffect)(fromDone)(Effect_Ref.read(r))();
       };
     };
@@ -7083,13 +6006,10 @@ var PS = {};
         if (v2 instanceof Loop) {
           return new Loop(v(v2.value0));
         }
-
         ;
-
         if (v2 instanceof Done) {
           return new Done(v1(v2.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 29, column 1 - line 31, column 34): " + [v.constructor.name, v1.constructor.name, v2.constructor.name]);
       };
@@ -7103,34 +6023,28 @@ var PS = {};
   exports["monadRecEffect"] = monadRecEffect;
   exports["monadRecEither"] = monadRecEither;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Parallel.Class"] = $PS["Control.Parallel.Class"] || {};
   var exports = $PS["Control.Parallel.Class"];
-
   var Parallel = function Parallel(Applicative1, Monad0, parallel, sequential) {
     this.Applicative1 = Applicative1;
     this.Monad0 = Monad0;
     this.parallel = parallel;
     this.sequential = sequential;
   };
-
   var sequential = function sequential(dict) {
     return dict.sequential;
   };
-
   var parallel = function parallel(dict) {
     return dict.parallel;
   };
-
   exports["parallel"] = parallel;
   exports["sequential"] = sequential;
   exports["Parallel"] = Parallel;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7139,25 +6053,20 @@ var PS = {};
   var exports = $PS["Effect.Class"];
   var Control_Category = $PS["Control.Category"];
   var Effect = $PS["Effect"];
-
   var MonadEffect = function MonadEffect(Monad0, liftEffect) {
     this.Monad0 = Monad0;
     this.liftEffect = liftEffect;
   };
-
   var monadEffectEffect = new MonadEffect(function () {
     return Effect.monadEffect;
   }, Control_Category.identity(Control_Category.categoryFn));
-
   var liftEffect = function liftEffect(dict) {
     return dict.liftEffect;
   };
-
   exports["liftEffect"] = liftEffect;
   exports["MonadEffect"] = MonadEffect;
   exports["monadEffectEffect"] = monadEffectEffect;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -7165,7 +6074,6 @@ var PS = {};
     return f();
   };
 })(PS["Effect.Unsafe"] = PS["Effect.Unsafe"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7175,25 +6083,24 @@ var PS = {};
   var $foreign = $PS["Effect.Unsafe"];
   exports["unsafePerformEffect"] = $foreign.unsafePerformEffect;
 })(PS);
-
 (function (exports) {
-  "use strict"; // module Partial.Unsafe
+  "use strict";
 
+  // module Partial.Unsafe
   exports.unsafePartial = function (f) {
     return f();
   };
 })(PS["Partial.Unsafe"] = PS["Partial.Unsafe"] || {});
-
 (function (exports) {
-  "use strict"; // module Partial
+  "use strict";
 
+  // module Partial
   exports.crashWith = function () {
     return function (msg) {
       throw new Error(msg);
     };
   };
 })(PS["Partial"] = PS["Partial"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7203,7 +6110,6 @@ var PS = {};
   var $foreign = $PS["Partial"];
   exports["crashWith"] = $foreign.crashWith;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7212,24 +6118,21 @@ var PS = {};
   var exports = $PS["Partial.Unsafe"];
   var $foreign = $PS["Partial.Unsafe"];
   var Partial = $PS["Partial"];
-
   var unsafeCrashWith = function unsafeCrashWith(msg) {
     return $foreign.unsafePartial(function (dictPartial) {
       return Partial.crashWith()(msg);
     });
   };
-
   exports["unsafeCrashWith"] = unsafeCrashWith;
 })(PS);
-
 (function (exports) {
-  "use strict"; // module Unsafe.Coerce
+  "use strict";
 
+  // module Unsafe.Coerce
   exports.unsafeCoerce = function (x) {
     return x;
   };
 })(PS["Unsafe.Coerce"] = PS["Unsafe.Coerce"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7239,7 +6142,6 @@ var PS = {};
   var $foreign = $PS["Unsafe.Coerce"];
   exports["unsafeCoerce"] = $foreign.unsafeCoerce;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7263,62 +6165,47 @@ var PS = {};
   var Effect_Unsafe = $PS["Effect.Unsafe"];
   var Partial_Unsafe = $PS["Partial.Unsafe"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var Canceler = function Canceler(x) {
     return x;
   };
-
   var suspendAff = $foreign["_fork"](false);
   var functorParAff = new Data_Functor.Functor($foreign["_parAffMap"]);
   var functorAff = new Data_Functor.Functor($foreign["_map"]);
   var forkAff = $foreign["_fork"](true);
-
   var ffiUtil = function () {
     var unsafeFromRight = function unsafeFromRight(v) {
       if (v instanceof Data_Either.Right) {
         return v.value0;
       }
-
       ;
-
       if (v instanceof Data_Either.Left) {
         return Partial_Unsafe.unsafeCrashWith("unsafeFromRight: Left");
       }
-
       ;
       throw new Error("Failed pattern match at Effect.Aff (line 400, column 21 - line 402, column 54): " + [v.constructor.name]);
     };
-
     var unsafeFromLeft = function unsafeFromLeft(v) {
       if (v instanceof Data_Either.Left) {
         return v.value0;
       }
-
       ;
-
       if (v instanceof Data_Either.Right) {
         return Partial_Unsafe.unsafeCrashWith("unsafeFromLeft: Right");
       }
-
       ;
       throw new Error("Failed pattern match at Effect.Aff (line 395, column 20 - line 397, column 54): " + [v.constructor.name]);
     };
-
     var isLeft = function isLeft(v) {
       if (v instanceof Data_Either.Left) {
         return true;
       }
-
       ;
-
       if (v instanceof Data_Either.Right) {
         return false;
       }
-
       ;
       throw new Error("Failed pattern match at Effect.Aff (line 390, column 12 - line 392, column 20): " + [v.constructor.name]);
     };
-
     return {
       isLeft: isLeft,
       fromLeft: unsafeFromLeft,
@@ -7327,11 +6214,9 @@ var PS = {};
       right: Data_Either.Right.create
     };
   }();
-
   var makeFiber = function makeFiber(aff) {
     return $foreign["_makeFiber"](ffiUtil, aff);
   };
-
   var launchAff = function launchAff(aff) {
     return function __do() {
       var fiber = makeFiber(aff)();
@@ -7339,14 +6224,12 @@ var PS = {};
       return fiber;
     };
   };
-
   var launchAff_ = function () {
     var $43 = Data_Functor["void"](Effect.functorEffect);
     return function ($44) {
       return $43(launchAff($44));
     };
   }();
-
   var bracket = function bracket(acquire) {
     return function (completed) {
       return $foreign.generalBracket(acquire)({
@@ -7356,7 +6239,6 @@ var PS = {};
       });
     };
   };
-
   var applyParAff = new Control_Apply.Apply(function () {
     return functorParAff;
   }, $foreign["_parAffApply"]);
@@ -7374,43 +6256,36 @@ var PS = {};
   var applicativeAff = new Control_Applicative.Applicative(function () {
     return applyAff;
   }, $foreign["_pure"]);
-
   var $$finally = function $$finally(fin) {
     return function (a) {
       return bracket(Control_Applicative.pure(applicativeAff)(Data_Unit.unit))(Data_Function["const"](fin))(Data_Function["const"](a));
     };
   };
-
   var monadEffectAff = new Effect_Class.MonadEffect(function () {
     return monadAff;
   }, $foreign["_liftEffect"]);
-
   var effectCanceler = function () {
     var $45 = Effect_Class.liftEffect(monadEffectAff);
     return function ($46) {
       return Canceler(Data_Function["const"]($45($46)));
     };
   }();
-
   var joinFiber = function joinFiber(v) {
     return $foreign.makeAff(function (k) {
       return Data_Functor.map(Effect.functorEffect)(effectCanceler)(v.join(k));
     });
   };
-
   var functorFiber = new Data_Functor.Functor(function (f) {
     return function (t) {
       return Effect_Unsafe.unsafePerformEffect(makeFiber(Data_Functor.map(functorAff)(f)(joinFiber(t))));
     };
   });
-
   var killFiber = function killFiber(e) {
     return function (v) {
       return Control_Bind.bind(bindAff)(Effect_Class.liftEffect(monadEffectAff)(v.isSuspended))(function (v1) {
         if (v1) {
           return Effect_Class.liftEffect(monadEffectAff)(Data_Functor["void"](Effect.functorEffect)(v.kill(e, Data_Function["const"](Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit)))));
         }
-
         ;
         return $foreign.makeAff(function (k) {
           return Data_Functor.map(Effect.functorEffect)(effectCanceler)(v.kill(e, k));
@@ -7418,7 +6293,6 @@ var PS = {};
       });
     };
   };
-
   var monadThrowAff = new Control_Monad_Error_Class.MonadThrow(function () {
     return monadAff;
   }, $foreign["_throwError"]);
@@ -7426,7 +6300,6 @@ var PS = {};
     return monadThrowAff;
   }, $foreign["_catchError"]);
   var attempt = Control_Monad_Error_Class["try"](monadErrorAff);
-
   var runAff = function runAff(k) {
     return function (aff) {
       return launchAff(Control_Bind.bindFlipped(bindAff)(function () {
@@ -7437,13 +6310,11 @@ var PS = {};
       }())(Control_Monad_Error_Class["try"](monadErrorAff)(aff)));
     };
   };
-
   var runAff_ = function runAff_(k) {
     return function (aff) {
       return Data_Functor["void"](Effect.functorEffect)(runAff(k)(aff));
     };
   };
-
   var parallelAff = new Control_Parallel_Class.Parallel(function () {
     return applicativeParAff;
   }, function () {
@@ -7466,18 +6337,14 @@ var PS = {};
         if (res instanceof Control_Monad_Rec_Class.Done) {
           return Control_Applicative.pure(applicativeAff)(res.value0);
         }
-
         ;
-
         if (res instanceof Control_Monad_Rec_Class.Loop) {
           return go(res.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Effect.Aff (line 100, column 7 - line 102, column 22): " + [res.constructor.name]);
       });
     };
-
     return go;
   });
   var nonCanceler = Data_Function["const"](Control_Applicative.pure(applicativeAff)(Data_Unit.unit));
@@ -7504,7 +6371,6 @@ var PS = {};
   exports["functorFiber"] = functorFiber;
   exports["makeAff"] = $foreign.makeAff;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7513,7 +6379,6 @@ var PS = {};
   var exports = $PS["Effect.Aff.Compat"];
   var Data_Either = $PS["Data.Either"];
   var Effect_Aff = $PS["Effect.Aff"];
-
   var fromEffectFnAff = function fromEffectFnAff(v) {
     return Effect_Aff.makeAff(function (k) {
       return function __do() {
@@ -7537,28 +6402,23 @@ var PS = {};
       };
     });
   };
-
   exports["fromEffectFnAff"] = fromEffectFnAff;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.error = function (msg) {
     return new Error(msg);
   };
-
   exports.message = function (e) {
     return e.message;
   };
-
   exports.throwException = function (e) {
     return function () {
       throw e;
     };
   };
 })(PS["Effect.Exception"] = PS["Effect.Exception"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7566,37 +6426,30 @@ var PS = {};
   $PS["Effect.Exception"] = $PS["Effect.Exception"] || {};
   var exports = $PS["Effect.Exception"];
   var $foreign = $PS["Effect.Exception"];
-
   var $$throw = function $$throw($2) {
     return $foreign.throwException($foreign.error($2));
   };
-
   exports["throw"] = $$throw;
   exports["error"] = $foreign.error;
   exports["message"] = $foreign.message;
   exports["throwException"] = $foreign.throwException;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.unsafeToForeign = function (value) {
     return value;
   };
-
   exports.unsafeFromForeign = function (value) {
     return value;
   };
-
   exports.typeOf = function (value) {
     return _typeof(value);
   };
-
   exports.tagOf = function (value) {
     return Object.prototype.toString.call(value).slice(8, -1);
   };
 })(PS["Foreign"] = PS["Foreign"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7606,7 +6459,6 @@ var PS = {};
   var otherwise = true;
   exports["otherwise"] = otherwise;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -7618,12 +6470,10 @@ var PS = {};
       };
     };
   };
-
   exports.toNumber = function (n) {
     return n;
   };
 })(PS["Data.Int"] = PS["Data.Int"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -7632,7 +6482,6 @@ var PS = {};
   exports.topChar = String.fromCharCode(65535);
   exports.bottomChar = String.fromCharCode(0);
 })(PS["Data.Bounded"] = PS["Data.Bounded"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7641,44 +6490,38 @@ var PS = {};
   var exports = $PS["Data.Bounded"];
   var $foreign = $PS["Data.Bounded"];
   var Data_Ord = $PS["Data.Ord"];
-
   var Bounded = function Bounded(Ord0, bottom, top) {
     this.Ord0 = Ord0;
     this.bottom = bottom;
     this.top = top;
   };
-
   var top = function top(dict) {
     return dict.top;
   };
-
   var boundedInt = new Bounded(function () {
     return Data_Ord.ordInt;
   }, $foreign.bottomInt, $foreign.topInt);
   var boundedChar = new Bounded(function () {
     return Data_Ord.ordChar;
   }, $foreign.bottomChar, $foreign.topChar);
-
   var bottom = function bottom(dict) {
     return dict.bottom;
   };
-
   exports["Bounded"] = Bounded;
   exports["bottom"] = bottom;
   exports["top"] = top;
   exports["boundedInt"] = boundedInt;
   exports["boundedChar"] = boundedChar;
 })(PS);
-
 (function (exports) {
-  "use strict"; // module Math
+  "use strict";
 
+  // module Math
   exports.abs = Math.abs;
   exports.exp = Math.exp;
   exports.log = Math.log;
   exports.round = Math.round;
 })(PS["Math"] = PS["Math"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7691,7 +6534,6 @@ var PS = {};
   exports["log"] = $foreign.log;
   exports["round"] = $foreign.round;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7705,49 +6547,36 @@ var PS = {};
   var Global = $PS["Global"];
   var $$Math = $PS["Math"];
   var fromNumber = $foreign.fromNumberImpl(Data_Maybe.Just.create)(Data_Maybe.Nothing.value);
-
   var unsafeClamp = function unsafeClamp(x) {
     if (x === Global.infinity) {
       return 0;
     }
-
     ;
-
     if (x === -Global.infinity) {
       return 0;
     }
-
     ;
-
     if (x >= $foreign.toNumber(Data_Bounded.top(Data_Bounded.boundedInt))) {
       return Data_Bounded.top(Data_Bounded.boundedInt);
     }
-
     ;
-
     if (x <= $foreign.toNumber(Data_Bounded.bottom(Data_Bounded.boundedInt))) {
       return Data_Bounded.bottom(Data_Bounded.boundedInt);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.fromMaybe(0)(fromNumber(x));
     }
-
     ;
     throw new Error("Failed pattern match at Data.Int (line 66, column 1 - line 66, column 29): " + [x.constructor.name]);
   };
-
   var round = function round($23) {
     return unsafeClamp($$Math.round($23));
   };
-
   exports["fromNumber"] = fromNumber;
   exports["round"] = round;
   exports["toNumber"] = $foreign.toNumber;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7767,139 +6596,105 @@ var PS = {};
   var Data_List_NonEmpty = $PS["Data.List.NonEmpty"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Show = $PS["Data.Show"];
-
   var ForeignError = function () {
     function ForeignError(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ForeignError.create = function (value0) {
       return new ForeignError(value0);
     };
-
     return ForeignError;
   }();
-
   var TypeMismatch = function () {
     function TypeMismatch(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     TypeMismatch.create = function (value0) {
       return function (value1) {
         return new TypeMismatch(value0, value1);
       };
     };
-
     return TypeMismatch;
   }();
-
   var ErrorAtIndex = function () {
     function ErrorAtIndex(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     ErrorAtIndex.create = function (value0) {
       return function (value1) {
         return new ErrorAtIndex(value0, value1);
       };
     };
-
     return ErrorAtIndex;
   }();
-
   var ErrorAtProperty = function () {
     function ErrorAtProperty(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     ErrorAtProperty.create = function (value0) {
       return function (value1) {
         return new ErrorAtProperty(value0, value1);
       };
     };
-
     return ErrorAtProperty;
   }();
-
   var renderForeignError = function renderForeignError(v) {
     if (v instanceof ForeignError) {
       return v.value0;
     }
-
     ;
-
     if (v instanceof ErrorAtIndex) {
       return "Error at array index " + (Data_Show.show(Data_Show.showInt)(v.value0) + (": " + renderForeignError(v.value1)));
     }
-
     ;
-
     if (v instanceof ErrorAtProperty) {
       return "Error at property " + (Data_Show.show(Data_Show.showString)(v.value0) + (": " + renderForeignError(v.value1)));
     }
-
     ;
-
     if (v instanceof TypeMismatch) {
       return "Type mismatch: expected " + (v.value0 + (", found " + v.value1));
     }
-
     ;
     throw new Error("Failed pattern match at Foreign (line 72, column 1 - line 72, column 45): " + [v.constructor.name]);
   };
-
   var fail = function () {
     var $107 = Control_Monad_Error_Class.throwError(Control_Monad_Except_Trans.monadThrowExceptT(Data_Identity.monadIdentity));
     return function ($108) {
       return $107(Data_List_NonEmpty.singleton($108));
     };
   }();
-
   var unsafeReadTagged = function unsafeReadTagged(tag) {
     return function (value) {
       if ($foreign.tagOf(value) === tag) {
         return Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Data_Identity.monadIdentity))($foreign.unsafeFromForeign(value));
       }
-
       ;
-
       if (Data_Boolean.otherwise) {
         return fail(new TypeMismatch(tag, $foreign.tagOf(value)));
       }
-
       ;
       throw new Error("Failed pattern match at Foreign (line 106, column 1 - line 106, column 55): " + [tag.constructor.name, value.constructor.name]);
     };
   };
-
   var readBoolean = unsafeReadTagged("Boolean");
   var readNumber = unsafeReadTagged("Number");
-
   var readInt = function readInt(value) {
     var error = Data_Either.Left.create(Data_List_NonEmpty.singleton(new TypeMismatch("Int", $foreign.tagOf(value))));
-
     var fromNumber = function () {
       var $109 = Data_Maybe.maybe(error)(Control_Applicative.pure(Data_Either.applicativeEither));
       return function ($110) {
         return $109(Data_Int.fromNumber($110));
       };
     }();
-
     return Control_Monad_Except.mapExcept(Data_Either.either(Data_Function["const"](error))(fromNumber))(readNumber(value));
   };
-
   var readString = unsafeReadTagged("String");
   exports["ForeignError"] = ForeignError;
   exports["TypeMismatch"] = TypeMismatch;
@@ -7912,7 +6707,6 @@ var PS = {};
   exports["unsafeToForeign"] = $foreign.unsafeToForeign;
   exports["typeOf"] = $foreign.typeOf;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -7949,165 +6743,121 @@ var PS = {};
   var Effect_Aff_Compat = $PS["Effect.Aff.Compat"];
   var Effect_Exception = $PS["Effect.Exception"];
   var Foreign = $PS["Foreign"];
-
   var RequestContentError = function () {
     function RequestContentError(value0) {
       this.value0 = value0;
     }
-
     ;
-
     RequestContentError.create = function (value0) {
       return new RequestContentError(value0);
     };
-
     return RequestContentError;
   }();
-
   var ResponseBodyError = function () {
     function ResponseBodyError(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     ResponseBodyError.create = function (value0) {
       return function (value1) {
         return new ResponseBodyError(value0, value1);
       };
     };
-
     return ResponseBodyError;
   }();
-
   var XHRError = function () {
     function XHRError(value0) {
       this.value0 = value0;
     }
-
     ;
-
     XHRError.create = function (value0) {
       return new XHRError(value0);
     };
-
     return XHRError;
   }();
-
   var request = function request(req) {
     var parseJSON = function parseJSON(v) {
       if (v === "") {
         return Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Data_Identity.monadIdentity))(Data_Argonaut_Core.jsonEmptyObject);
       }
-
       ;
       return Data_Either.either(function ($47) {
         return Foreign.fail(Foreign.ForeignError.create($47));
       })(Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Data_Identity.monadIdentity)))(Data_Argonaut_Parser.jsonParser(v));
     };
-
     var fromResponse = function () {
       if (req.responseFormat instanceof Affjax_ResponseFormat["ArrayBuffer"]) {
         return Foreign.unsafeReadTagged("ArrayBuffer");
       }
-
       ;
-
       if (req.responseFormat instanceof Affjax_ResponseFormat.Blob) {
         return Foreign.unsafeReadTagged("Blob");
       }
-
       ;
-
       if (req.responseFormat instanceof Affjax_ResponseFormat.Document) {
         return Foreign.unsafeReadTagged("Document");
       }
-
       ;
-
       if (req.responseFormat instanceof Affjax_ResponseFormat.Json) {
         return Control_Bind.composeKleisliFlipped(Control_Monad_Except_Trans.bindExceptT(Data_Identity.monadIdentity))(function ($48) {
           return req.responseFormat.value0(parseJSON($48));
         })(Foreign.unsafeReadTagged("String"));
       }
-
       ;
-
       if (req.responseFormat instanceof Affjax_ResponseFormat["String"]) {
         return Foreign.unsafeReadTagged("String");
       }
-
       ;
-
       if (req.responseFormat instanceof Affjax_ResponseFormat.Ignore) {
         return Data_Function["const"](req.responseFormat.value0(Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Data_Identity.monadIdentity))(Data_Unit.unit)));
       }
-
       ;
       throw new Error("Failed pattern match at Affjax (line 237, column 18 - line 243, column 57): " + [req.responseFormat.constructor.name]);
     }();
-
     var extractContent = function extractContent(v) {
       if (v instanceof Affjax_RequestBody.ArrayView) {
         return Data_Either.Right.create(v.value0(Foreign.unsafeToForeign));
       }
-
       ;
-
       if (v instanceof Affjax_RequestBody.Blob) {
         return Data_Either.Right.create(Foreign.unsafeToForeign(v.value0));
       }
-
       ;
-
       if (v instanceof Affjax_RequestBody.Document) {
         return Data_Either.Right.create(Foreign.unsafeToForeign(v.value0));
       }
-
       ;
-
       if (v instanceof Affjax_RequestBody["String"]) {
         return Data_Either.Right.create(Foreign.unsafeToForeign(v.value0));
       }
-
       ;
-
       if (v instanceof Affjax_RequestBody.FormData) {
         return Data_Either.Right.create(Foreign.unsafeToForeign(v.value0));
       }
-
       ;
-
       if (v instanceof Affjax_RequestBody.FormURLEncoded) {
         return Data_Either.note("Body contains values that cannot be encoded as application/x-www-form-urlencoded")(Data_Functor.map(Data_Maybe.functorMaybe)(Foreign.unsafeToForeign)(Data_FormURLEncoded.encode(v.value0)));
       }
-
       ;
-
       if (v instanceof Affjax_RequestBody.Json) {
         return Data_Either.Right.create(Foreign.unsafeToForeign(Data_Argonaut_Core.stringify(v.value0)));
       }
-
       ;
       throw new Error("Failed pattern match at Affjax (line 203, column 20 - line 218, column 69): " + [v.constructor.name]);
     };
-
     var addHeader = function addHeader(mh) {
       return function (hs) {
         if (mh instanceof Data_Maybe.Just && !Data_Foldable.any(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)(Data_Function.on(Data_Eq.eq(Data_Eq.eqString))(Affjax_RequestHeader.name)(mh.value0))(hs)) {
           return Data_Array.snoc(hs)(mh.value0);
         }
-
         ;
         return hs;
       };
     };
-
     var headers = function headers(reqContent) {
       return addHeader(Data_Functor.map(Data_Maybe.functorMaybe)(Affjax_RequestHeader.ContentType.create)(Control_Bind.bindFlipped(Data_Maybe.bindMaybe)(Affjax_RequestBody.toMediaType)(reqContent)))(addHeader(Data_Functor.map(Data_Maybe.functorMaybe)(Affjax_RequestHeader.Accept.create)(Affjax_ResponseFormat.toMediaType(req.responseFormat)))(req.headers));
     };
-
     var ajaxRequest = function ajaxRequest(v) {
       return {
         method: Data_HTTP_Method.print(req.method),
@@ -8125,18 +6875,14 @@ var PS = {};
         withCredentials: req.withCredentials
       };
     };
-
     var send = function send(content) {
       return Data_Functor.mapFlipped(Effect_Aff.functorAff)(Control_Monad_Error_Class["try"](Effect_Aff.monadErrorAff)(Effect_Aff_Compat.fromEffectFnAff($foreign["_ajax"](Affjax_ResponseHeader.ResponseHeader.create, ajaxRequest(content)))))(function (v) {
         if (v instanceof Data_Either.Right) {
           var v1 = Control_Monad_Except.runExcept(fromResponse(v.value0.body));
-
           if (v1 instanceof Data_Either.Left) {
             return new Data_Either.Left(new ResponseBodyError(Data_List_NonEmpty.head(v1.value0), v.value0));
           }
-
           ;
-
           if (v1 instanceof Data_Either.Right) {
             return new Data_Either.Right({
               body: v1.value0,
@@ -8145,70 +6891,51 @@ var PS = {};
               statusText: v.value0.statusText
             });
           }
-
           ;
           throw new Error("Failed pattern match at Affjax (line 184, column 9 - line 186, column 52): " + [v1.constructor.name]);
         }
-
         ;
-
         if (v instanceof Data_Either.Left) {
           return new Data_Either.Left(new XHRError(v.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Affjax (line 182, column 86 - line 188, column 28): " + [v.constructor.name]);
       });
     };
-
     if (req.content instanceof Data_Maybe.Nothing) {
       return send(Data_Nullable.toNullable(Data_Maybe.Nothing.value));
     }
-
     ;
-
     if (req.content instanceof Data_Maybe.Just) {
       var v = extractContent(req.content.value0);
-
       if (v instanceof Data_Either.Right) {
         return send(Data_Nullable.toNullable(new Data_Maybe.Just(v.value0)));
       }
-
       ;
-
       if (v instanceof Data_Either.Left) {
         return Control_Applicative.pure(Effect_Aff.applicativeAff)(new Data_Either.Left(new RequestContentError(v.value0)));
       }
-
       ;
       throw new Error("Failed pattern match at Affjax (line 173, column 7 - line 177, column 48): " + [v.constructor.name]);
     }
-
     ;
     throw new Error("Failed pattern match at Affjax (line 169, column 3 - line 177, column 48): " + [req.content.constructor.name]);
   };
-
   var printError = function printError(v) {
     if (v instanceof RequestContentError) {
       return "There was a problem with the request content: " + v.value0;
     }
-
     ;
-
     if (v instanceof ResponseBodyError) {
       return "There was a problem with the response body: " + Foreign.renderForeignError(v.value0);
     }
-
     ;
-
     if (v instanceof XHRError) {
       return "There was a problem making the request: " + Effect_Exception.message(v.value0);
     }
-
     ;
     throw new Error("Failed pattern match at Affjax (line 91, column 14 - line 97, column 66): " + [v.constructor.name]);
   };
-
   var defaultRequest = {
     method: new Data_Either.Left(Data_HTTP_Method.GET.value),
     url: "/",
@@ -8223,7 +6950,6 @@ var PS = {};
   exports["printError"] = printError;
   exports["request"] = request;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -8239,60 +6965,45 @@ var PS = {};
   var Data_List_Types = $PS["Data.List.Types"];
   var Data_NonEmpty = $PS["Data.NonEmpty"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var Pure = function () {
     function Pure(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Pure.create = function (value0) {
       return new Pure(value0);
     };
-
     return Pure;
   }();
-
   var Lift = function () {
     function Lift(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Lift.create = function (value0) {
       return new Lift(value0);
     };
-
     return Lift;
   }();
-
   var Ap = function () {
     function Ap(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Ap.create = function (value0) {
       return function (value1) {
         return new Ap(value0, value1);
       };
     };
-
     return Ap;
   }();
-
   var mkAp = function mkAp(fba) {
     return function (fb) {
       return new Ap(fba, fb);
     };
   };
-
   var liftFreeAp = Lift.create;
-
   var goLeft = function goLeft($copy_dictApplicative) {
     return function ($copy_fStack) {
       return function ($copy_valStack) {
@@ -8306,7 +7017,6 @@ var PS = {};
               var $tco_var_func = $copy_func;
               var $tco_done = false;
               var $tco_result;
-
               function $tco_loop(dictApplicative, fStack, valStack, nat, func, count) {
                 if (func instanceof Pure) {
                   $tco_done = true;
@@ -8315,9 +7025,7 @@ var PS = {};
                     count: count
                   }, fStack), valStack);
                 }
-
                 ;
-
                 if (func instanceof Lift) {
                   $tco_done = true;
                   return new Data_Tuple.Tuple(new Data_List_Types.Cons({
@@ -8325,9 +7033,7 @@ var PS = {};
                     count: count
                   }, fStack), valStack);
                 }
-
                 ;
-
                 if (func instanceof Ap) {
                   $tco_var_dictApplicative = dictApplicative;
                   $tco_var_fStack = fStack;
@@ -8337,17 +7043,13 @@ var PS = {};
                   $copy_count = count + 1 | 0;
                   return;
                 }
-
                 ;
                 throw new Error("Failed pattern match at Control.Applicative.Free (line 102, column 41 - line 105, column 81): " + [func.constructor.name]);
               }
-
               ;
-
               while (!$tco_done) {
                 $tco_result = $tco_loop($tco_var_dictApplicative, $tco_var_fStack, $tco_var_valStack, $tco_var_nat, $tco_var_func, $copy_count);
               }
-
               ;
               return $tco_result;
             };
@@ -8356,7 +7058,6 @@ var PS = {};
       };
     };
   };
-
   var goApply = function goApply($copy_dictApplicative) {
     return function ($copy_fStack) {
       return function ($copy_vals) {
@@ -8366,25 +7067,20 @@ var PS = {};
           var $tco_var_vals = $copy_vals;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(dictApplicative, fStack, vals, gVal) {
             if (fStack instanceof Data_List_Types.Nil) {
               $tco_done = true;
               return new Data_Either.Left(gVal);
             }
-
             ;
-
             if (fStack instanceof Data_List_Types.Cons) {
               var gRes = Control_Apply.apply(dictApplicative.Apply0())(fStack.value0.func)(gVal);
               var $14 = fStack.value0.count === 1;
-
               if ($14) {
                 if (fStack.value1 instanceof Data_List_Types.Nil) {
                   $tco_done = true;
                   return new Data_Either.Left(gRes);
                 }
-
                 ;
                 $tco_var_dictApplicative = dictApplicative;
                 $tco_var_fStack = fStack.value1;
@@ -8392,16 +7088,12 @@ var PS = {};
                 $copy_gVal = gRes;
                 return;
               }
-
               ;
-
               if (vals instanceof Data_List_Types.Nil) {
                 $tco_done = true;
                 return new Data_Either.Left(gRes);
               }
-
               ;
-
               if (vals instanceof Data_List_Types.Cons) {
                 $tco_done = true;
                 return Data_Either.Right.create(new Data_Tuple.Tuple(new Data_List_Types.Cons({
@@ -8409,113 +7101,86 @@ var PS = {};
                   count: fStack.value0.count - 1 | 0
                 }, fStack.value1), new Data_NonEmpty.NonEmpty(vals.value0, vals.value1)));
               }
-
               ;
               throw new Error("Failed pattern match at Control.Applicative.Free (line 83, column 11 - line 88, column 50): " + [vals.constructor.name]);
             }
-
             ;
             throw new Error("Failed pattern match at Control.Applicative.Free (line 72, column 3 - line 88, column 50): " + [fStack.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_dictApplicative, $tco_var_fStack, $tco_var_vals, $copy_gVal);
           }
-
           ;
           return $tco_result;
         };
       };
     };
   };
-
   var functorFreeAp = new Data_Functor.Functor(function (f) {
     return function (x) {
       return mkAp(new Pure(f))(x);
     };
   });
-
   var foldFreeAp = function foldFreeAp(dictApplicative) {
     return function (nat) {
       return function (z) {
         var go = function go($copy_v) {
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(v) {
             if (v.value1.value0 instanceof Pure) {
               var v1 = goApply(dictApplicative)(v.value0)(v.value1.value1)(Control_Applicative.pure(dictApplicative)(v.value1.value0.value0));
-
               if (v1 instanceof Data_Either.Left) {
                 $tco_done = true;
                 return v1.value0;
               }
-
               ;
-
               if (v1 instanceof Data_Either.Right) {
                 $copy_v = v1.value0;
                 return;
               }
-
               ;
               throw new Error("Failed pattern match at Control.Applicative.Free (line 54, column 17 - line 56, column 24): " + [v1.constructor.name]);
             }
-
             ;
-
             if (v.value1.value0 instanceof Lift) {
               var v1 = goApply(dictApplicative)(v.value0)(v.value1.value1)(nat(v.value1.value0.value0));
-
               if (v1 instanceof Data_Either.Left) {
                 $tco_done = true;
                 return v1.value0;
               }
-
               ;
-
               if (v1 instanceof Data_Either.Right) {
                 $copy_v = v1.value0;
                 return;
               }
-
               ;
               throw new Error("Failed pattern match at Control.Applicative.Free (line 57, column 17 - line 59, column 24): " + [v1.constructor.name]);
             }
-
             ;
-
             if (v.value1.value0 instanceof Ap) {
               var nextVals = new Data_NonEmpty.NonEmpty(v.value1.value0.value1, v.value1.value1);
               $copy_v = goLeft(dictApplicative)(v.value0)(nextVals)(nat)(v.value1.value0.value0)(1);
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Control.Applicative.Free (line 53, column 5 - line 62, column 47): " + [v.value1.value0.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($copy_v);
           }
-
           ;
           return $tco_result;
         };
-
         return go(new Data_Tuple.Tuple(Data_List_Types.Nil.value, Data_List_NonEmpty.singleton(z)));
       };
     };
   };
-
   var retractFreeAp = function retractFreeAp(dictApplicative) {
     return foldFreeAp(dictApplicative)(Control_Category.identity(Control_Category.categoryFn));
   };
-
   var applyFreeAp = new Control_Apply.Apply(function () {
     return functorFreeAp;
   }, function (fba) {
@@ -8526,17 +7191,14 @@ var PS = {};
   var applicativeFreeAp = new Control_Applicative.Applicative(function () {
     return applyFreeAp;
   }, Pure.create);
-
   var hoistFreeAp = function hoistFreeAp(f) {
     return foldFreeAp(applicativeFreeAp)(function ($37) {
       return liftFreeAp(f($37));
     });
   };
-
   exports["retractFreeAp"] = retractFreeAp;
   exports["hoistFreeAp"] = hoistFreeAp;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -8549,7 +7211,6 @@ var PS = {};
   exports["mkExists"] = mkExists;
   exports["runExists"] = runExists;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -8567,52 +7228,39 @@ var PS = {};
   var Data_Exists = $PS["Data.Exists"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Unit = $PS["Data.Unit"];
-
   var Bound = function () {
     function Bound(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Bound.create = function (value0) {
       return function (value1) {
         return new Bound(value0, value1);
       };
     };
-
     return Bound;
   }();
-
   var FreeT = function () {
     function FreeT(value0) {
       this.value0 = value0;
     }
-
     ;
-
     FreeT.create = function (value0) {
       return new FreeT(value0);
     };
-
     return FreeT;
   }();
-
   var Bind = function () {
     function Bind(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Bind.create = function (value0) {
       return new Bind(value0);
     };
-
     return Bind;
   }();
-
   var monadTransFreeT = function monadTransFreeT(dictFunctor) {
     return new Control_Monad_Trans_Class.MonadTrans(function (dictMonad) {
       return function (ma) {
@@ -8622,15 +7270,12 @@ var PS = {};
       };
     });
   };
-
   var freeT = FreeT.create;
-
   var bound = function bound(m) {
     return function (f) {
       return new Bind(Data_Exists.mkExists(new Bound(m, f)));
     };
   };
-
   var functorFreeT = function functorFreeT(dictFunctor) {
     return function (dictFunctor1) {
       return new Data_Functor.Functor(function (f) {
@@ -8640,9 +7285,7 @@ var PS = {};
               return Data_Functor.map(dictFunctor1)(Data_Bifunctor.bimap(Data_Either.bifunctorEither)(f)(Data_Functor.map(dictFunctor)(Data_Functor.map(functorFreeT(dictFunctor)(dictFunctor1))(f))))(v.value0(Data_Unit.unit));
             });
           }
-
           ;
-
           if (v instanceof Bind) {
             return Data_Exists.runExists(function (v1) {
               return bound(v1.value0)(function () {
@@ -8653,14 +7296,12 @@ var PS = {};
               }());
             })(v.value0);
           }
-
           ;
           throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 59, column 1 - line 61, column 71): " + [f.constructor.name, v.constructor.name]);
         };
       });
     };
   };
-
   var monadFreeT = function monadFreeT(dictFunctor) {
     return function (dictMonad) {
       return new Control_Monad.Monad(function () {
@@ -8670,7 +7311,6 @@ var PS = {};
       });
     };
   };
-
   var bindFreeT = function bindFreeT(dictFunctor) {
     return function (dictMonad) {
       return new Control_Bind.Bind(function () {
@@ -8686,7 +7326,6 @@ var PS = {};
               });
             })(v.value0);
           }
-
           ;
           return bound(function (v1) {
             return v;
@@ -8695,7 +7334,6 @@ var PS = {};
       });
     };
   };
-
   var applyFreeT = function applyFreeT(dictFunctor) {
     return function (dictMonad) {
       return new Control_Apply.Apply(function () {
@@ -8703,7 +7341,6 @@ var PS = {};
       }, Control_Monad.ap(monadFreeT(dictFunctor)(dictMonad)));
     };
   };
-
   var applicativeFreeT = function applicativeFreeT(dictFunctor) {
     return function (dictMonad) {
       return new Control_Applicative.Applicative(function () {
@@ -8715,7 +7352,6 @@ var PS = {};
       });
     };
   };
-
   var liftFreeT = function liftFreeT(dictFunctor) {
     return function (dictMonad) {
       return function (fa) {
@@ -8725,41 +7361,32 @@ var PS = {};
       };
     };
   };
-
   var resume = function resume(dictFunctor) {
     return function (dictMonadRec) {
       var go = function go(v) {
         if (v instanceof FreeT) {
           return Data_Functor.map(dictMonadRec.Monad0().Bind1().Apply0().Functor0())(Control_Monad_Rec_Class.Done.create)(v.value0(Data_Unit.unit));
         }
-
         ;
-
         if (v instanceof Bind) {
           return Data_Exists.runExists(function (v1) {
             var v2 = v1.value0(Data_Unit.unit);
-
             if (v2 instanceof FreeT) {
               return Control_Bind.bind(dictMonadRec.Monad0().Bind1())(v2.value0(Data_Unit.unit))(function (v3) {
                 if (v3 instanceof Data_Either.Left) {
                   return Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(new Control_Monad_Rec_Class.Loop(v1.value1(v3.value0)));
                 }
-
                 ;
-
                 if (v3 instanceof Data_Either.Right) {
                   return Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(new Control_Monad_Rec_Class.Done(new Data_Either.Right(Data_Functor.map(dictFunctor)(function (h) {
                     return Control_Bind.bind(bindFreeT(dictFunctor)(dictMonadRec.Monad0()))(h)(v1.value1);
                   })(v3.value0))));
                 }
-
                 ;
                 throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 54, column 20 - line 56, column 67): " + [v3.constructor.name]);
               });
             }
-
             ;
-
             if (v2 instanceof Bind) {
               return Data_Exists.runExists(function (v3) {
                 return Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(new Control_Monad_Rec_Class.Loop(Control_Bind.bind(bindFreeT(dictFunctor)(dictMonadRec.Monad0()))(v3.value0(Data_Unit.unit))(function (z) {
@@ -8767,20 +7394,16 @@ var PS = {};
                 })));
               })(v2.value0);
             }
-
             ;
             throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 52, column 5 - line 57, column 98): " + [v2.constructor.name]);
           })(v.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 49, column 3 - line 49, column 75): " + [v.constructor.name]);
       };
-
       return Control_Monad_Rec_Class.tailRecM(dictMonadRec)(go);
     };
   };
-
   var runFreeT = function runFreeT(dictFunctor) {
     return function (dictMonadRec) {
       return function (interp) {
@@ -8788,22 +7411,17 @@ var PS = {};
           if (v instanceof Data_Either.Left) {
             return Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(new Control_Monad_Rec_Class.Done(v.value0));
           }
-
           ;
-
           if (v instanceof Data_Either.Right) {
             return Data_Functor.map(dictMonadRec.Monad0().Bind1().Apply0().Functor0())(Control_Monad_Rec_Class.Loop.create)(interp(v.value0));
           }
-
           ;
           throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 141, column 3 - line 141, column 63): " + [v.constructor.name]);
         };
-
         return Control_Monad_Rec_Class.tailRecM(dictMonadRec)(Control_Bind.composeKleisliFlipped(dictMonadRec.Monad0().Bind1())(go)(resume(dictFunctor)(dictMonadRec)));
       };
     };
   };
-
   var monadRecFreeT = function monadRecFreeT(dictFunctor) {
     return function (dictMonad) {
       return new Control_Monad_Rec_Class.MonadRec(function () {
@@ -8814,23 +7432,18 @@ var PS = {};
             if (v instanceof Control_Monad_Rec_Class.Loop) {
               return go(v.value0);
             }
-
             ;
-
             if (v instanceof Control_Monad_Rec_Class.Done) {
               return Control_Applicative.pure(applicativeFreeT(dictFunctor)(dictMonad))(v.value0);
             }
-
             ;
             throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 82, column 15 - line 84, column 25): " + [v.constructor.name]);
           });
         };
-
         return go;
       });
     };
   };
-
   exports["freeT"] = freeT;
   exports["liftFreeT"] = liftFreeT;
   exports["resume"] = resume;
@@ -8841,7 +7454,6 @@ var PS = {};
   exports["monadTransFreeT"] = monadTransFreeT;
   exports["monadRecFreeT"] = monadRecFreeT;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -8849,11 +7461,9 @@ var PS = {};
   $PS["Data.Profunctor"] = $PS["Data.Profunctor"] || {};
   var exports = $PS["Data.Profunctor"];
   var Control_Category = $PS["Control.Category"];
-
   var Profunctor = function Profunctor(dimap) {
     this.dimap = dimap;
   };
-
   var profunctorFn = new Profunctor(function (a2b) {
     return function (c2d) {
       return function (b2c) {
@@ -8863,23 +7473,19 @@ var PS = {};
       };
     };
   });
-
   var dimap = function dimap(dict) {
     return dict.dimap;
   };
-
   var rmap = function rmap(dictProfunctor) {
     return function (b2c) {
       return dimap(dictProfunctor)(Control_Category.identity(Control_Category.categoryFn))(b2c);
     };
   };
-
   exports["dimap"] = dimap;
   exports["Profunctor"] = Profunctor;
   exports["rmap"] = rmap;
   exports["profunctorFn"] = profunctorFn;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -8904,24 +7510,19 @@ var PS = {};
   var Data_Profunctor = $PS["Data.Profunctor"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unit = $PS["Data.Unit"];
-
   var Emit = function () {
     function Emit(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Emit.create = function (value0) {
       return function (value1) {
         return new Emit(value0, value1);
       };
     };
-
     return Emit;
   }();
-
   var runProcess = function runProcess(dictMonadRec) {
     return Control_Monad_Free_Trans.runFreeT(Data_Identity.functorIdentity)(dictMonadRec)(function () {
       var $176 = Control_Applicative.pure(dictMonadRec.Monad0().Applicative0());
@@ -8931,7 +7532,6 @@ var PS = {};
       };
     }());
   };
-
   var profunctorAwait = new Data_Profunctor.Profunctor(function (f) {
     return function (g) {
       return function (v) {
@@ -8939,7 +7539,6 @@ var PS = {};
       };
     };
   });
-
   var loop = function loop(dictFunctor) {
     return function (dictMonad) {
       return function (me) {
@@ -8949,7 +7548,6 @@ var PS = {};
       };
     };
   };
-
   var fuseWithL = function fuseWithL(dictFunctor) {
     return function (dictFunctor1) {
       return function (dictFunctor2) {
@@ -8968,7 +7566,6 @@ var PS = {};
                     });
                   }));
                 };
-
                 return Control_Monad_Free_Trans.freeT(function (v) {
                   return go(new Data_Tuple.Tuple(fs, gs));
                 });
@@ -8979,7 +7576,6 @@ var PS = {};
       };
     };
   };
-
   var fuseWith = function fuseWith(dictFunctor) {
     return function (dictFunctor1) {
       return function (dictFunctor2) {
@@ -8993,9 +7589,7 @@ var PS = {};
                       if (next instanceof Data_Either.Left) {
                         return Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(new Data_Either.Left(next.value0));
                       }
-
                       ;
-
                       if (next instanceof Data_Either.Right) {
                         return Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(new Data_Either.Right(Data_Functor.map(dictFunctor2)(function (t) {
                           return Control_Monad_Free_Trans.freeT(function (v1) {
@@ -9003,12 +7597,10 @@ var PS = {};
                           });
                         })(next.value0)));
                       }
-
                       ;
                       throw new Error("Failed pattern match at Control.Coroutine (line 79, column 5 - line 81, column 63): " + [next.constructor.name]);
                     });
                   };
-
                   return Control_Monad_Free_Trans.freeT(function (v) {
                     return go(new Data_Tuple.Tuple(fs, gs));
                   });
@@ -9020,7 +7612,6 @@ var PS = {};
       };
     };
   };
-
   var functorAwait = new Data_Functor.Functor(Data_Profunctor.rmap(profunctorAwait));
   var bifunctorEmit = new Data_Bifunctor.Bifunctor(function (f) {
     return function (g) {
@@ -9030,7 +7621,6 @@ var PS = {};
     };
   });
   var functorEmit = new Data_Functor.Functor(Data_Bifunctor.rmap(bifunctorEmit));
-
   var connect = function connect(dictMonadRec) {
     return function (dictParallel) {
       return fuseWith(functorEmit)(functorAwait)(Data_Identity.functorIdentity)(dictMonadRec)(dictParallel)(function (f) {
@@ -9042,32 +7632,26 @@ var PS = {};
       });
     };
   };
-
   var emit = function emit(dictMonad) {
     return function (o) {
       return Control_Monad_Free_Trans.liftFreeT(functorEmit)(dictMonad)(new Emit(o, Data_Unit.unit));
     };
   };
-
   var producer = function producer(dictMonad) {
     return function (recv) {
       return loop(functorEmit)(dictMonad)(Control_Bind.bind(Control_Monad_Free_Trans.bindFreeT(functorEmit)(dictMonad))(Control_Monad_Trans_Class.lift(Control_Monad_Free_Trans.monadTransFreeT(functorEmit))(dictMonad)(recv))(function (e) {
         if (e instanceof Data_Either.Left) {
           return Data_Functor.voidLeft(Control_Monad_Free_Trans.functorFreeT(functorEmit)(dictMonad.Bind1().Apply0().Functor0()))(emit(dictMonad)(e.value0))(Data_Maybe.Nothing.value);
         }
-
         ;
-
         if (e instanceof Data_Either.Right) {
           return Control_Applicative.pure(Control_Monad_Free_Trans.applicativeFreeT(functorEmit)(dictMonad))(new Data_Maybe.Just(e.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Control.Coroutine (line 125, column 3 - line 127, column 29): " + [e.constructor.name]);
       }));
     };
   };
-
   var pullFrom = function pullFrom(dictMonadRec) {
     return fuseWithL(functorAwait)(functorEmit)(Data_Identity.functorIdentity)(dictMonadRec)(function (f) {
       return function (v) {
@@ -9077,11 +7661,9 @@ var PS = {};
       };
     });
   };
-
   var $$await = function $$await(dictMonad) {
     return Control_Monad_Free_Trans.liftFreeT(functorAwait)(dictMonad)(Control_Category.identity(Control_Category.categoryFn));
   };
-
   exports["runProcess"] = runProcess;
   exports["producer"] = producer;
   exports["await"] = $$await;
@@ -9090,7 +7672,6 @@ var PS = {};
   exports["functorEmit"] = functorEmit;
   exports["functorAwait"] = functorAwait;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -9098,7 +7679,6 @@ var PS = {};
   $PS["Control.Monad.Fork.Class"] = $PS["Control.Monad.Fork.Class"] || {};
   var exports = $PS["Control.Monad.Fork.Class"];
   var Effect_Aff = $PS["Effect.Aff"];
-
   var MonadFork = function MonadFork(Functor1, Monad0, fork, join, suspend) {
     this.Functor1 = Functor1;
     this.Monad0 = Monad0;
@@ -9106,21 +7686,17 @@ var PS = {};
     this.join = join;
     this.suspend = suspend;
   };
-
   var monadForkAff = new MonadFork(function () {
     return Effect_Aff.functorFiber;
   }, function () {
     return Effect_Aff.monadAff;
   }, Effect_Aff.forkAff, Effect_Aff.joinFiber, Effect_Aff.suspendAff);
-
   var fork = function fork(dict) {
     return dict.fork;
   };
-
   exports["fork"] = fork;
   exports["monadForkAff"] = monadForkAff;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -9139,25 +7715,20 @@ var PS = {};
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unfoldable = $PS["Data.Unfoldable"];
   var Data_Unit = $PS["Data.Unit"];
-
   var uncons = function uncons(v) {
     if (v instanceof Data_List_Types.Nil) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
-
     if (v instanceof Data_List_Types.Cons) {
       return new Data_Maybe.Just({
         head: v.value0,
         tail: v.value1
       });
     }
-
     ;
     throw new Error("Failed pattern match at Data.List (line 259, column 1 - line 259, column 66): " + [v.constructor.name]);
   };
-
   var toUnfoldable = function toUnfoldable(dictUnfoldable) {
     return Data_Unfoldable.unfoldr(dictUnfoldable)(function (xs) {
       return Data_Functor.map(Data_Maybe.functorMaybe)(function (rec) {
@@ -9165,61 +7736,47 @@ var PS = {};
       })(uncons(xs));
     });
   };
-
   var tail = function tail(v) {
     if (v instanceof Data_List_Types.Nil) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
-
     if (v instanceof Data_List_Types.Cons) {
       return new Data_Maybe.Just(v.value1);
     }
-
     ;
     throw new Error("Failed pattern match at Data.List (line 245, column 1 - line 245, column 43): " + [v.constructor.name]);
   };
-
   var reverse = function () {
     var go = function go($copy_acc) {
       return function ($copy_v) {
         var $tco_var_acc = $copy_acc;
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(acc, v) {
           if (v instanceof Data_List_Types.Nil) {
             $tco_done = true;
             return acc;
           }
-
           ;
-
           if (v instanceof Data_List_Types.Cons) {
             $tco_var_acc = new Data_List_Types.Cons(v.value0, acc);
             $copy_v = v.value1;
             return;
           }
-
           ;
           throw new Error("Failed pattern match at Data.List (line 368, column 3 - line 368, column 19): " + [acc.constructor.name, v.constructor.name]);
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($tco_var_acc, $copy_v);
         }
-
         ;
         return $tco_result;
       };
     };
-
     return go(Data_List_Types.Nil.value);
   }();
-
   var take = function () {
     var go = function go($copy_acc) {
       return function ($copy_v) {
@@ -9228,48 +7785,37 @@ var PS = {};
           var $tco_var_v = $copy_v;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(acc, v, v1) {
             if (v < 1) {
               $tco_done = true;
               return reverse(acc);
             }
-
             ;
-
             if (v1 instanceof Data_List_Types.Nil) {
               $tco_done = true;
               return reverse(acc);
             }
-
             ;
-
             if (v1 instanceof Data_List_Types.Cons) {
               $tco_var_acc = new Data_List_Types.Cons(v1.value0, acc);
               $tco_var_v = v - 1 | 0;
               $copy_v1 = v1.value1;
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Data.List (line 520, column 3 - line 520, column 35): " + [acc.constructor.name, v.constructor.name, v1.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_acc, $tco_var_v, $copy_v1);
           }
-
           ;
           return $tco_result;
         };
       };
     };
-
     return go(Data_List_Types.Nil.value);
   }();
-
   var zipWith = function zipWith(f) {
     return function (xs) {
       return function (ys) {
@@ -9280,59 +7826,46 @@ var PS = {};
               var $tco_var_v1 = $copy_v1;
               var $tco_done = false;
               var $tco_result;
-
               function $tco_loop(v, v1, acc) {
                 if (v instanceof Data_List_Types.Nil) {
                   $tco_done = true;
                   return acc;
                 }
-
                 ;
-
                 if (v1 instanceof Data_List_Types.Nil) {
                   $tco_done = true;
                   return acc;
                 }
-
                 ;
-
                 if (v instanceof Data_List_Types.Cons && v1 instanceof Data_List_Types.Cons) {
                   $tco_var_v = v.value1;
                   $tco_var_v1 = v1.value1;
                   $copy_acc = new Data_List_Types.Cons(f(v.value0)(v1.value0), acc);
                   return;
                 }
-
                 ;
                 throw new Error("Failed pattern match at Data.List (line 718, column 3 - line 718, column 21): " + [v.constructor.name, v1.constructor.name, acc.constructor.name]);
               }
-
               ;
-
               while (!$tco_done) {
                 $tco_result = $tco_loop($tco_var_v, $tco_var_v1, $copy_acc);
               }
-
               ;
               return $tco_result;
             };
           };
         };
-
         return reverse(go(xs)(ys)(Data_List_Types.Nil.value));
       };
     };
   };
-
   var $$null = function $$null(v) {
     if (v instanceof Data_List_Types.Nil) {
       return true;
     }
-
     ;
     return false;
   };
-
   var manyRec = function manyRec(dictMonadRec) {
     return function (dictAlternative) {
       return function (p) {
@@ -9345,73 +7878,56 @@ var PS = {};
             })(aa));
           });
         };
-
         return Control_Monad_Rec_Class.tailRecM(dictMonadRec)(go)(Data_List_Types.Nil.value);
       };
     };
   };
-
   var head = function head(v) {
     if (v instanceof Data_List_Types.Nil) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
-
     if (v instanceof Data_List_Types.Cons) {
       return new Data_Maybe.Just(v.value0);
     }
-
     ;
     throw new Error("Failed pattern match at Data.List (line 230, column 1 - line 230, column 22): " + [v.constructor.name]);
   };
-
   var fromFoldable = function fromFoldable(dictFoldable) {
     return Data_Foldable.foldr(dictFoldable)(Data_List_Types.Cons.create)(Data_List_Types.Nil.value);
   };
-
   var drop = function drop($copy_v) {
     return function ($copy_v1) {
       var $tco_var_v = $copy_v;
       var $tco_done = false;
       var $tco_result;
-
       function $tco_loop(v, v1) {
         if (v < 1) {
           $tco_done = true;
           return v1;
         }
-
         ;
-
         if (v1 instanceof Data_List_Types.Nil) {
           $tco_done = true;
           return Data_List_Types.Nil.value;
         }
-
         ;
-
         if (v1 instanceof Data_List_Types.Cons) {
           $tco_var_v = v - 1 | 0;
           $copy_v1 = v1.value1;
           return;
         }
-
         ;
         throw new Error("Failed pattern match at Data.List (line 543, column 1 - line 543, column 42): " + [v.constructor.name, v1.constructor.name]);
       }
-
       ;
-
       while (!$tco_done) {
         $tco_result = $tco_loop($tco_var_v, $copy_v1);
       }
-
       ;
       return $tco_result;
     };
   };
-
   exports["toUnfoldable"] = toUnfoldable;
   exports["fromFoldable"] = fromFoldable;
   exports["manyRec"] = manyRec;
@@ -9421,7 +7937,6 @@ var PS = {};
   exports["drop"] = drop;
   exports["zipWith"] = zipWith;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -9432,84 +7947,65 @@ var PS = {};
   var Data_List_Types = $PS["Data.List.Types"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var CatQueue = function () {
     function CatQueue(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     CatQueue.create = function (value0) {
       return function (value1) {
         return new CatQueue(value0, value1);
       };
     };
-
     return CatQueue;
   }();
-
   var uncons = function uncons($copy_v) {
     var $tco_done = false;
     var $tco_result;
-
     function $tco_loop(v) {
       if (v.value0 instanceof Data_List_Types.Nil && v.value1 instanceof Data_List_Types.Nil) {
         $tco_done = true;
         return Data_Maybe.Nothing.value;
       }
-
       ;
-
       if (v.value0 instanceof Data_List_Types.Nil) {
         $copy_v = new CatQueue(Data_List.reverse(v.value1), Data_List_Types.Nil.value);
         return;
       }
-
       ;
-
       if (v.value0 instanceof Data_List_Types.Cons) {
         $tco_done = true;
         return new Data_Maybe.Just(new Data_Tuple.Tuple(v.value0.value0, new CatQueue(v.value0.value1, v.value1)));
       }
-
       ;
       throw new Error("Failed pattern match at Data.CatQueue (line 83, column 1 - line 83, column 63): " + [v.constructor.name]);
     }
-
     ;
-
     while (!$tco_done) {
       $tco_result = $tco_loop($copy_v);
     }
-
     ;
     return $tco_result;
   };
-
   var snoc = function snoc(v) {
     return function (a) {
       return new CatQueue(v.value0, new Data_List_Types.Cons(a, v.value1));
     };
   };
-
   var $$null = function $$null(v) {
     if (v.value0 instanceof Data_List_Types.Nil && v.value1 instanceof Data_List_Types.Nil) {
       return true;
     }
-
     ;
     return false;
   };
-
   var empty = new CatQueue(Data_List_Types.Nil.value, Data_List_Types.Nil.value);
   exports["empty"] = empty;
   exports["null"] = $$null;
   exports["snoc"] = snoc;
   exports["uncons"] = uncons;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -9521,55 +8017,42 @@ var PS = {};
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var CatNil = function () {
     function CatNil() {}
-
     ;
     CatNil.value = new CatNil();
     return CatNil;
   }();
-
   var CatCons = function () {
     function CatCons(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     CatCons.create = function (value0) {
       return function (value1) {
         return new CatCons(value0, value1);
       };
     };
-
     return CatCons;
   }();
-
   var link = function link(v) {
     return function (v1) {
       if (v instanceof CatNil) {
         return v1;
       }
-
       ;
-
       if (v1 instanceof CatNil) {
         return v;
       }
-
       ;
-
       if (v instanceof CatCons) {
         return new CatCons(v.value0, Data_CatQueue.snoc(v.value1)(v1));
       }
-
       ;
       throw new Error("Failed pattern match at Data.CatList (line 109, column 1 - line 109, column 54): " + [v.constructor.name, v1.constructor.name]);
     };
   };
-
   var foldr = function foldr(k) {
     return function (b) {
       return function (q) {
@@ -9580,47 +8063,37 @@ var PS = {};
               var $tco_var_c = $copy_c;
               var $tco_done = false;
               var $tco_result;
-
               function $tco_loop(v, c, v1) {
                 if (v1 instanceof Data_List_Types.Nil) {
                   $tco_done = true;
                   return c;
                 }
-
                 ;
-
                 if (v1 instanceof Data_List_Types.Cons) {
                   $tco_var_v = v;
                   $tco_var_c = v(c)(v1.value0);
                   $copy_v1 = v1.value1;
                   return;
                 }
-
                 ;
                 throw new Error("Failed pattern match at Data.CatList (line 125, column 3 - line 125, column 59): " + [v.constructor.name, c.constructor.name, v1.constructor.name]);
               }
-
               ;
-
               while (!$tco_done) {
                 $tco_result = $tco_loop($tco_var_v, $tco_var_c, $copy_v1);
               }
-
               ;
               return $tco_result;
             };
           };
         };
-
         var go = function go($copy_xs) {
           return function ($copy_ys) {
             var $tco_var_xs = $copy_xs;
             var $tco_done = false;
             var $tco_result;
-
             function $tco_loop(xs, ys) {
               var v = Data_CatQueue.uncons(xs);
-
               if (v instanceof Data_Maybe.Nothing) {
                 $tco_done = true;
                 return foldl(function (x) {
@@ -9629,75 +8102,58 @@ var PS = {};
                   };
                 })(b)(ys);
               }
-
               ;
-
               if (v instanceof Data_Maybe.Just) {
                 $tco_var_xs = v.value0.value1;
                 $copy_ys = new Data_List_Types.Cons(k(v.value0.value0), ys);
                 return;
               }
-
               ;
               throw new Error("Failed pattern match at Data.CatList (line 121, column 14 - line 123, column 67): " + [v.constructor.name]);
             }
-
             ;
-
             while (!$tco_done) {
               $tco_result = $tco_loop($tco_var_xs, $copy_ys);
             }
-
             ;
             return $tco_result;
           };
         };
-
         return go(q)(Data_List_Types.Nil.value);
       };
     };
   };
-
   var uncons = function uncons(v) {
     if (v instanceof CatNil) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
-
     if (v instanceof CatCons) {
       return new Data_Maybe.Just(new Data_Tuple.Tuple(v.value0, function () {
         var $44 = Data_CatQueue["null"](v.value1);
-
         if ($44) {
           return CatNil.value;
         }
-
         ;
         return foldr(link)(CatNil.value)(v.value1);
       }()));
     }
-
     ;
     throw new Error("Failed pattern match at Data.CatList (line 100, column 1 - line 100, column 61): " + [v.constructor.name]);
   };
-
   var empty = CatNil.value;
   var append = link;
   var semigroupCatList = new Data_Semigroup.Semigroup(append);
-
   var snoc = function snoc(cat) {
     return function (a) {
       return append(cat)(new CatCons(a, Data_CatQueue.empty));
     };
   };
-
   exports["empty"] = empty;
   exports["snoc"] = snoc;
   exports["uncons"] = uncons;
   exports["semigroupCatList"] = semigroupCatList;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -9713,116 +8169,88 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Semigroup = $PS["Data.Semigroup"];
-
   var Free = function () {
     function Free(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Free.create = function (value0) {
       return function (value1) {
         return new Free(value0, value1);
       };
     };
-
     return Free;
   }();
-
   var Return = function () {
     function Return(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Return.create = function (value0) {
       return new Return(value0);
     };
-
     return Return;
   }();
-
   var Bind = function () {
     function Bind(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Bind.create = function (value0) {
       return function (value1) {
         return new Bind(value0, value1);
       };
     };
-
     return Bind;
   }();
-
   var toView = function toView($copy_v) {
     var $tco_done = false;
     var $tco_result;
-
     function $tco_loop(v) {
       var runExpF = function runExpF(v2) {
         return v2;
       };
-
       var concatF = function concatF(v2) {
         return function (r) {
           return new Free(v2.value0, Data_Semigroup.append(Data_CatList.semigroupCatList)(v2.value1)(r));
         };
       };
-
       if (v.value0 instanceof Return) {
         var v2 = Data_CatList.uncons(v.value1);
-
         if (v2 instanceof Data_Maybe.Nothing) {
           $tco_done = true;
           return new Return(v.value0.value0);
         }
-
         ;
-
         if (v2 instanceof Data_Maybe.Just) {
           $copy_v = concatF(runExpF(v2.value0.value0)(v.value0.value0))(v2.value0.value1);
           return;
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Free (line 227, column 7 - line 231, column 64): " + [v2.constructor.name]);
       }
-
       ;
-
       if (v.value0 instanceof Bind) {
         $tco_done = true;
         return new Bind(v.value0.value0, function (a) {
           return concatF(v.value0.value1(a))(v.value1);
         });
       }
-
       ;
       throw new Error("Failed pattern match at Control.Monad.Free (line 225, column 3 - line 233, column 56): " + [v.value0.constructor.name]);
     }
-
     ;
-
     while (!$tco_done) {
       $tco_result = $tco_loop($copy_v);
     }
-
     ;
     return $tco_result;
   };
-
   var fromView = function fromView(f) {
     return new Free(f, Data_CatList.empty);
   };
-
   var freeMonad = new Control_Monad.Monad(function () {
     return freeApplicative;
   }, function () {
@@ -9853,7 +8281,6 @@ var PS = {};
   }, function ($122) {
     return fromView(Return.create($122));
   });
-
   var liftF = function liftF(f) {
     return fromView(new Bind(f, function () {
       var $123 = Control_Applicative.pure(freeApplicative);
@@ -9862,32 +8289,25 @@ var PS = {};
       };
     }()));
   };
-
   var foldFree = function foldFree(dictMonadRec) {
     return function (k) {
       var go = function go(f) {
         var v = toView(f);
-
         if (v instanceof Return) {
           return Data_Functor.map(dictMonadRec.Monad0().Bind1().Apply0().Functor0())(Control_Monad_Rec_Class.Done.create)(Control_Applicative.pure(dictMonadRec.Monad0().Applicative0())(v.value0));
         }
-
         ;
-
         if (v instanceof Bind) {
           return Data_Functor.map(dictMonadRec.Monad0().Bind1().Apply0().Functor0())(function ($136) {
             return Control_Monad_Rec_Class.Loop.create(v.value1($136));
           })(k(v.value0));
         }
-
         ;
         throw new Error("Failed pattern match at Control.Monad.Free (line 158, column 10 - line 160, column 37): " + [v.constructor.name]);
       };
-
       return Control_Monad_Rec_Class.tailRecM(dictMonadRec)(go);
     };
   };
-
   exports["liftF"] = liftF;
   exports["foldFree"] = foldFree;
   exports["freeFunctor"] = freeFunctor;
@@ -9895,7 +8315,6 @@ var PS = {};
   exports["freeApplicative"] = freeApplicative;
   exports["freeMonad"] = freeMonad;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -9912,22 +8331,18 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Effect_Class = $PS["Effect.Class"];
-
   var MaybeT = function MaybeT(x) {
     return x;
   };
-
   var runMaybeT = function runMaybeT(v) {
     return v;
   };
-
   var monadTransMaybeT = new Control_Monad_Trans_Class.MonadTrans(function (dictMonad) {
     var $71 = Control_Monad.liftM1(dictMonad)(Data_Maybe.Just.create);
     return function ($72) {
       return MaybeT($71($72));
     };
   });
-
   var functorMaybeT = function functorMaybeT(dictFunctor) {
     return new Data_Functor.Functor(function (f) {
       return function (v) {
@@ -9935,7 +8350,6 @@ var PS = {};
       };
     });
   };
-
   var monadMaybeT = function monadMaybeT(dictMonad) {
     return new Control_Monad.Monad(function () {
       return applicativeMaybeT(dictMonad);
@@ -9943,7 +8357,6 @@ var PS = {};
       return bindMaybeT(dictMonad);
     });
   };
-
   var bindMaybeT = function bindMaybeT(dictMonad) {
     return new Control_Bind.Bind(function () {
       return applyMaybeT(dictMonad);
@@ -9953,27 +8366,22 @@ var PS = {};
           if (v1 instanceof Data_Maybe.Nothing) {
             return Control_Applicative.pure(dictMonad.Applicative0())(Data_Maybe.Nothing.value);
           }
-
           ;
-
           if (v1 instanceof Data_Maybe.Just) {
             var v2 = f(v1.value0);
             return v2;
           }
-
           ;
           throw new Error("Failed pattern match at Control.Monad.Maybe.Trans (line 54, column 11 - line 56, column 42): " + [v1.constructor.name]);
         });
       };
     });
   };
-
   var applyMaybeT = function applyMaybeT(dictMonad) {
     return new Control_Apply.Apply(function () {
       return functorMaybeT(dictMonad.Bind1().Apply0().Functor0());
     }, Control_Monad.ap(monadMaybeT(dictMonad)));
   };
-
   var applicativeMaybeT = function applicativeMaybeT(dictMonad) {
     return new Control_Applicative.Applicative(function () {
       return applyMaybeT(dictMonad);
@@ -9984,7 +8392,6 @@ var PS = {};
       };
     }());
   };
-
   var monadEffectMaybe = function monadEffectMaybe(dictMonadEffect) {
     return new Effect_Class.MonadEffect(function () {
       return monadMaybeT(dictMonadEffect.Monad0());
@@ -9996,7 +8403,6 @@ var PS = {};
       };
     }());
   };
-
   var altMaybeT = function altMaybeT(dictMonad) {
     return new Control_Alt.Alt(function () {
       return functorMaybeT(dictMonad.Bind1().Apply0().Functor0());
@@ -10006,20 +8412,17 @@ var PS = {};
           if (m instanceof Data_Maybe.Nothing) {
             return v1;
           }
-
           ;
           return Control_Applicative.pure(dictMonad.Applicative0())(m);
         });
       };
     });
   };
-
   var plusMaybeT = function plusMaybeT(dictMonad) {
     return new Control_Plus.Plus(function () {
       return altMaybeT(dictMonad);
     }, Control_Applicative.pure(dictMonad.Applicative0())(Data_Maybe.Nothing.value));
   };
-
   exports["MaybeT"] = MaybeT;
   exports["runMaybeT"] = runMaybeT;
   exports["applicativeMaybeT"] = applicativeMaybeT;
@@ -10027,7 +8430,6 @@ var PS = {};
   exports["plusMaybeT"] = plusMaybeT;
   exports["monadEffectMaybe"] = monadEffectMaybe;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10036,16 +8438,13 @@ var PS = {};
   var exports = $PS["Control.Monad.State.Class"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unit = $PS["Data.Unit"];
-
   var MonadState = function MonadState(Monad0, state) {
     this.Monad0 = Monad0;
     this.state = state;
   };
-
   var state = function state(dict) {
     return dict.state;
   };
-
   var put = function put(dictMonadState) {
     return function (s) {
       return state(dictMonadState)(function (v) {
@@ -10053,7 +8452,6 @@ var PS = {};
       });
     };
   };
-
   var modify_ = function modify_(dictMonadState) {
     return function (f) {
       return state(dictMonadState)(function (s) {
@@ -10061,7 +8459,6 @@ var PS = {};
       });
     };
   };
-
   var gets = function gets(dictMonadState) {
     return function (f) {
       return state(dictMonadState)(function (s) {
@@ -10069,13 +8466,11 @@ var PS = {};
       });
     };
   };
-
   var get = function get(dictMonadState) {
     return state(dictMonadState)(function (s) {
       return new Data_Tuple.Tuple(s, s);
     });
   };
-
   exports["state"] = state;
   exports["MonadState"] = MonadState;
   exports["get"] = get;
@@ -10083,27 +8478,22 @@ var PS = {};
   exports["put"] = put;
   exports["modify_"] = modify_;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Control.Monad.Writer.Class"] = $PS["Control.Monad.Writer.Class"] || {};
   var exports = $PS["Control.Monad.Writer.Class"];
-
   var MonadTell = function MonadTell(Monad0, tell) {
     this.Monad0 = Monad0;
     this.tell = tell;
   };
-
   var tell = function tell(dict) {
     return dict.tell;
   };
-
   exports["tell"] = tell;
   exports["MonadTell"] = MonadTell;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10121,16 +8511,13 @@ var PS = {};
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unit = $PS["Data.Unit"];
-
   var RWSResult = function () {
     function RWSResult(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     RWSResult.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -10138,10 +8525,8 @@ var PS = {};
         };
       };
     };
-
     return RWSResult;
   }();
-
   var functorRWST = function functorRWST(dictFunctor) {
     return new Data_Functor.Functor(function (f) {
       return function (v) {
@@ -10155,7 +8540,6 @@ var PS = {};
       };
     });
   };
-
   var evalRWST = function evalRWST(dictMonad) {
     return function (v) {
       return function (r) {
@@ -10167,7 +8551,6 @@ var PS = {};
       };
     };
   };
-
   var applyRWST = function applyRWST(dictBind) {
     return function (dictMonoid) {
       return new Control_Apply.Apply(function () {
@@ -10187,7 +8570,6 @@ var PS = {};
       });
     };
   };
-
   var bindRWST = function bindRWST(dictBind) {
     return function (dictMonoid) {
       return new Control_Bind.Bind(function () {
@@ -10208,7 +8590,6 @@ var PS = {};
       });
     };
   };
-
   var applicativeRWST = function applicativeRWST(dictMonad) {
     return function (dictMonoid) {
       return new Control_Applicative.Applicative(function () {
@@ -10222,7 +8603,6 @@ var PS = {};
       });
     };
   };
-
   var monadRWST = function monadRWST(dictMonad) {
     return function (dictMonoid) {
       return new Control_Monad.Monad(function () {
@@ -10232,7 +8612,6 @@ var PS = {};
       });
     };
   };
-
   var monadStateRWST = function monadStateRWST(dictMonad) {
     return function (dictMonoid) {
       return new Control_Monad_State_Class.MonadState(function () {
@@ -10247,7 +8626,6 @@ var PS = {};
       });
     };
   };
-
   var monadTellRWST = function monadTellRWST(dictMonad) {
     return function (dictMonoid) {
       return new Control_Monad_Writer_Class.MonadTell(function () {
@@ -10261,14 +8639,12 @@ var PS = {};
       });
     };
   };
-
   exports["evalRWST"] = evalRWST;
   exports["bindRWST"] = bindRWST;
   exports["applicativeRWST"] = applicativeRWST;
   exports["monadStateRWST"] = monadStateRWST;
   exports["monadTellRWST"] = monadTellRWST;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10278,7 +8654,6 @@ var PS = {};
   var Control_Monad_RWS_Trans = $PS["Control.Monad.RWS.Trans"];
   var Data_Identity = $PS["Data.Identity"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var evalRWS = function evalRWS(m) {
     return function (r) {
       return function (s) {
@@ -10286,10 +8661,8 @@ var PS = {};
       };
     };
   };
-
   exports["evalRWS"] = evalRWS;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10305,11 +8678,9 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Effect_Class = $PS["Effect.Class"];
-
   var StateT = function StateT(x) {
     return x;
   };
-
   var monadTransStateT = new Control_Monad_Trans_Class.MonadTrans(function (dictMonad) {
     return function (m) {
       return function (s) {
@@ -10319,7 +8690,6 @@ var PS = {};
       };
     };
   });
-
   var functorStateT = function functorStateT(dictFunctor) {
     return new Data_Functor.Functor(function (f) {
       return function (v) {
@@ -10331,7 +8701,6 @@ var PS = {};
       };
     });
   };
-
   var evalStateT = function evalStateT(dictFunctor) {
     return function (v) {
       return function (s) {
@@ -10339,7 +8708,6 @@ var PS = {};
       };
     };
   };
-
   var monadStateT = function monadStateT(dictMonad) {
     return new Control_Monad.Monad(function () {
       return applicativeStateT(dictMonad);
@@ -10347,7 +8715,6 @@ var PS = {};
       return bindStateT(dictMonad);
     });
   };
-
   var bindStateT = function bindStateT(dictMonad) {
     return new Control_Bind.Bind(function () {
       return applyStateT(dictMonad);
@@ -10362,13 +8729,11 @@ var PS = {};
       };
     });
   };
-
   var applyStateT = function applyStateT(dictMonad) {
     return new Control_Apply.Apply(function () {
       return functorStateT(dictMonad.Bind1().Apply0().Functor0());
     }, Control_Monad.ap(monadStateT(dictMonad)));
   };
-
   var applicativeStateT = function applicativeStateT(dictMonad) {
     return new Control_Applicative.Applicative(function () {
       return applyStateT(dictMonad);
@@ -10378,7 +8743,6 @@ var PS = {};
       };
     });
   };
-
   var monadEffectState = function monadEffectState(dictMonadEffect) {
     return new Effect_Class.MonadEffect(function () {
       return monadStateT(dictMonadEffect.Monad0());
@@ -10390,7 +8754,6 @@ var PS = {};
       };
     }());
   };
-
   var monadStateStateT = function monadStateStateT(dictMonad) {
     return new Control_Monad_State_Class.MonadState(function () {
       return monadStateT(dictMonad);
@@ -10403,7 +8766,6 @@ var PS = {};
       }());
     });
   };
-
   exports["evalStateT"] = evalStateT;
   exports["applicativeStateT"] = applicativeStateT;
   exports["bindStateT"] = bindStateT;
@@ -10411,7 +8773,6 @@ var PS = {};
   exports["monadEffectState"] = monadEffectState;
   exports["monadStateStateT"] = monadStateStateT;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10421,7 +8782,6 @@ var PS = {};
   var Control_Category = $PS["Control.Category"];
   var Control_Parallel_Class = $PS["Control.Parallel.Class"];
   var Data_Foldable = $PS["Data.Foldable"];
-
   var parTraverse_ = function parTraverse_(dictParallel) {
     return function (dictFoldable) {
       return function (f) {
@@ -10438,19 +8798,17 @@ var PS = {};
       };
     };
   };
-
   var parSequence_ = function parSequence_(dictParallel) {
     return function (dictFoldable) {
       return parTraverse_(dictParallel)(dictFoldable)(Control_Category.identity(Control_Category.categoryFn));
     };
   };
-
   exports["parSequence_"] = parSequence_;
 })(PS);
-
 (function (exports) {
-  "use strict"; // getPair :: Point -> (forall r. Number -> Number -> r) -> r
+  "use strict";
 
+  // getPair :: Point -> (forall r. Number -> Number -> r) -> r
   exports._linReg = function (getPair, pts) {
     var n = 0;
     var x = 0;
@@ -10458,10 +8816,8 @@ var PS = {};
     var x2 = 0;
     var y2 = 0;
     var xy = 0;
-
     var _iterator = _createForOfIteratorHelper(pts),
-        _step;
-
+      _step;
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var pt = _step.value;
@@ -10481,7 +8837,6 @@ var PS = {};
     } finally {
       _iterator.f();
     }
-
     var mx = x / n;
     var my = y / n;
     var mx2 = x2 / n;
@@ -10502,7 +8857,6 @@ var PS = {};
     };
   };
 })(PS["Corona.Analyze.LinReg"] = PS["Corona.Analyze.LinReg"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10510,16 +8864,13 @@ var PS = {};
   $PS["Data.DivisionRing"] = $PS["Data.DivisionRing"] || {};
   var exports = $PS["Data.DivisionRing"];
   var Data_Ring = $PS["Data.Ring"];
-
   var DivisionRing = function DivisionRing(Ring0, recip) {
     this.Ring0 = Ring0;
     this.recip = recip;
   };
-
   var recip = function recip(dict) {
     return dict.recip;
   };
-
   var divisionringNumber = new DivisionRing(function () {
     return Data_Ring.ringNumber;
   }, function (x) {
@@ -10528,23 +8879,21 @@ var PS = {};
   exports["recip"] = recip;
   exports["divisionringNumber"] = divisionringNumber;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.intDegree = function (x) {
     return Math.min(Math.abs(x), 2147483647);
-  }; // See the Euclidean definition in
+  };
+
+  // See the Euclidean definition in
   // https://en.m.wikipedia.org/wiki/Modulo_operation.
-
-
   exports.intDiv = function (x) {
     return function (y) {
       if (y === 0) return 0;
       return y > 0 ? Math.floor(x / y) : -Math.floor(x / -y);
     };
   };
-
   exports.intMod = function (x) {
     return function (y) {
       if (y === 0) return 0;
@@ -10552,14 +8901,12 @@ var PS = {};
       return (x % yy + yy) % yy;
     };
   };
-
   exports.numDiv = function (n1) {
     return function (n2) {
       return n1 / n2;
     };
   };
 })(PS["Data.EuclideanRing"] = PS["Data.EuclideanRing"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10567,11 +8914,9 @@ var PS = {};
   $PS["Data.CommutativeRing"] = $PS["Data.CommutativeRing"] || {};
   var exports = $PS["Data.CommutativeRing"];
   var Data_Ring = $PS["Data.Ring"];
-
   var CommutativeRing = function CommutativeRing(Ring0) {
     this.Ring0 = Ring0;
   };
-
   var commutativeRingNumber = new CommutativeRing(function () {
     return Data_Ring.ringNumber;
   });
@@ -10581,7 +8926,6 @@ var PS = {};
   exports["commutativeRingInt"] = commutativeRingInt;
   exports["commutativeRingNumber"] = commutativeRingNumber;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10590,18 +8934,15 @@ var PS = {};
   var exports = $PS["Data.EuclideanRing"];
   var $foreign = $PS["Data.EuclideanRing"];
   var Data_CommutativeRing = $PS["Data.CommutativeRing"];
-
   var EuclideanRing = function EuclideanRing(CommutativeRing0, degree, div, mod) {
     this.CommutativeRing0 = CommutativeRing0;
     this.degree = degree;
     this.div = div;
     this.mod = mod;
   };
-
   var mod = function mod(dict) {
     return dict.mod;
   };
-
   var euclideanRingNumber = new EuclideanRing(function () {
     return Data_CommutativeRing.commutativeRingNumber;
   }, function (v) {
@@ -10614,17 +8955,14 @@ var PS = {};
   var euclideanRingInt = new EuclideanRing(function () {
     return Data_CommutativeRing.commutativeRingInt;
   }, $foreign.intDegree, $foreign.intDiv, $foreign.intMod);
-
   var div = function div(dict) {
     return dict.div;
   };
-
   exports["div"] = div;
   exports["mod"] = mod;
   exports["euclideanRingInt"] = euclideanRingInt;
   exports["euclideanRingNumber"] = euclideanRingNumber;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10639,15 +8977,12 @@ var PS = {};
   var Data_Ring = $PS["Data.Ring"];
   var Data_Semiring = $PS["Data.Semiring"];
   var $$Math = $PS["Math"];
-
   var unTrans = function unTrans(v) {
     return v.from;
   };
-
   var runTrans = function runTrans(v) {
     return v.to;
   };
-
   var recipTrans = function recipTrans(dictDivisionRing) {
     return {
       to: Data_DivisionRing.recip(dictDivisionRing),
@@ -10659,7 +8994,6 @@ var PS = {};
       }()
     };
   };
-
   var mulTrans = function mulTrans(dictEuclideanRing) {
     return function (x) {
       return {
@@ -10674,7 +9008,6 @@ var PS = {};
       };
     };
   };
-
   var idTrans = {
     to: Control_Category.identity(Control_Category.categoryFn),
     from: Data_Maybe.Just.create
@@ -10683,16 +9016,13 @@ var PS = {};
     to: $$Math.exp,
     from: function from(x) {
       var $17 = x >= 0;
-
       if ($17) {
         return new Data_Maybe.Just($$Math.log(x));
       }
-
       ;
       return Data_Maybe.Nothing.value;
     }
   };
-
   var compose = function compose(v) {
     return function (v1) {
       return {
@@ -10703,7 +9033,6 @@ var PS = {};
       };
     };
   };
-
   var addTrans = function addTrans(dictRing) {
     return function (a) {
       return {
@@ -10718,15 +9047,12 @@ var PS = {};
       };
     };
   };
-
   var decayTrans = function decayTrans(m) {
     return compose(addTrans(Data_Ring.ringNumber)(m))(compose(mulTrans(Data_EuclideanRing.euclideanRingNumber)(-1.0))(expTrans));
   };
-
   var logisticTrans = function logisticTrans(m) {
     return compose(mulTrans(Data_EuclideanRing.euclideanRingNumber)(m))(compose(recipTrans(Data_DivisionRing.divisionringNumber))(compose(addTrans(Data_Ring.ringNumber)(1))(expTrans)));
   };
-
   exports["runTrans"] = runTrans;
   exports["unTrans"] = unTrans;
   exports["idTrans"] = idTrans;
@@ -10734,7 +9060,6 @@ var PS = {};
   exports["logisticTrans"] = logisticTrans;
   exports["decayTrans"] = decayTrans;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10754,7 +9079,6 @@ var PS = {};
       return f(xy.x)(xy.y);
     };
   });
-
   var linRegTrans = function linRegTrans(tr) {
     var $9 = Data_Array.mapMaybe(function (xy) {
       return Data_Functor.map(Data_Maybe.functorMaybe)(function (v) {
@@ -10768,7 +9092,6 @@ var PS = {};
       return linReg($9($10));
     };
   };
-
   var applyLinReg = function applyLinReg(dictSemiring) {
     return function (v) {
       return function (x) {
@@ -10776,7 +9099,6 @@ var PS = {};
       };
     };
   };
-
   var applyLinRegTrans = function applyLinRegTrans(dictSemiring) {
     return function (tr) {
       return function (lr) {
@@ -10788,14 +9110,13 @@ var PS = {};
       };
     };
   };
-
   exports["linRegTrans"] = linRegTrans;
   exports["applyLinRegTrans"] = applyLinRegTrans;
 })(PS);
-
 (function (exports) {
-  "use strict"; // getPair :: Point -> (forall r. Number -> Number -> r) -> r
+  "use strict";
 
+  // getPair :: Point -> (forall r. Number -> Number -> r) -> r
   exports._quadReg = function (getPair, pts) {
     var n = 0;
     var x = 0;
@@ -10806,10 +9127,8 @@ var PS = {};
     var x4 = 0;
     var xy = 0;
     var x2y = 0;
-
     var _iterator2 = _createForOfIteratorHelper(pts),
-        _step2;
-
+      _step2;
     try {
       for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
         var pt = _step2.value;
@@ -10826,31 +9145,34 @@ var PS = {};
             x2y += xx * xx * yy;
           };
         });
-      } // https://www.varsitytutors.com/hotmath/hotmath_help/topics/quadratic-regression
-      // -x2^3     + 2 x x2 x3 - n x3^2  - x^2 x4 + n x2 x4
+      }
 
+      // https://www.varsitytutors.com/hotmath/hotmath_help/topics/quadratic-regression
+
+      // -x2^3     + 2 x x2 x3 - n x3^2  - x^2 x4 + n x2 x4
     } catch (err) {
       _iterator2.e(err);
     } finally {
       _iterator2.f();
     }
+    var det = -x2 * x2 * x2 + 2 * x * x2 * x3 - n * x3 * x3 - x * x * x4 + n * x2 * x4;
 
-    var det = -x2 * x2 * x2 + 2 * x * x2 * x3 - n * x3 * x3 - x * x * x4 + n * x2 * x4; // { {-x^2 + n x2, x x2 - n x3, -x2^2 + x x3}
-
+    // { {-x^2 + n x2, x x2 - n x3, -x2^2 + x x3}
     var m11 = (-x * x + n * x2) / det;
     var m21 = (x * x2 - n * x3) / det;
-    var m31 = (-x2 * x2 + x * x3) / det; // , {x x2 - n x3, -x2^2 + n x4, x2 x3 - x x4}
-
+    var m31 = (-x2 * x2 + x * x3) / det;
+    // , {x x2 - n x3, -x2^2 + n x4, x2 x3 - x x4}
     var m12 = (x * x2 - n * x3) / det;
     var m22 = (-x2 * x2 + n * x4) / det;
-    var m32 = (x2 * x3 - x * x4) / det; // , {-x2^2 + x x3, x2 x3 - x x4, -x3^2 + x2 x4}
-
+    var m32 = (x2 * x3 - x * x4) / det;
+    // , {-x2^2 + x x3, x2 x3 - x x4, -x3^2 + x2 x4}
     var m13 = (-x2 * x2 + x * x3) / det;
     var m23 = (x2 * x3 - x * x4) / det;
     var m33 = (-x3 * x3 + x2 * x4) / det;
     var alpha = m11 * x2y + m21 * xy + m31 * y;
     var beta = m12 * x2y + m22 * xy + m32 * y;
-    var gamma = m13 * x2y + m23 * xy + m33 * y; //   c^2
+    var gamma = m13 * x2y + m23 * xy + m33 * y;
+    //   c^2
     // + 2 b c x
     // + b^2 x^2
     // + 2 a c x^2
@@ -10860,15 +9182,16 @@ var PS = {};
     // - 2 b x y
     // - 2 a x^2 y
     // + y^2
-
-    var sse = n * gamma * gamma + 2 * beta * gamma * x + beta * beta * x2 + 2 * alpha * gamma * x2 + 2 * alpha * beta * x3 + alpha * alpha * x4 - 2 * gamma * y - 2 * beta * xy - 2 * alpha * x2y + y2; // Sum(mu^2 - 2 mu y + y^2)
+    var sse = n * gamma * gamma + 2 * beta * gamma * x + beta * beta * x2 + 2 * alpha * gamma * x2 + 2 * alpha * beta * x3 + alpha * alpha * x4 - 2 * gamma * y - 2 * beta * xy - 2 * alpha * x2y + y2;
+    // Sum(mu^2 - 2 mu y + y^2)
     // = n*mu^2 - 2*mu*Sum(y) + Sum(y^2)
     // = n*(Sum(y)/n)^2 - 2*(Sum(y)/n)*Sum(y) + Sum(y^2)
     // = n*Sum(y)^2/n^2 - 2*Sum(y)/n*Sum(y) + Sum(y^2)
     // = Sum(y)^2/n - 2*Sum(y)^2/n + Sum(y^2)
     // = Sum(y^2) - Sum(y)^2/n;
+    var sst = y2 - y * y / n;
 
-    var sst = y2 - y * y / n; // console.log(det);
+    // console.log(det);
     // console.log(n,x,y,x2,y2,x3,x4,xy,x2y);
     // console.log(-x2*x2*x2, 2*x*x2*x3, -n*x3*x3, -x*x*x4, n*x2*x4);
     // console.log(alpha, beta, gamma);
@@ -10883,7 +9206,6 @@ var PS = {};
     };
   };
 })(PS["Corona.Analyze.QuadReg"] = PS["Corona.Analyze.QuadReg"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10899,7 +9221,6 @@ var PS = {};
       return f(xy.x)(xy.y);
     };
   });
-
   var applyQuadReg = function applyQuadReg(dictSemiring) {
     return function (v) {
       return function (x) {
@@ -10907,11 +9228,9 @@ var PS = {};
       };
     };
   };
-
   exports["applyQuadReg"] = applyQuadReg;
   exports["quadReg"] = quadReg;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -10924,28 +9243,23 @@ var PS = {};
       var b = mx;
       var p = (mn + mx) / 2;
       var err = Math.abs(f(p));
-
       while (err > eps && i < 100) {
         if (f(a) * f(p) < 0) {
           b = p;
         } else {
           a = p;
         }
-
         p = (a + b) / 2;
         err = Math.abs(f(p));
         i += 1;
       }
-
       if (i >= 100) {
         console.warn("search timed out after 100 steps");
       }
-
       return mkMaybe.just(p);
     }
   };
 })(PS["Corona.Analyze.Search"] = PS["Corona.Analyze.Search"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -10960,7 +9274,6 @@ var PS = {};
     nothing: Data_Function["const"](Data_Maybe.Nothing.value),
     just: Data_Maybe.Just.create
   });
-
   var bisectionExtreme = function bisectionExtreme(eps) {
     return function (h) {
       return function (f) {
@@ -10969,23 +9282,19 @@ var PS = {};
             var go = function go(x) {
               return (f(x + h) - f(x - h)) / h;
             };
-
             return bisectionSearch(eps)(go)(mn)(mx);
           };
         };
       };
     };
   };
-
   exports["bisectionExtreme"] = bisectionExtreme;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports._intersectionWith = function (f, m0, n0) {
     var m = {};
-
     for (var k in m0) {
       if (hasOwnProperty.call(m0, k)) {
         if (hasOwnProperty.call(n0, k)) {
@@ -10993,11 +9302,9 @@ var PS = {};
         }
       }
     }
-
     return m;
   };
 })(PS["Corona.Data.Type"] = PS["Corona.Data.Type"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -11006,7 +9313,6 @@ var PS = {};
   var exports = $PS["Corona.Data.Type"];
   var $foreign = $PS["Corona.Data.Type"];
   var Data_Function_Uncurried = $PS["Data.Function.Uncurried"];
-
   var mapCounts = function mapCounts(f) {
     return function (c) {
       return {
@@ -11017,7 +9323,6 @@ var PS = {};
       };
     };
   };
-
   var combineDat = Data_Function_Uncurried.runFn3($foreign["_intersectionWith"])(function (pop) {
     return function (counts) {
       return {
@@ -11029,62 +9334,51 @@ var PS = {};
   exports["mapCounts"] = mapCounts;
   exports["combineDat"] = combineDat;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports._parseIso = function (just, nothing, v) {
     var d = new Date(v);
-
     if (!isNaN(d)) {
       return just(d);
     } else {
       return nothing();
     }
   };
-
   exports._toIso = function (d) {
     return d.toISOString().slice(0, 10);
   };
 })(PS["Data.ModifiedJulianDay"] = PS["Data.ModifiedJulianDay"] || {});
-
 (function (exports) {
   "use strict";
 
   var createDate = function createDate(y, m, d) {
     var date = new Date(Date.UTC(y, m, d));
-
     if (y >= 0 && y < 100) {
       date.setUTCFullYear(y);
     }
-
     return date;
   };
-
   exports.canonicalDateImpl = function (ctor, y, m, d) {
     var date = createDate(y, m - 1, d);
     return ctor(date.getUTCFullYear())(date.getUTCMonth() + 1)(date.getUTCDate());
   };
-
   exports.calcDiff = function (y1, m1, d1, y2, m2, d2) {
     var dt1 = createDate(y1, m1 - 1, d1);
     var dt2 = createDate(y2, m2 - 1, d2);
     return dt1.getTime() - dt2.getTime();
   };
 })(PS["Data.Date"] = PS["Data.Date"] || {});
-
 (function (exports) {
   "use strict";
 
   exports.toCharCode = function (c) {
     return c.charCodeAt(0);
   };
-
   exports.fromCharCode = function (c) {
     return String.fromCharCode(c);
   };
 })(PS["Data.Enum"] = PS["Data.Enum"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -11095,13 +9389,11 @@ var PS = {};
   var Data_Bounded = $PS["Data.Bounded"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Ord = $PS["Data.Ord"];
-
   var Enum = function Enum(Ord0, pred, succ) {
     this.Ord0 = Ord0;
     this.pred = pred;
     this.succ = succ;
   };
-
   var BoundedEnum = function BoundedEnum(Bounded0, Enum1, cardinality, fromEnum, toEnum) {
     this.Bounded0 = Bounded0;
     this.Enum1 = Enum1;
@@ -11109,53 +9401,41 @@ var PS = {};
     this.fromEnum = fromEnum;
     this.toEnum = toEnum;
   };
-
   var toEnum = function toEnum(dict) {
     return dict.toEnum;
   };
-
   var succ = function succ(dict) {
     return dict.succ;
   };
-
   var pred = function pred(dict) {
     return dict.pred;
   };
-
   var fromEnum = function fromEnum(dict) {
     return dict.fromEnum;
   };
-
   var toEnumWithDefaults = function toEnumWithDefaults(dictBoundedEnum) {
     return function (low) {
       return function (high) {
         return function (x) {
           var v = toEnum(dictBoundedEnum)(x);
-
           if (v instanceof Data_Maybe.Just) {
             return v.value0;
           }
-
           ;
-
           if (v instanceof Data_Maybe.Nothing) {
             var $54 = x < fromEnum(dictBoundedEnum)(Data_Bounded.bottom(dictBoundedEnum.Bounded0()));
-
             if ($54) {
               return low;
             }
-
             ;
             return high;
           }
-
           ;
           throw new Error("Failed pattern match at Data.Enum (line 158, column 33 - line 160, column 62): " + [v.constructor.name]);
         };
       };
     };
   };
-
   var defaultSucc = function defaultSucc(toEnum$prime) {
     return function (fromEnum$prime) {
       return function (a) {
@@ -11163,7 +9443,6 @@ var PS = {};
       };
     };
   };
-
   var defaultPred = function defaultPred(toEnum$prime) {
     return function (fromEnum$prime) {
       return function (a) {
@@ -11171,16 +9450,13 @@ var PS = {};
       };
     };
   };
-
   var charToEnum = function charToEnum(v) {
     if (v >= Data_Bounded.bottom(Data_Bounded.boundedInt) && v <= Data_Bounded.top(Data_Bounded.boundedInt)) {
       return new Data_Maybe.Just($foreign.fromCharCode(v));
     }
-
     ;
     return Data_Maybe.Nothing.value;
   };
-
   var enumChar = new Enum(function () {
     return Data_Ord.ordChar;
   }, defaultPred(charToEnum)($foreign.toCharCode), defaultSucc(charToEnum)($foreign.toCharCode));
@@ -11198,7 +9474,6 @@ var PS = {};
   exports["toEnumWithDefaults"] = toEnumWithDefaults;
   exports["boundedEnumChar"] = boundedEnumChar;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -11212,103 +9487,78 @@ var PS = {};
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
-
   var January = function () {
     function January() {}
-
     ;
     January.value = new January();
     return January;
   }();
-
   var February = function () {
     function February() {}
-
     ;
     February.value = new February();
     return February;
   }();
-
   var March = function () {
     function March() {}
-
     ;
     March.value = new March();
     return March;
   }();
-
   var April = function () {
     function April() {}
-
     ;
     April.value = new April();
     return April;
   }();
-
   var May = function () {
     function May() {}
-
     ;
     May.value = new May();
     return May;
   }();
-
   var June = function () {
     function June() {}
-
     ;
     June.value = new June();
     return June;
   }();
-
   var July = function () {
     function July() {}
-
     ;
     July.value = new July();
     return July;
   }();
-
   var August = function () {
     function August() {}
-
     ;
     August.value = new August();
     return August;
   }();
-
   var September = function () {
     function September() {}
-
     ;
     September.value = new September();
     return September;
   }();
-
   var October = function () {
     function October() {}
-
     ;
     October.value = new October();
     return October;
   }();
-
   var November = function () {
     function November() {}
-
     ;
     November.value = new November();
     return November;
   }();
-
   var December = function () {
     function December() {}
-
     ;
     December.value = new December();
     return December;
   }();
-
   var ordYear = Data_Ord.ordInt;
   var ordDay = Data_Ord.ordInt;
   var eqYear = Data_Eq.eqInt;
@@ -11317,73 +9567,50 @@ var PS = {};
       if (x instanceof January && y instanceof January) {
         return true;
       }
-
       ;
-
       if (x instanceof February && y instanceof February) {
         return true;
       }
-
       ;
-
       if (x instanceof March && y instanceof March) {
         return true;
       }
-
       ;
-
       if (x instanceof April && y instanceof April) {
         return true;
       }
-
       ;
-
       if (x instanceof May && y instanceof May) {
         return true;
       }
-
       ;
-
       if (x instanceof June && y instanceof June) {
         return true;
       }
-
       ;
-
       if (x instanceof July && y instanceof July) {
         return true;
       }
-
       ;
-
       if (x instanceof August && y instanceof August) {
         return true;
       }
-
       ;
-
       if (x instanceof September && y instanceof September) {
         return true;
       }
-
       ;
-
       if (x instanceof October && y instanceof October) {
         return true;
       }
-
       ;
-
       if (x instanceof November && y instanceof November) {
         return true;
       }
-
       ;
-
       if (x instanceof December && y instanceof December) {
         return true;
       }
-
       ;
       return false;
     };
@@ -11395,205 +9622,138 @@ var PS = {};
       if (x instanceof January && y instanceof January) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof January) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof January) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof February && y instanceof February) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof February) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof February) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof March && y instanceof March) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof March) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof March) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof April && y instanceof April) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof April) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof April) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof May && y instanceof May) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof May) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof May) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof June && y instanceof June) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof June) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof June) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof July && y instanceof July) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof July) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof July) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof August && y instanceof August) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof August) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof August) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof September && y instanceof September) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof September) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof September) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof October && y instanceof October) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof October) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof October) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof November && y instanceof November) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof November) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof November) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof December && y instanceof December) {
         return Data_Ordering.EQ.value;
       }
-
       ;
       throw new Error("Failed pattern match at Data.Date.Component (line 61, column 1 - line 61, column 38): " + [x.constructor.name, y.constructor.name]);
     };
@@ -11615,13 +9775,10 @@ var PS = {};
     if (n >= (-271820 | 0) && n <= 275759) {
       return new Data_Maybe.Just(n);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Date.Component (line 35, column 1 - line 40, column 24): " + [n.constructor.name]);
   });
@@ -11652,146 +9809,100 @@ var PS = {};
     if (v instanceof January) {
       return 1;
     }
-
     ;
-
     if (v instanceof February) {
       return 2;
     }
-
     ;
-
     if (v instanceof March) {
       return 3;
     }
-
     ;
-
     if (v instanceof April) {
       return 4;
     }
-
     ;
-
     if (v instanceof May) {
       return 5;
     }
-
     ;
-
     if (v instanceof June) {
       return 6;
     }
-
     ;
-
     if (v instanceof July) {
       return 7;
     }
-
     ;
-
     if (v instanceof August) {
       return 8;
     }
-
     ;
-
     if (v instanceof September) {
       return 9;
     }
-
     ;
-
     if (v instanceof October) {
       return 10;
     }
-
     ;
-
     if (v instanceof November) {
       return 11;
     }
-
     ;
-
     if (v instanceof December) {
       return 12;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Date.Component (line 87, column 14 - line 99, column 19): " + [v.constructor.name]);
   }, function (v) {
     if (v === 1) {
       return new Data_Maybe.Just(January.value);
     }
-
     ;
-
     if (v === 2) {
       return new Data_Maybe.Just(February.value);
     }
-
     ;
-
     if (v === 3) {
       return new Data_Maybe.Just(March.value);
     }
-
     ;
-
     if (v === 4) {
       return new Data_Maybe.Just(April.value);
     }
-
     ;
-
     if (v === 5) {
       return new Data_Maybe.Just(May.value);
     }
-
     ;
-
     if (v === 6) {
       return new Data_Maybe.Just(June.value);
     }
-
     ;
-
     if (v === 7) {
       return new Data_Maybe.Just(July.value);
     }
-
     ;
-
     if (v === 8) {
       return new Data_Maybe.Just(August.value);
     }
-
     ;
-
     if (v === 9) {
       return new Data_Maybe.Just(September.value);
     }
-
     ;
-
     if (v === 10) {
       return new Data_Maybe.Just(October.value);
     }
-
     ;
-
     if (v === 11) {
       return new Data_Maybe.Just(November.value);
     }
-
     ;
-
     if (v === 12) {
       return new Data_Maybe.Just(December.value);
     }
-
     ;
     return Data_Maybe.Nothing.value;
   });
@@ -11827,13 +9938,10 @@ var PS = {};
     if (n >= 1 && n <= 31) {
       return new Data_Maybe.Just(n);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Date.Component (line 133, column 1 - line 138, column 23): " + [n.constructor.name]);
   });
@@ -11883,7 +9991,6 @@ var PS = {};
   exports["enumDay"] = enumDay;
   exports["boundedEnumDay"] = boundedEnumDay;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -11891,24 +9998,19 @@ var PS = {};
   $PS["Data.Time.Duration"] = $PS["Data.Time.Duration"] || {};
   var exports = $PS["Data.Time.Duration"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var Milliseconds = function Milliseconds(x) {
     return x;
   };
-
   var Days = function Days(x) {
     return x;
   };
-
   var Duration = function Duration(fromDuration, toDuration) {
     this.fromDuration = fromDuration;
     this.toDuration = toDuration;
   };
-
   var toDuration = function toDuration(dict) {
     return dict.toDuration;
   };
-
   var newtypeMilliseconds = new Data_Newtype.Newtype(function (n) {
     return n;
   }, Milliseconds);
@@ -11924,7 +10026,6 @@ var PS = {};
   exports["Milliseconds"] = Milliseconds;
   exports["durationDays"] = durationDays;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -11947,16 +10048,13 @@ var PS = {};
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
   var Data_Time_Duration = $PS["Data.Time.Duration"];
-
   var $$Date = function () {
     function $$Date(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     $$Date.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -11964,23 +10062,18 @@ var PS = {};
         };
       };
     };
-
     return $$Date;
   }();
-
   var year = function year(v) {
     return v.value0;
   };
-
   var month = function month(v) {
     return v.value1;
   };
-
   var isLeapYear = function isLeapYear(y) {
     var y$prime = Data_Enum.fromEnum(Data_Date_Component.boundedEnumYear)(y);
     return Data_EuclideanRing.mod(Data_EuclideanRing.euclideanRingInt)(y$prime)(4) === 0 && (Data_EuclideanRing.mod(Data_EuclideanRing.euclideanRingInt)(y$prime)(400) === 0 || !(Data_EuclideanRing.mod(Data_EuclideanRing.euclideanRingInt)(y$prime)(100) === 0));
   };
-
   var lastDayOfMonth = function lastDayOfMonth(y) {
     return function (m) {
       var unsafeDay = function () {
@@ -11990,92 +10083,64 @@ var PS = {};
           return $108($109($110));
         };
       }();
-
       if (m instanceof Data_Date_Component.January) {
         return unsafeDay(31);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.February) {
         if (isLeapYear(y)) {
           return unsafeDay(29);
         }
-
         ;
-
         if (Data_Boolean.otherwise) {
           return unsafeDay(28);
         }
-
         ;
       }
-
       ;
-
       if (m instanceof Data_Date_Component.March) {
         return unsafeDay(31);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.April) {
         return unsafeDay(30);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.May) {
         return unsafeDay(31);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.June) {
         return unsafeDay(30);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.July) {
         return unsafeDay(31);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.August) {
         return unsafeDay(31);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.September) {
         return unsafeDay(30);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.October) {
         return unsafeDay(31);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.November) {
         return unsafeDay(30);
       }
-
       ;
-
       if (m instanceof Data_Date_Component.December) {
         return unsafeDay(31);
       }
-
       ;
       throw new Error("Failed pattern match at Data.Date (line 127, column 22 - line 141, column 27): " + [m.constructor.name]);
     };
   };
-
   var eqDate = new Data_Eq.Eq(function (x) {
     return function (y) {
       return Data_Eq.eq(Data_Date_Component.eqYear)(x.value0)(y.value0) && Data_Eq.eq(Data_Date_Component.eqMonth)(x.value1)(y.value1) && Data_Eq.eq(Data_Date_Component.eqDay)(x.value2)(y.value2);
@@ -12086,30 +10151,22 @@ var PS = {};
   }, function (x) {
     return function (y) {
       var v = Data_Ord.compare(Data_Date_Component.ordYear)(x.value0)(y.value0);
-
       if (v instanceof Data_Ordering.LT) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (v instanceof Data_Ordering.GT) {
         return Data_Ordering.GT.value;
       }
-
       ;
       var v1 = Data_Ord.compare(Data_Date_Component.ordMonth)(x.value1)(y.value1);
-
       if (v1 instanceof Data_Ordering.LT) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (v1 instanceof Data_Ordering.GT) {
         return Data_Ordering.GT.value;
       }
-
       ;
       return Data_Ord.compare(Data_Date_Component.ordDay)(x.value2)(y.value2);
     };
@@ -12119,95 +10176,70 @@ var PS = {};
   }, function (v) {
     var pm = Data_Enum.pred(Data_Date_Component.enumMonth)(v.value1);
     var pd = Data_Enum.pred(Data_Date_Component.enumDay)(v.value2);
-
     var y$prime = function () {
       var $73 = Data_Maybe.isNothing(pd) && Data_Maybe.isNothing(pm);
-
       if ($73) {
         return Data_Enum.pred(Data_Date_Component.enumYear)(v.value0);
       }
-
       ;
       return new Data_Maybe.Just(v.value0);
     }();
-
     var m$prime = function () {
       var $74 = Data_Maybe.isNothing(pd);
-
       if ($74) {
         return Data_Maybe.fromMaybe(Data_Date_Component.December.value)(pm);
       }
-
       ;
       return v.value1;
     }();
-
     var l = lastDayOfMonth(v.value0)(m$prime);
-
     var d$prime = function () {
       var $75 = Data_Maybe.isNothing(pd);
-
       if ($75) {
         return new Data_Maybe.Just(l);
       }
-
       ;
       return pd;
     }();
-
     return Control_Apply.apply(Data_Maybe.applyMaybe)(Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)($$Date.create)(y$prime))(Control_Applicative.pure(Data_Maybe.applicativeMaybe)(m$prime)))(d$prime);
   }, function (v) {
     var sm = Data_Enum.succ(Data_Date_Component.enumMonth)(v.value1);
     var l = lastDayOfMonth(v.value0)(v.value1);
-
     var sd = function () {
       var v1 = Data_Enum.succ(Data_Date_Component.enumDay)(v.value2);
       var $80 = Data_Ord.greaterThan(Data_Maybe.ordMaybe(Data_Date_Component.ordDay))(v1)(new Data_Maybe.Just(l));
-
       if ($80) {
         return Data_Maybe.Nothing.value;
       }
-
       ;
       return v1;
     }();
-
     var m$prime = function () {
       var $81 = Data_Maybe.isNothing(sd);
-
       if ($81) {
         return Data_Maybe.fromMaybe(Data_Date_Component.January.value)(sm);
       }
-
       ;
       return v.value1;
     }();
-
     var y$prime = function () {
       var $82 = Data_Maybe.isNothing(sd) && Data_Maybe.isNothing(sm);
-
       if ($82) {
         return Data_Enum.succ(Data_Date_Component.enumYear)(v.value0);
       }
-
       ;
       return new Data_Maybe.Just(v.value0);
     }();
-
     var d$prime = function () {
       var $83 = Data_Maybe.isNothing(sd);
-
       if ($83) {
         return Data_Enum.toEnum(Data_Date_Component.boundedEnumDay)(1);
       }
-
       ;
       return sd;
     }();
-
     return Control_Apply.apply(Data_Maybe.applyMaybe)(Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)($$Date.create)(y$prime))(Control_Applicative.pure(Data_Maybe.applicativeMaybe)(m$prime)))(d$prime);
   });
-
   var diff = function diff(dictDuration) {
     return function (v) {
       return function (v1) {
@@ -12215,11 +10247,9 @@ var PS = {};
       };
     };
   };
-
   var day = function day(v) {
     return v.value2;
   };
-
   var canonicalDate = function canonicalDate(y) {
     return function (m) {
       return function (d) {
@@ -12230,12 +10260,10 @@ var PS = {};
             };
           };
         };
-
         return $foreign.canonicalDateImpl(mkDate, y, Data_Enum.fromEnum(Data_Date_Component.boundedEnumMonth)(m), d);
       };
     };
   };
-
   var adjust = function adjust(v) {
     return function (date) {
       var adj = function adj(v1) {
@@ -12243,7 +10271,6 @@ var PS = {};
           if (v1 === 0) {
             return new Data_Maybe.Just(v2);
           }
-
           ;
           var j = v1 + Data_Enum.fromEnum(Data_Date_Component.boundedEnumDay)(v2.value2) | 0;
           var low = j < 1;
@@ -12251,62 +10278,46 @@ var PS = {};
             if (low) {
               return Data_Maybe.fromMaybe(Data_Date_Component.December.value)(Data_Enum.pred(Data_Date_Component.enumMonth)(v2.value1));
             }
-
             ;
             return v2.value1;
           }());
           var hi = j > Data_Enum.fromEnum(Data_Date_Component.boundedEnumDay)(l);
-
           var i$prime = function () {
             if (low) {
               return j;
             }
-
             ;
-
             if (hi) {
               return (j - Data_Enum.fromEnum(Data_Date_Component.boundedEnumDay)(l) | 0) - 1 | 0;
             }
-
             ;
-
             if (Data_Boolean.otherwise) {
               return 0;
             }
-
             ;
             throw new Error("Failed pattern match at Data.Date (line 101, column 9 - line 103, column 28): " + []);
           }();
-
           var dt$prime = function () {
             if (low) {
               return Control_Bind.bindFlipped(Data_Maybe.bindMaybe)(Data_Enum.pred(enumDate))(Data_Functor.map(Data_Maybe.functorMaybe)($$Date.create(v2.value0)(v2.value1))(Data_Enum.toEnum(Data_Date_Component.boundedEnumDay)(1)));
             }
-
             ;
-
             if (hi) {
               return Data_Enum.succ(enumDate)(new $$Date(v2.value0, v2.value1, l));
             }
-
             ;
-
             if (Data_Boolean.otherwise) {
               return Data_Functor.map(Data_Maybe.functorMaybe)($$Date.create(v2.value0)(v2.value1))(Data_Enum.toEnum(Data_Date_Component.boundedEnumDay)(j));
             }
-
             ;
             throw new Error("Failed pattern match at Data.Date (line 104, column 9 - line 106, column 48): " + []);
           }();
-
           return Control_Bind.bindFlipped(Data_Maybe.bindMaybe)(adj(i$prime))(dt$prime);
         };
       };
-
       return Control_Bind.bind(Data_Maybe.bindMaybe)(Data_Int.fromNumber(v))(Data_Function.flip(adj)(date));
     };
   };
-
   exports["canonicalDate"] = canonicalDate;
   exports["year"] = year;
   exports["month"] = month;
@@ -12314,53 +10325,42 @@ var PS = {};
   exports["diff"] = diff;
   exports["adjust"] = adjust;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Data.DateTime"] = $PS["Data.DateTime"] || {};
   var exports = $PS["Data.DateTime"];
-
   var DateTime = function () {
     function DateTime(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     DateTime.create = function (value0) {
       return function (value1) {
         return new DateTime(value0, value1);
       };
     };
-
     return DateTime;
   }();
-
   var date = function date(v) {
     return v.value0;
   };
-
   exports["DateTime"] = DateTime;
   exports["date"] = date;
 })(PS);
-
 (function (exports) {
   /* global exports */
   "use strict";
 
   var createDate = function createDate(y, m, d, h, mi, s, ms) {
     var date = new Date(Date.UTC(y, m, d, h, mi, s, ms));
-
     if (y >= 0 && y < 100) {
       date.setUTCFullYear(y);
     }
-
     return date;
   };
-
   exports.toInstantImpl = function (just) {
     return function (nothing) {
       return function (date) {
@@ -12369,22 +10369,18 @@ var PS = {};
       };
     };
   };
-
   exports.jsdate = function (parts) {
     return createDate(parts.year, parts.month, parts.day, parts.hour, parts.minute, parts.second, parts.millisecond);
   };
-
   exports.dateMethod = function (method, date) {
     return date[method]();
   };
-
   exports.parse = function (dateString) {
     return function () {
       return new Date(dateString);
     };
   };
 })(PS["Data.JSDate"] = PS["Data.JSDate"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -12395,7 +10391,6 @@ var PS = {};
     };
   };
 })(PS["Data.DateTime.Instant"] = PS["Data.DateTime.Instant"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -12438,13 +10433,10 @@ var PS = {};
     if (n >= 0 && n <= 59) {
       return new Data_Maybe.Just(n);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Time.Component (line 90, column 1 - line 95, column 26): " + [n.constructor.name]);
   });
@@ -12477,13 +10469,10 @@ var PS = {};
     if (n >= 0 && n <= 59) {
       return new Data_Maybe.Just(n);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Time.Component (line 61, column 1 - line 66, column 26): " + [n.constructor.name]);
   });
@@ -12516,13 +10505,10 @@ var PS = {};
     if (n >= 0 && n <= 999) {
       return new Data_Maybe.Just(n);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Time.Component (line 120, column 1 - line 125, column 31): " + [n.constructor.name]);
   });
@@ -12555,13 +10541,10 @@ var PS = {};
     if (n >= 0 && n <= 23) {
       return new Data_Maybe.Just(n);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.Time.Component (line 32, column 1 - line 37, column 24): " + [n.constructor.name]);
   });
@@ -12601,7 +10584,6 @@ var PS = {};
   exports["boundedMillisecond"] = boundedMillisecond;
   exports["boundedEnumMillisecond"] = boundedEnumMillisecond;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -12613,7 +10595,6 @@ var PS = {};
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
   var Data_Time_Component = $PS["Data.Time.Component"];
-
   var Time = function () {
     function Time(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -12621,9 +10602,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Time.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -12633,26 +10612,20 @@ var PS = {};
         };
       };
     };
-
     return Time;
   }();
-
   var second = function second(v) {
     return v.value2;
   };
-
   var minute = function minute(v) {
     return v.value1;
   };
-
   var millisecond = function millisecond(v) {
     return v.value3;
   };
-
   var hour = function hour(v) {
     return v.value0;
   };
-
   var eqTime = new Data_Eq.Eq(function (x) {
     return function (y) {
       return Data_Eq.eq(Data_Time_Component.eqHour)(x.value0)(y.value0) && Data_Eq.eq(Data_Time_Component.eqMinute)(x.value1)(y.value1) && Data_Eq.eq(Data_Time_Component.eqSecond)(x.value2)(y.value2) && Data_Eq.eq(Data_Time_Component.eqMillisecond)(x.value3)(y.value3);
@@ -12663,43 +10636,31 @@ var PS = {};
   }, function (x) {
     return function (y) {
       var v = Data_Ord.compare(Data_Time_Component.ordHour)(x.value0)(y.value0);
-
       if (v instanceof Data_Ordering.LT) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (v instanceof Data_Ordering.GT) {
         return Data_Ordering.GT.value;
       }
-
       ;
       var v1 = Data_Ord.compare(Data_Time_Component.ordMinute)(x.value1)(y.value1);
-
       if (v1 instanceof Data_Ordering.LT) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (v1 instanceof Data_Ordering.GT) {
         return Data_Ordering.GT.value;
       }
-
       ;
       var v2 = Data_Ord.compare(Data_Time_Component.ordSecond)(x.value2)(y.value2);
-
       if (v2 instanceof Data_Ordering.LT) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (v2 instanceof Data_Ordering.GT) {
         return Data_Ordering.GT.value;
       }
-
       ;
       return Data_Ord.compare(Data_Time_Component.ordMillisecond)(x.value3)(y.value3);
     };
@@ -12714,7 +10675,6 @@ var PS = {};
   exports["millisecond"] = millisecond;
   exports["boundedTime"] = boundedTime;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -12729,7 +10689,6 @@ var PS = {};
   var Data_Enum = $PS["Data.Enum"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Time = $PS["Data.Time"];
-
   var toDateTime = function () {
     var mkDateTime = function mkDateTime(y) {
       return function (mo) {
@@ -12746,29 +10705,22 @@ var PS = {};
         };
       };
     };
-
     return $foreign.toDateTimeImpl(mkDateTime);
   }();
-
   var instant = function instant(v) {
     if (v >= -8.6399778816e15 && v <= 8.639977881599999e15) {
       return new Data_Maybe.Just(v);
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
     throw new Error("Failed pattern match at Data.DateTime.Instant (line 44, column 1 - line 44, column 41): " + [v.constructor.name]);
   };
-
   exports["instant"] = instant;
   exports["toDateTime"] = toDateTime;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -12794,15 +10746,12 @@ var PS = {};
   })($foreign.toInstantImpl(Data_Maybe.Just.create)(Data_Maybe.Nothing.value));
   var toDateTime = Data_Functor.map(Data_Functor.functorFn)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime_Instant.toDateTime))(toInstant);
   var toDate = Data_Functor.map(Data_Functor.functorFn)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.date))(toDateTime);
-
   var getTime = function getTime(dt) {
     return $foreign.dateMethod("getTime", dt);
   };
-
   var showJSDate = new Data_Show.Show(function (a) {
     return "(fromTime " + (Data_Show.show(Data_Show.showNumber)(getTime(a)) + ")");
   });
-
   var fromDateTime = function fromDateTime(v) {
     return $foreign.jsdate({
       year: Data_Int.toNumber(Data_Enum.fromEnum(Data_Date_Component.boundedEnumYear)(Data_Date.year(v.value0))),
@@ -12814,13 +10763,11 @@ var PS = {};
       millisecond: Data_Int.toNumber(Data_Enum.fromEnum(Data_Time_Component.boundedEnumMillisecond)(Data_Time.millisecond(v.value1)))
     });
   };
-
   exports["fromDateTime"] = fromDateTime;
   exports["toDate"] = toDate;
   exports["showJSDate"] = showJSDate;
   exports["parse"] = $foreign.parse;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -12845,15 +10792,12 @@ var PS = {};
   var Data_Show = $PS["Data.Show"];
   var Data_Time = $PS["Data.Time"];
   var Data_Time_Duration = $PS["Data.Time.Duration"];
-
   var Day = function Day(x) {
     return x;
   };
-
   var toModifiedJulianDay = function toModifiedJulianDay(v) {
     return v;
   };
-
   var showDay = new Data_Show.Show(function (v) {
     return "fromModifiedJulianDay " + Data_Show.show(Data_Show.showInt)(v);
   });
@@ -12870,50 +10814,40 @@ var PS = {};
       return Data_Ord.compare(Data_Ord.ordInt)(x)(y);
     };
   });
-
   var diffDays = function diffDays(v) {
     return function (v1) {
       return v - v1 | 0;
     };
   };
-
   var date0 = Data_Date.canonicalDate(Data_Enum.toEnumWithDefaults(Data_Date_Component.boundedEnumYear)(Data_Bounded.bottom(Data_Date_Component.boundedYear))(Data_Bounded.top(Data_Date_Component.boundedYear))(1858))(Data_Date_Component.November.value)(Data_Enum.toEnumWithDefaults(Data_Date_Component.boundedEnumDay)(Data_Bounded.bottom(Data_Date_Component.boundedDay))(Data_Bounded.top(Data_Date_Component.boundedDay))(17));
-
   var fromDate = function fromDate(d) {
     var v = Data_Date.diff(Data_Time_Duration.durationDays)(d)(date0);
     return Data_Int.round(v);
   };
-
   var fromJSDate = function () {
     var $31 = Data_Functor.map(Data_Maybe.functorMaybe)(fromDate);
     return function ($32) {
       return $31(Data_JSDate.toDate($32));
     };
   }();
-
   var fromISO8601 = Control_Bind.composeKleisliFlipped(Data_Maybe.bindMaybe)(fromJSDate)(Data_Function_Uncurried.runFn3($foreign["_parseIso"])(Data_Maybe.Just.create)(Data_Function["const"](Data_Maybe.Nothing.value)));
-
   var toDate = function toDate(v) {
     return Data_Maybe.fromMaybe(date0)(Data_Date.adjust(Data_Int.toNumber(v))(date0));
   };
-
   var toJSDate = function () {
     var $33 = Data_Function.flip(Data_DateTime.DateTime.create)(Data_Bounded.bottom(Data_Time.boundedTime));
     return function ($34) {
       return Data_JSDate.fromDateTime($33(toDate($34)));
     };
   }();
-
   var toISO8601 = function toISO8601($35) {
     return $foreign["_toIso"](toJSDate($35));
   };
-
   var addDays = function addDays(x) {
     return function (v) {
       return x + v | 0;
     };
   };
-
   exports["Day"] = Day;
   exports["fromModifiedJulianDay"] = fromModifiedJulianDay;
   exports["toModifiedJulianDay"] = toModifiedJulianDay;
@@ -12927,22 +10861,18 @@ var PS = {};
   exports["ordDay"] = ordDay;
   exports["showDay"] = showDay;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Type.DSum"] = $PS["Type.DSum"] || {};
   var exports = $PS["Type.DSum"];
-
   var withDSum2 = function withDSum2(v) {
     return v;
   };
-
   var withDSum = function withDSum(v) {
     return v;
   };
-
   var dsum2 = function dsum2(k1) {
     return function (k2) {
       return function (v) {
@@ -12952,7 +10882,6 @@ var PS = {};
       };
     };
   };
-
   var dsum = function dsum(k) {
     return function (v) {
       return function (f) {
@@ -12960,25 +10889,21 @@ var PS = {};
       };
     };
   };
-
   exports["dsum"] = dsum;
   exports["withDSum"] = withDSum;
   exports["dsum2"] = dsum2;
   exports["withDSum2"] = withDSum2;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Type.Equality"] = $PS["Type.Equality"] || {};
   var exports = $PS["Type.Equality"];
-
   var TypeEquals = function TypeEquals(from, to) {
     this.from = from;
     this.to = to;
   };
-
   var refl = new TypeEquals(function (a) {
     return a;
   }, function (a) {
@@ -12986,7 +10911,6 @@ var PS = {};
   });
   exports["refl"] = refl;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -12995,47 +10919,36 @@ var PS = {};
   var exports = $PS["Type.Equiv"];
   var Type_Equality = $PS["Type.Equality"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var Decide = function Decide(decide) {
     this.decide = decide;
   };
-
   var refl = function refl(x) {
     return x(Type_Equality.refl);
   };
-
   var equivToF2 = function equivToF2(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var equivToF = function equivToF(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var equivTo = function equivTo(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var equivFromFF = function equivFromFF(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var equivFromF2 = function equivFromF2(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var equivFromF = function equivFromF(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var equivFrom = function equivFrom(v) {
     return Unsafe_Coerce.unsafeCoerce;
   };
-
   var decide = function decide(dict) {
     return dict.decide;
   };
-
   exports["decide"] = decide;
   exports["equivTo"] = equivTo;
   exports["equivToF"] = equivToF;
@@ -13047,7 +10960,6 @@ var PS = {};
   exports["refl"] = refl;
   exports["Decide"] = Decide;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -13060,100 +10972,75 @@ var PS = {};
   var Data_Newtype = $PS["Data.Newtype"];
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
-
   var WrEx = function WrEx(x) {
     return x;
   };
-
   var GLT = function () {
     function GLT() {}
-
     ;
     GLT.value = new GLT();
     return GLT;
   }();
-
   var GEQ = function () {
     function GEQ(value0) {
       this.value0 = value0;
     }
-
     ;
-
     GEQ.create = function (value0) {
       return new GEQ(value0);
     };
-
     return GEQ;
   }();
-
   var GGT = function () {
     function GGT() {}
-
     ;
     GGT.value = new GGT();
     return GGT;
   }();
-
   var GShow2 = function GShow2(gshow2) {
     this.gshow2 = gshow2;
   };
-
   var GShow = function GShow(gshow) {
     this.gshow = gshow;
   };
-
   var GEq = function GEq(Decide0, geq) {
     this.Decide0 = Decide0;
     this.geq = geq;
   };
-
   var GOrd = function GOrd(GEq0, gcompare) {
     this.GEq0 = GEq0;
     this.gcompare = gcompare;
   };
-
   var toOrdering = function toOrdering(v) {
     if (v instanceof GLT) {
       return Data_Ordering.LT.value;
     }
-
     ;
-
     if (v instanceof GEQ) {
       return Data_Ordering.EQ.value;
     }
-
     ;
-
     if (v instanceof GGT) {
       return Data_Ordering.GT.value;
     }
-
     ;
     throw new Error("Failed pattern match at Type.GCompare (line 22, column 14 - line 25, column 16): " + [v.constructor.name]);
   };
-
   var ntWrEx = new Data_Newtype.Newtype(function (n) {
     return n;
   }, WrEx);
-
   var mkWrEx = function mkWrEx($25) {
     return WrEx(Data_Exists.mkExists($25));
   };
-
   var gshow = function gshow(dict) {
     return dict.gshow;
   };
-
   var geq = function geq(dict) {
     return dict.geq;
   };
-
   var gcompare = function gcompare(dict) {
     return dict.gcompare;
   };
-
   var eqSome = function eqSome(dictGEq) {
     return new Data_Eq.Eq(function (v) {
       return function (v1) {
@@ -13165,7 +11052,6 @@ var PS = {};
       };
     });
   };
-
   var ordSome = function ordSome(dictGOrd) {
     return new Data_Ord.Ord(function () {
       return eqSome(dictGOrd.GEq0());
@@ -13179,7 +11065,6 @@ var PS = {};
       };
     });
   };
-
   exports["geq"] = geq;
   exports["gshow"] = gshow;
   exports["GEq"] = GEq;
@@ -13194,7 +11079,6 @@ var PS = {};
   exports["eqSome"] = eqSome;
   exports["ordSome"] = ordSome;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -13204,32 +11088,26 @@ var PS = {};
   var Data_Function = $PS["Data.Function"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Unit = $PS["Data.Unit"];
-
   var Handle1 = function Handle1(handle1, unHandle1) {
     this.handle1 = handle1;
     this.unHandle1 = unHandle1;
   };
-
   var Handle = function Handle(handle, unHandle) {
     this.handle = handle;
     this.unHandle = unHandle;
   };
-
   var handleMaybe1 = new Handle1(function (v) {
     if (v instanceof Data_Maybe.Nothing) {
       return function (f) {
         return f.nothing(Data_Unit.unit);
       };
     }
-
     ;
-
     if (v instanceof Data_Maybe.Just) {
       return function (f) {
         return f.just(v.value0);
       };
     }
-
     ;
     throw new Error("Failed pattern match at Type.Handler (line 40, column 15 - line 42, column 42): " + [v.constructor.name]);
   }, function (v) {
@@ -13238,22 +11116,18 @@ var PS = {};
       just: Data_Maybe.Just.create
     });
   });
-
   var handle1 = function handle1(dict) {
     return dict.handle1;
   };
-
   var handle = function handle(dict) {
     return dict.handle;
   };
-
   exports["handle"] = handle;
   exports["handle1"] = handle1;
   exports["Handle"] = Handle;
   exports["Handle1"] = Handle1;
   exports["handleMaybe1"] = handleMaybe1;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -13276,382 +11150,278 @@ var PS = {};
   var Type_Equiv = $PS["Type.Equiv"];
   var Type_GCompare = $PS["Type.GCompare"];
   var Type_Handler = $PS["Type.Handler"];
-
   var Percent = function Percent(x) {
     return x;
   };
-
   var NInt = function () {
     function NInt(value0) {
       this.value0 = value0;
     }
-
     ;
-
     NInt.create = function (value0) {
       return new NInt(value0);
     };
-
     return NInt;
   }();
-
   var NNumber = function () {
     function NNumber(value0) {
       this.value0 = value0;
     }
-
     ;
-
     NNumber.create = function (value0) {
       return new NNumber(value0);
     };
-
     return NNumber;
   }();
-
   var NPercent = function () {
     function NPercent(value0) {
       this.value0 = value0;
     }
-
     ;
-
     NPercent.create = function (value0) {
       return new NPercent(value0);
     };
-
     return NPercent;
   }();
-
   var LinFit = function () {
     function LinFit() {}
-
     ;
     LinFit.value = new LinFit();
     return LinFit;
   }();
-
   var ExpFit = function () {
     function ExpFit() {}
-
     ;
     ExpFit.value = new ExpFit();
     return ExpFit;
   }();
-
   var LogFit = function () {
     function LogFit() {}
-
     ;
     LogFit.value = new LogFit();
     return LogFit;
   }();
-
   var DecFit = function () {
     function DecFit() {}
-
     ;
     DecFit.value = new DecFit();
     return DecFit;
   }();
-
   var QuadFit = function () {
     function QuadFit() {}
-
     ;
     QuadFit.value = new QuadFit();
     return QuadFit;
   }();
-
   var Days = function Days(x) {
     return x;
   };
-
   var SDay = function () {
     function SDay(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SDay.create = function (value0) {
       return new SDay(value0);
     };
-
     return SDay;
   }();
-
   var SDays = function () {
     function SDays(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SDays.create = function (value0) {
       return new SDays(value0);
     };
-
     return SDays;
   }();
-
   var SInt = function () {
     function SInt(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SInt.create = function (value0) {
       return new SInt(value0);
     };
-
     return SInt;
   }();
-
   var SNumber = function () {
     function SNumber(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SNumber.create = function (value0) {
       return new SNumber(value0);
     };
-
     return SNumber;
   }();
-
   var SPercent = function () {
     function SPercent(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SPercent.create = function (value0) {
       return new SPercent(value0);
     };
-
     return SPercent;
   }();
-
   var $$Date = function () {
     function $$Date(value0) {
       this.value0 = value0;
     }
-
     ;
-
     $$Date.create = function (value0) {
       return new $$Date(value0);
     };
-
     return $$Date;
   }();
-
   var Linear = function () {
     function Linear(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Linear.create = function (value0) {
       return function (value1) {
         return new Linear(value0, value1);
       };
     };
-
     return Linear;
   }();
-
   var Log = function () {
     function Log(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Log.create = function (value0) {
       return new Log(value0);
     };
-
     return Log;
   }();
-
   var SymLog = function () {
     function SymLog(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SymLog.create = function (value0) {
       return new SymLog(value0);
     };
-
     return SymLog;
   }();
-
   var XAxis = function () {
     function XAxis() {}
-
     ;
     XAxis.value = new XAxis();
     return XAxis;
   }();
-
   var YAxis = function () {
     function YAxis() {}
-
     ;
     YAxis.value = new YAxis();
     return YAxis;
   }();
-
   var ZAxis = function () {
     function ZAxis() {}
-
     ;
     ZAxis.value = new ZAxis();
     return ZAxis;
   }();
-
   var TAxis = function () {
     function TAxis() {}
-
     ;
     TAxis.value = new TAxis();
     return TAxis;
   }();
-
   var STypeable = function STypeable(sType) {
     this.sType = sType;
   };
-
   var unPercent = function unPercent(v) {
     return v;
   };
-
   var unDays = function unDays(v) {
     return v;
   };
-
   var toNType = function toNType(v) {
     if (v instanceof SDay) {
       return new Data_Either.Left(new Data_Either.Left(v.value0));
     }
-
     ;
-
     if (v instanceof SDays) {
       return new Data_Either.Left(new Data_Either.Right(v.value0));
     }
-
     ;
-
     if (v instanceof SInt) {
       return Data_Either.Right.create(new NInt(v.value0));
     }
-
     ;
-
     if (v instanceof SNumber) {
       return Data_Either.Right.create(new NNumber(v.value0));
     }
-
     ;
-
     if (v instanceof SPercent) {
       return Data_Either.Right.create(new NPercent(v.value0));
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 214, column 11 - line 220, column 37): " + [v.constructor.name]);
   };
-
   var showSType = new Data_Show.Show(function (v) {
     if (v instanceof SDay) {
       return "SDay";
     }
-
     ;
-
     if (v instanceof SDays) {
       return "SDays";
     }
-
     ;
-
     if (v instanceof SInt) {
       return "SInt";
     }
-
     ;
-
     if (v instanceof SNumber) {
       return "SNumber";
     }
-
     ;
-
     if (v instanceof SPercent) {
       return "SPercent";
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 144, column 12 - line 149, column 31): " + [v.constructor.name]);
   });
   var showDays = new Data_Show.Show(function (v) {
     return "Days " + Data_Show.show(Data_Show.showInt)(v);
   });
-
   var sTypeIx = function sTypeIx(v) {
     if (v instanceof SDay) {
       return 0;
     }
-
     ;
-
     if (v instanceof SDays) {
       return 1;
     }
-
     ;
-
     if (v instanceof SInt) {
       return 2;
     }
-
     ;
-
     if (v instanceof SNumber) {
       return 3;
     }
-
     ;
-
     if (v instanceof SPercent) {
       return 4;
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 154, column 11 - line 159, column 20): " + [v.constructor.name]);
   };
-
   var sType = function sType(dict) {
     return dict.sType;
   };
-
   var someValue = function someValue(dictSTypeable) {
     return function (x) {
       return Type_DSum.dsum(sType(dictSTypeable))(x);
     };
   };
-
   var sPercent = new SPercent(Type_Equiv.refl);
   var stPercent = new STypeable(sPercent);
   var sNumber = new SNumber(Type_Equiv.refl);
@@ -13665,7 +11435,6 @@ var PS = {};
   var percentShow = new Data_Show.Show(function (v) {
     return "Percent " + Data_Show.show(Data_Show.showNumber)(v);
   });
-
   var sTypeShow = function sTypeShow(v) {
     if (v instanceof SDay) {
       var $249 = Data_Show.show(Data_ModifiedJulianDay.showDay);
@@ -13674,9 +11443,7 @@ var PS = {};
         return $249($250($251));
       };
     }
-
     ;
-
     if (v instanceof SDays) {
       var $252 = Data_Show.show(showDays);
       var $253 = Type_Equiv.equivTo(v.value0);
@@ -13684,9 +11451,7 @@ var PS = {};
         return $252($253($254));
       };
     }
-
     ;
-
     if (v instanceof SInt) {
       var $255 = Data_Show.show(Data_Show.showInt);
       var $256 = Type_Equiv.equivTo(v.value0);
@@ -13694,9 +11459,7 @@ var PS = {};
         return $255($256($257));
       };
     }
-
     ;
-
     if (v instanceof SNumber) {
       var $258 = Data_Show.show(Data_Show.showNumber);
       var $259 = Type_Equiv.equivTo(v.value0);
@@ -13704,9 +11467,7 @@ var PS = {};
         return $258($259($260));
       };
     }
-
     ;
-
     if (v instanceof SPercent) {
       var $261 = Data_Show.show(percentShow);
       var $262 = Type_Equiv.equivTo(v.value0);
@@ -13714,11 +11475,9 @@ var PS = {};
         return $261($262($263));
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 163, column 13 - line 168, column 37): " + [v.constructor.name]);
   };
-
   var percentSemiring = new Data_Semiring.Semiring(function (v) {
     return function (v1) {
       return v + v1;
@@ -13735,7 +11494,6 @@ var PS = {};
       return v - v1;
     };
   });
-
   var numberNType = function numberNType(v) {
     if (v instanceof NInt) {
       var $264 = Type_Equiv.equivFrom(v.value0);
@@ -13743,26 +11501,20 @@ var PS = {};
         return $264(Data_Int.round($265));
       };
     }
-
     ;
-
     if (v instanceof NNumber) {
       return Type_Equiv.equivFrom(v.value0);
     }
-
     ;
-
     if (v instanceof NPercent) {
       var $266 = Type_Equiv.equivFrom(v.value0);
       return function ($267) {
         return $266(Percent($267));
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 229, column 15 - line 232, column 42): " + [v.constructor.name]);
   };
-
   var nTypeSubtract = function nTypeSubtract(v) {
     if (v instanceof NInt) {
       return function (x) {
@@ -13771,9 +11523,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof NNumber) {
       return function (x) {
         return function (y) {
@@ -13781,9 +11531,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof NPercent) {
       return function (x) {
         return function (y) {
@@ -13791,11 +11539,9 @@ var PS = {};
         };
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 235, column 17 - line 238, column 66): " + [v.constructor.name]);
   };
-
   var nTypeNumber = function nTypeNumber(v) {
     if (v instanceof NInt) {
       var $268 = Type_Equiv.equivTo(v.value0);
@@ -13803,100 +11549,74 @@ var PS = {};
         return Data_Int.toNumber($268($269));
       };
     }
-
     ;
-
     if (v instanceof NNumber) {
       return Type_Equiv.equivTo(v.value0);
     }
-
     ;
-
     if (v instanceof NPercent) {
       var $270 = Type_Equiv.equivTo(v.value0);
       return function ($271) {
         return unPercent($270($271));
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 223, column 15 - line 226, column 42): " + [v.constructor.name]);
   };
-
   var nInt = new NInt(Type_Equiv.refl);
-
   var modelFitLabel = function modelFitLabel(v) {
     if (v instanceof LinFit) {
       return "Linear";
     }
-
     ;
-
     if (v instanceof ExpFit) {
       return "Exp. Growth";
     }
-
     ;
-
     if (v instanceof LogFit) {
       return "Logistic";
     }
-
     ;
-
     if (v instanceof DecFit) {
       return "Exp. Decay";
     }
-
     ;
-
     if (v instanceof QuadFit) {
       return "Quadratic";
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 326, column 17 - line 331, column 27): " + [v.constructor.name]);
   };
-
   var handleModelFit = new Type_Handler.Handle(function (v) {
     if (v instanceof LinFit) {
       return function (h) {
         return h.linFit(Data_Unit.unit);
       };
     }
-
     ;
-
     if (v instanceof ExpFit) {
       return function (h) {
         return h.expFit(Data_Unit.unit);
       };
     }
-
     ;
-
     if (v instanceof LogFit) {
       return function (h) {
         return h.logFit(Data_Unit.unit);
       };
     }
-
     ;
-
     if (v instanceof DecFit) {
       return function (h) {
         return h.decFit(Data_Unit.unit);
       };
     }
-
     ;
-
     if (v instanceof QuadFit) {
       return function (h) {
         return h.quadFit(Data_Unit.unit);
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 486, column 16 - line 491, column 51): " + [v.constructor.name]);
   }, function (v) {
@@ -13914,31 +11634,24 @@ var PS = {};
         return h.date(v.value0);
       };
     }
-
     ;
-
     if (v instanceof Linear) {
       return function (h) {
         return h.linear(v.value0)(v.value1);
       };
     }
-
     ;
-
     if (v instanceof Log) {
       return function (h) {
         return h.log(v.value0);
       };
     }
-
     ;
-
     if (v instanceof SymLog) {
       return function (h) {
         return h.symlog(v.value0);
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 436, column 15 - line 440, column 51): " + [v.constructor.name]);
   }, function (v) {
@@ -13955,39 +11668,30 @@ var PS = {};
         return h.day(v.value0);
       };
     }
-
     ;
-
     if (v instanceof SDays) {
       return function (h) {
         return h.days(v.value0);
       };
     }
-
     ;
-
     if (v instanceof SInt) {
       return function (h) {
         return h["int"](v.value0);
       };
     }
-
     ;
-
     if (v instanceof SNumber) {
       return function (h) {
         return h.number(v.value0);
       };
     }
-
     ;
-
     if (v instanceof SPercent) {
       return function (h) {
         return h.percent(v.value0);
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 461, column 15 - line 466, column 54): " + [v.constructor.name]);
   }, function (v) {
@@ -14000,28 +11704,21 @@ var PS = {};
     });
   });
   var gshowSType = new Type_GCompare.GShow(Data_Show.show(showSType));
-
   var fromNType = function fromNType(v) {
     if (v instanceof NInt) {
       return new SInt(v.value0);
     }
-
     ;
-
     if (v instanceof NNumber) {
       return new SNumber(v.value0);
     }
-
     ;
-
     if (v instanceof NPercent) {
       return new SPercent(v.value0);
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 207, column 13 - line 211, column 29): " + [v.constructor.name]);
   };
-
   var eqPercent = new Data_Eq.Eq(function (v) {
     return function (v1) {
       return v === v1;
@@ -14039,31 +11736,22 @@ var PS = {};
       if (x instanceof LinFit && y instanceof LinFit) {
         return true;
       }
-
       ;
-
       if (x instanceof ExpFit && y instanceof ExpFit) {
         return true;
       }
-
       ;
-
       if (x instanceof LogFit && y instanceof LogFit) {
         return true;
       }
-
       ;
-
       if (x instanceof DecFit && y instanceof DecFit) {
         return true;
       }
-
       ;
-
       if (x instanceof QuadFit && y instanceof QuadFit) {
         return true;
       }
-
       ;
       return false;
     };
@@ -14075,79 +11763,54 @@ var PS = {};
       if (x instanceof LinFit && y instanceof LinFit) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof LinFit) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof LinFit) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof ExpFit && y instanceof ExpFit) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof ExpFit) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof ExpFit) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof LogFit && y instanceof LogFit) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof LogFit) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof LogFit) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof DecFit && y instanceof DecFit) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof DecFit) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof DecFit) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof QuadFit && y instanceof QuadFit) {
         return Data_Ordering.EQ.value;
       }
-
       ;
       throw new Error("Failed pattern match at D3.Scatter.Type (line 320, column 1 - line 320, column 44): " + [x.constructor.name, y.constructor.name]);
     };
@@ -14164,7 +11827,6 @@ var PS = {};
       return Data_Ord.compare(Data_Ord.ordInt)(x)(y);
     };
   });
-
   var sTypeCompare = function sTypeCompare(v) {
     if (v instanceof SDay) {
       return function (x) {
@@ -14173,9 +11835,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof SDays) {
       return function (x) {
         return function (y) {
@@ -14183,9 +11843,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof SInt) {
       return function (x) {
         return function (y) {
@@ -14193,9 +11851,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof SNumber) {
       return function (x) {
         return function (y) {
@@ -14203,9 +11859,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof SPercent) {
       return function (x) {
         return function (y) {
@@ -14213,35 +11867,26 @@ var PS = {};
         };
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 174, column 16 - line 179, column 62): " + [v.constructor.name]);
   };
-
   var eqAxis = new Data_Eq.Eq(function (x) {
     return function (y) {
       if (x instanceof XAxis && y instanceof XAxis) {
         return true;
       }
-
       ;
-
       if (x instanceof YAxis && y instanceof YAxis) {
         return true;
       }
-
       ;
-
       if (x instanceof ZAxis && y instanceof ZAxis) {
         return true;
       }
-
       ;
-
       if (x instanceof TAxis && y instanceof TAxis) {
         return true;
       }
-
       ;
       return false;
     };
@@ -14253,61 +11898,42 @@ var PS = {};
       if (x instanceof XAxis && y instanceof XAxis) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof XAxis) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof XAxis) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof YAxis && y instanceof YAxis) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof YAxis) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof YAxis) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof ZAxis && y instanceof ZAxis) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof ZAxis) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof ZAxis) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof TAxis && y instanceof TAxis) {
         return Data_Ordering.EQ.value;
       }
-
       ;
       throw new Error("Failed pattern match at D3.Scatter.Type (line 268, column 1 - line 268, column 36): " + [x.constructor.name, y.constructor.name]);
     };
@@ -14318,68 +11944,53 @@ var PS = {};
         if (v1 instanceof SDay) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof SDays) {
       return function (v1) {
         if (v1 instanceof SDays) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof SInt) {
       return function (v1) {
         if (v1 instanceof SInt) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof SNumber) {
       return function (v1) {
         if (v1 instanceof SNumber) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof SPercent) {
       return function (v1) {
         if (v1 instanceof SPercent) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 110, column 14 - line 125, column 28): " + [v.constructor.name]);
   });
-
   var eqSomeValue = function eqSomeValue(dx) {
     return function (dy) {
       return Type_DSum.withDSum(dx)(function (tx) {
@@ -14387,17 +11998,13 @@ var PS = {};
           return Type_DSum.withDSum(dy)(function (ty) {
             return function (v1) {
               var v2 = Type_Equiv.decide(decideSType)(tx)(ty);
-
               if (v2 instanceof Data_Maybe.Nothing) {
                 return false;
               }
-
               ;
-
               if (v2 instanceof Data_Maybe.Just) {
                 return Data_Eq.eq(Data_Ordering.eqOrdering)(sTypeCompare(tx)(v)(Type_Equiv.equivFrom(v2.value0)(v1)))(Data_Ordering.EQ.value);
               }
-
               ;
               throw new Error("Failed pattern match at D3.Scatter.Type (line 301, column 9 - line 303, column 61): " + [v2.constructor.name]);
             };
@@ -14406,7 +12013,6 @@ var PS = {};
       });
     };
   };
-
   var geqSType = new Type_GCompare.GEq(function () {
     return decideSType;
   }, Type_Equiv.decide(decideSType));
@@ -14415,68 +12021,49 @@ var PS = {};
   }, function (x) {
     return function (y) {
       var v = Type_GCompare.geq(geqSType)(x)(y);
-
       if (v instanceof Data_Maybe.Just) {
         return new Type_GCompare.GEQ(v.value0);
       }
-
       ;
-
       if (v instanceof Data_Maybe.Nothing) {
         var v1 = Data_Ord.compare(Data_Ord.ordInt)(sTypeIx(x))(sTypeIx(y));
-
         if (v1 instanceof Data_Ordering.LT) {
           return Type_GCompare.GLT.value;
         }
-
         ;
-
         if (v1 instanceof Data_Ordering.EQ) {
           return Type_GCompare.GLT.value;
         }
-
         ;
-
         if (v1 instanceof Data_Ordering.GT) {
           return Type_GCompare.GGT.value;
         }
-
         ;
         throw new Error("Failed pattern match at D3.Scatter.Type (line 132, column 20 - line 135, column 18): " + [v1.constructor.name]);
       }
-
       ;
       throw new Error("Failed pattern match at D3.Scatter.Type (line 130, column 20 - line 135, column 18): " + [v.constructor.name]);
     };
   });
-
   var axisLabel = function axisLabel(v) {
     if (v instanceof XAxis) {
       return "X Axis";
     }
-
     ;
-
     if (v instanceof YAxis) {
       return "Y Axis";
     }
-
     ;
-
     if (v instanceof ZAxis) {
       return "Color Axis";
     }
-
     ;
-
     if (v instanceof TAxis) {
       return "Time Axis";
     }
-
     ;
     throw new Error("Failed pattern match at D3.Scatter.Type (line 284, column 13 - line 288, column 25): " + [v.constructor.name]);
   };
-
   var allModelFit = [LinFit.value, ExpFit.value, LogFit.value, DecFit.value, QuadFit.value];
   var allAxis = [XAxis.value, YAxis.value, ZAxis.value, TAxis.value];
   exports["sType"] = sType;
@@ -14540,7 +12127,6 @@ var PS = {};
   exports["handle1SType"] = handle1SType;
   exports["handleModelFit"] = handleModelFit;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -14549,15 +12135,12 @@ var PS = {};
   var exports = $PS["Data.Bundle"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var Bundle = function Bundle(x) {
     return x;
   };
-
   var newtypeBundle = new Data_Newtype.Newtype(function (n) {
     return n;
   }, Bundle);
-
   var mkBundle = function mkBundle(x) {
     return function (y) {
       return {
@@ -14566,7 +12149,6 @@ var PS = {};
       };
     };
   };
-
   var mapPrincipal = function mapPrincipal(f) {
     return function (v) {
       return Bundle({
@@ -14575,7 +12157,6 @@ var PS = {};
       });
     };
   };
-
   var hoistBundle = function hoistBundle(dictFunctor) {
     return function (f) {
       return function (v) {
@@ -14586,15 +12167,12 @@ var PS = {};
       };
     };
   };
-
   var bundlePrincipal = function bundlePrincipal(v) {
     return v.principal;
   };
-
   var bundleMirrored = function bundleMirrored(v) {
     return v.mirrored;
   };
-
   exports["hoistBundle"] = hoistBundle;
   exports["bundlePrincipal"] = bundlePrincipal;
   exports["bundleMirrored"] = bundleMirrored;
@@ -14602,7 +12180,6 @@ var PS = {};
   exports["mapPrincipal"] = mapPrincipal;
   exports["newtypeBundle"] = newtypeBundle;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -14620,47 +12197,38 @@ var PS = {};
   var Data_Newtype = $PS["Data.Newtype"];
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
-
   var Dated = function Dated(x) {
     return x;
   };
-
   var zipDated = function zipDated(f) {
     return function (v) {
       return function (v1) {
         var v2 = Data_Ord.compare(Data_Ord.ordInt)(v.start)(v1.start);
-
         if (v2 instanceof Data_Ordering.LT) {
           return {
             start: v1.start,
             values: Data_Array.zipWith(f)(Data_Array.drop(v1.start - v.start | 0)(v.values))(v1.values)
           };
         }
-
         ;
-
         if (v2 instanceof Data_Ordering.EQ) {
           return {
             start: v.start,
             values: Data_Array.zipWith(f)(v.values)(v1.values)
           };
         }
-
         ;
-
         if (v2 instanceof Data_Ordering.GT) {
           return {
             start: v.start,
             values: Data_Array.zipWith(f)(v.values)(Data_Array.drop(v.start - v1.start | 0)(v1.values))
           };
         }
-
         ;
         throw new Error("Failed pattern match at Data.Dated (line 80, column 42 - line 83, column 90): " + [v2.constructor.name]);
       };
     };
   };
-
   var takeEnd = function takeEnd(i) {
     return function (v) {
       return {
@@ -14669,7 +12237,6 @@ var PS = {};
       };
     };
   };
-
   var take = function take(i) {
     return function (v) {
       return Dated({
@@ -14678,11 +12245,9 @@ var PS = {};
       });
     };
   };
-
   var newtypeDated = new Data_Newtype.Newtype(function (n) {
     return n;
   }, Dated);
-
   var mapWithIndex = function mapWithIndex(f) {
     return function (v) {
       return {
@@ -14693,7 +12258,6 @@ var PS = {};
       };
     };
   };
-
   var generate = function generate(start) {
     return function (tspan) {
       return function (f) {
@@ -14707,7 +12271,6 @@ var PS = {};
       };
     };
   };
-
   var functorDated = new Data_Functor.Functor(function (f) {
     return function (v) {
       return {
@@ -14750,13 +12313,11 @@ var PS = {};
       };
     };
   });
-
   var findLastIndex = function findLastIndex(p) {
     return function (v) {
       return Data_Functor.map(Data_Maybe.functorMaybe)(Data_Function.flip(Data_ModifiedJulianDay.addDays)(v.start))(Data_Array.findLastIndex(p)(v.values));
     };
   };
-
   var findLast = function findLast(v) {
     return Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(Data_Array.last(v.values))(function (value) {
       return {
@@ -14765,13 +12326,11 @@ var PS = {};
       };
     });
   };
-
   var findIndex = function findIndex(p) {
     return function (v) {
       return Data_Functor.map(Data_Maybe.functorMaybe)(Data_Function.flip(Data_ModifiedJulianDay.addDays)(v.start))(Data_Array.findIndex(p)(v.values));
     };
   };
-
   var findHead = function findHead(v) {
     return Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(Data_Array.head(v.values))(function (value) {
       return {
@@ -14780,7 +12339,6 @@ var PS = {};
       };
     });
   };
-
   var dropBefore = function dropBefore(d0) {
     return function (v) {
       return {
@@ -14789,29 +12347,23 @@ var PS = {};
       };
     };
   };
-
   var dropUntil = function dropUntil(f) {
     return function (v) {
       var v1 = findIndex(f)(v);
-
       if (v1 instanceof Data_Maybe.Nothing) {
         return {
           start: v.start,
           values: []
         };
       }
-
       ;
-
       if (v1 instanceof Data_Maybe.Just) {
         return dropBefore(v1.value0)(v);
       }
-
       ;
       throw new Error("Failed pattern match at Data.Dated (line 157, column 26 - line 159, column 39): " + [v1.constructor.name]);
     };
   };
-
   var dropAfter = function dropAfter(d0) {
     return function (v) {
       return Dated({
@@ -14820,29 +12372,23 @@ var PS = {};
       });
     };
   };
-
   var dropUntilEnd = function dropUntilEnd(f) {
     return function (v) {
       var v1 = findLastIndex(f)(v);
-
       if (v1 instanceof Data_Maybe.Nothing) {
         return {
           start: v.start,
           values: []
         };
       }
-
       ;
-
       if (v1 instanceof Data_Maybe.Just) {
         return dropAfter(v1.value0)(v);
       }
-
       ;
       throw new Error("Failed pattern match at Data.Dated (line 166, column 29 - line 168, column 38): " + [v1.constructor.name]);
     };
   };
-
   var drop = function drop(i) {
     return function (v) {
       return {
@@ -14851,22 +12397,18 @@ var PS = {};
       };
     };
   };
-
   var datedValues = function datedValues(v) {
     return v.values;
   };
-
   var datedStart = function datedStart(v) {
     return v.start;
   };
-
   var clearDated = function clearDated(v) {
     return Dated({
       start: v.start,
       values: []
     });
   };
-
   var applyDated = new Control_Apply.Apply(function () {
     return functorDated;
   }, zipDated(Data_Function.apply));
@@ -14885,7 +12427,6 @@ var PS = {};
   exports["applyDated"] = applyDated;
   exports["foldedableDated"] = foldedableDated;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -14893,18 +12434,15 @@ var PS = {};
   $PS["Data.Functor.Compose"] = $PS["Data.Functor.Compose"] || {};
   var exports = $PS["Data.Functor.Compose"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var Compose = function Compose(x) {
     return x;
   };
-
   var newtypeCompose = new Data_Newtype.Newtype(function (n) {
     return n;
   }, Compose);
   exports["Compose"] = Compose;
   exports["newtypeCompose"] = newtypeCompose;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -14914,16 +12452,13 @@ var PS = {};
       if (thunk === undefined) return v;
       v = thunk();
       thunk = undefined; // eslint-disable-line no-param-reassign
-
       return v;
     };
   };
-
   exports.force = function (l) {
     return l();
   };
 })(PS["Data.Lazy"] = PS["Data.Lazy"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -14943,7 +12478,6 @@ var PS = {};
   exports["defer"] = $foreign.defer;
   exports["force"] = $foreign.force;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -14956,33 +12490,26 @@ var PS = {};
   var nan = Global.nan;
   var $$isNaN = Global["isNaN"];
   var $$isFinite = Global["isFinite"];
-
   var fromString = function () {
     var check = function check(num) {
       if ($$isFinite(num)) {
         return new Data_Maybe.Just(num);
       }
-
       ;
-
       if (Data_Boolean.otherwise) {
         return Data_Maybe.Nothing.value;
       }
-
       ;
       throw new Error("Failed pattern match at Data.Number (line 45, column 5 - line 46, column 39): " + [num.constructor.name]);
     };
-
     return function ($1) {
       return check(Global.readFloat($1));
     };
   }();
-
   exports["fromString"] = fromString;
   exports["nan"] = nan;
   exports["isNaN"] = $$isNaN;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -14992,11 +12519,9 @@ var PS = {};
   var Data_Newtype = $PS["Data.Newtype"];
   var Data_Ord = $PS["Data.Ord"];
   var Data_Semigroup = $PS["Data.Semigroup"];
-
   var Max = function Max(x) {
     return x;
   };
-
   var semigroupMax = function semigroupMax(dictOrd) {
     return new Data_Semigroup.Semigroup(function (v) {
       return function (v1) {
@@ -15004,21 +12529,18 @@ var PS = {};
       };
     });
   };
-
   var newtypeMax = new Data_Newtype.Newtype(function (n) {
     return n;
   }, Max);
   exports["newtypeMax"] = newtypeMax;
   exports["semigroupMax"] = semigroupMax;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Data.Point"] = $PS["Data.Point"] || {};
   var exports = $PS["Data.Point"];
-
   var hoistPointF = function hoistPointF(f) {
     return function (v) {
       return {
@@ -15029,10 +12551,8 @@ var PS = {};
       };
     };
   };
-
   exports["hoistPointF"] = hoistPointF;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -15040,23 +12560,19 @@ var PS = {};
   $PS["Data.Array.Partial"] = $PS["Data.Array.Partial"] || {};
   var exports = $PS["Data.Array.Partial"];
   var Data_Array = $PS["Data.Array"];
-
   var tail = function tail(dictPartial) {
     return function (xs) {
       return Data_Array.slice(1)(Data_Array.length(xs))(xs);
     };
   };
-
   var head = function head(dictPartial) {
     return function (xs) {
       return xs[0];
     };
   };
-
   exports["head"] = head;
   exports["tail"] = tail;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -15069,19 +12585,15 @@ var PS = {};
   var Data_Monoid = $PS["Data.Monoid"];
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var Measured = function Measured(measure) {
     this.measure = measure;
   };
-
   var measuredElem = new Measured(function (v) {
     return 1;
   });
-
   var measure = function measure(dict) {
     return dict.measure;
   };
-
   var measuredArray = function measuredArray(dictMonoid) {
     return function (dictMeasured) {
       return new Measured(function (xs) {
@@ -15093,7 +12605,6 @@ var PS = {};
       });
     };
   };
-
   var measuredLazy = function measuredLazy(dictMonoid) {
     return function (dictMeasured) {
       return new Measured(function (s) {
@@ -15101,7 +12612,6 @@ var PS = {};
       });
     };
   };
-
   var mapmap = function mapmap(dictFunctor) {
     return function (dictFunctor1) {
       var $75 = Data_Functor.map(dictFunctor);
@@ -15111,7 +12621,6 @@ var PS = {};
       };
     };
   };
-
   var mapmapmap = function mapmapmap(dictFunctor) {
     return function (dictFunctor1) {
       return function (dictFunctor2) {
@@ -15123,14 +12632,11 @@ var PS = {};
       };
     };
   };
-
   var liftElem = Unsafe_Coerce.unsafeCoerce;
   var lift2Elem = Unsafe_Coerce.unsafeCoerce;
-
   var getElem = function getElem(v) {
     return v;
   };
-
   exports["mapmapmap"] = mapmapmap;
   exports["Measured"] = Measured;
   exports["measure"] = measure;
@@ -15141,7 +12647,6 @@ var PS = {};
   exports["measuredLazy"] = measuredLazy;
   exports["measuredElem"] = measuredElem;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -15156,20 +12661,16 @@ var PS = {};
   var Data_Ord = $PS["Data.Ord"];
   var Data_Sequence_Internal = $PS["Data.Sequence.Internal"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var runDigit = function runDigit(v) {
     return v;
   };
-
   var tailDigit = function () {
     var $14 = Data_Array_Partial.tail();
     return function ($15) {
       return $14(runDigit($15));
     };
   }();
-
   var overDigit = Unsafe_Coerce.unsafeCoerce;
-
   var snocDigit = function snocDigit(dictPartial) {
     return function (dg) {
       return function (x) {
@@ -15179,18 +12680,14 @@ var PS = {};
       };
     };
   };
-
   var mkDigitMay = function mkDigitMay(xs) {
     var $13 = Data_Ord.between(Data_Ord.ordInt)(1)(4)(Data_Array.length(xs));
-
     if ($13) {
       return new Data_Maybe.Just(xs);
     }
-
     ;
     return Data_Maybe.Nothing.value;
   };
-
   var mkDigit3 = function mkDigit3(x) {
     return function (y) {
       return function (z) {
@@ -15198,17 +12695,14 @@ var PS = {};
       };
     };
   };
-
   var mkDigit2 = function mkDigit2(x) {
     return function (y) {
       return [x, y];
     };
   };
-
   var mkDigit1 = function mkDigit1(x) {
     return [x];
   };
-
   var measuredDigit = function measuredDigit(dictMonoid) {
     return function (dictMeasured) {
       return new Data_Sequence_Internal.Measured(function () {
@@ -15219,17 +12713,14 @@ var PS = {};
       }());
     };
   };
-
   var headDigit = function () {
     var $22 = Data_Array_Partial.head();
     return function ($23) {
       return $22(runDigit($23));
     };
   }();
-
   var functorDigit = Data_Functor.functorArray;
   var foldableDigit = Data_Foldable.foldableArray;
-
   var consDigit = function consDigit(dictPartial) {
     return function (x) {
       return function (dg) {
@@ -15237,7 +12728,6 @@ var PS = {};
       };
     };
   };
-
   exports["mkDigitMay"] = mkDigitMay;
   exports["mkDigit1"] = mkDigit1;
   exports["mkDigit2"] = mkDigit2;
@@ -15251,7 +12741,6 @@ var PS = {};
   exports["foldableDigit"] = foldableDigit;
   exports["measuredDigit"] = measuredDigit;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -15268,41 +12757,32 @@ var PS = {};
   var Data_Monoid = $PS["Data.Monoid"];
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Sequence_Internal = $PS["Data.Sequence.Internal"];
-
   var NilL = function () {
     function NilL() {}
-
     ;
     NilL.value = new NilL();
     return NilL;
   }();
-
   var ConsL = function () {
     function ConsL(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     ConsL.create = function (value0) {
       return function (value1) {
         return new ConsL(value0, value1);
       };
     };
-
     return ConsL;
   }();
-
   var Node2 = function () {
     function Node2(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     Node2.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -15310,10 +12790,8 @@ var PS = {};
         };
       };
     };
-
     return Node2;
   }();
-
   var Node3 = function () {
     function Node3(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -15321,9 +12799,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Node3.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -15333,32 +12809,24 @@ var PS = {};
         };
       };
     };
-
     return Node3;
   }();
-
   var Empty = function () {
     function Empty() {}
-
     ;
     Empty.value = new Empty();
     return Empty;
   }();
-
   var Single = function () {
     function Single(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Single.create = function (value0) {
       return new Single(value0);
     };
-
     return Single;
   }();
-
   var Deep = function () {
     function Deep(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -15366,9 +12834,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Deep.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -15378,29 +12844,22 @@ var PS = {};
         };
       };
     };
-
     return Deep;
   }();
-
   var nodeToDigit = function () {
     var go = function go(v) {
       if (v instanceof Node2) {
         return Data_FingerTree_Digit.mkDigit2(v.value1)(v.value2);
       }
-
       ;
-
       if (v instanceof Node3) {
         return Data_FingerTree_Digit.mkDigit3(v.value1)(v.value2)(v.value3);
       }
-
       ;
       throw new Error("Failed pattern match at Data.FingerTree (line 88, column 3 - line 88, column 34): " + [v.constructor.name]);
     };
-
     return go;
   }();
-
   var node3 = function node3(dictMonoid) {
     return function (dictMeasured) {
       return function (a) {
@@ -15412,7 +12871,6 @@ var PS = {};
       };
     };
   };
-
   var node2 = function node2(dictMonoid) {
     return function (dictMeasured) {
       return function (a) {
@@ -15422,73 +12880,56 @@ var PS = {};
       };
     };
   };
-
   var nodes = function nodes(dictMonoid) {
     return function (dictMeasured) {
       return function (xs) {
         if (xs.length === 2) {
           return [node2(dictMonoid)(dictMeasured)(xs[0])(xs[1])];
         }
-
         ;
-
         if (xs.length === 3) {
           return [node3(dictMonoid)(dictMeasured)(xs[0])(xs[1])(xs[2])];
         }
-
         ;
-
         if (xs.length === 4) {
           return [node2(dictMonoid)(dictMeasured)(xs[0])(xs[1]), node2(dictMonoid)(dictMeasured)(xs[2])(xs[3])];
         }
-
         ;
         var idx = Data_Array.unsafeIndex();
         return Data_Array.cons(node3(dictMonoid)(dictMeasured)(idx(xs)(0))(idx(xs)(1))(idx(xs)(2)))(nodes(dictMonoid)(dictMeasured)(Data_Array.drop(3)(xs)));
       };
     };
   };
-
   var measuredNode = new Data_Sequence_Internal.Measured(function (v) {
     if (v instanceof Node2) {
       return v.value0;
     }
-
     ;
-
     if (v instanceof Node3) {
       return v.value0;
     }
-
     ;
     throw new Error("Failed pattern match at Data.FingerTree (line 107, column 1 - line 109, column 30): " + [v.constructor.name]);
   });
-
   var measuredFingerTree = function measuredFingerTree(dictMonoid) {
     return function (dictMeasured) {
       return new Data_Sequence_Internal.Measured(function (v) {
         if (v instanceof Empty) {
           return Data_Monoid.mempty(dictMonoid);
         }
-
         ;
-
         if (v instanceof Single) {
           return Data_Sequence_Internal.measure(dictMeasured)(v.value0);
         }
-
         ;
-
         if (v instanceof Deep) {
           return Data_Lazy.force(v.value0);
         }
-
         ;
         throw new Error("Failed pattern match at Data.FingerTree (line 228, column 1 - line 232, column 37): " + [v.constructor.name]);
       });
     };
   };
-
   var lazyEmpty = Data_Lazy.defer(function (v) {
     return Empty.value;
   });
@@ -15497,13 +12938,10 @@ var PS = {};
       if (v instanceof Node2) {
         return new Node2(v.value0, f(v.value1), f(v.value2));
       }
-
       ;
-
       if (v instanceof Node3) {
         return new Node3(v.value0, f(v.value1), f(v.value2), f(v.value3));
       }
-
       ;
       throw new Error("Failed pattern match at Data.FingerTree (line 91, column 1 - line 93, column 52): " + [f.constructor.name, v.constructor.name]);
     };
@@ -15513,19 +12951,14 @@ var PS = {};
       if (v instanceof Empty) {
         return Empty.value;
       }
-
       ;
-
       if (v instanceof Single) {
         return new Single(f(v.value0));
       }
-
       ;
-
       if (v instanceof Deep) {
         return new Deep(v.value0, Data_Functor.map(Data_FingerTree_Digit.functorDigit)(f)(v.value1), Data_Sequence_Internal.mapmapmap(Data_Lazy.functorLazy)(functorFingerTree)(functorNode)(f)(v.value2), Data_Functor.map(Data_FingerTree_Digit.functorDigit)(f)(v.value3));
       }
-
       ;
       throw new Error("Failed pattern match at Data.FingerTree (line 183, column 1 - line 186, column 68): " + [f.constructor.name, v.constructor.name]);
     };
@@ -15546,13 +12979,10 @@ var PS = {};
         if (v instanceof Node2) {
           return l(l(z)(v.value1))(v.value2);
         }
-
         ;
-
         if (v instanceof Node3) {
           return l(l(l(z)(v.value1))(v.value2))(v.value3);
         }
-
         ;
         throw new Error("Failed pattern match at Data.FingerTree (line 95, column 1 - line 100, column 56): " + [l.constructor.name, z.constructor.name, v.constructor.name]);
       };
@@ -15563,13 +12993,10 @@ var PS = {};
         if (v instanceof Node2) {
           return r(v.value1)(r(v.value2)(z));
         }
-
         ;
-
         if (v instanceof Node3) {
           return r(v.value1)(r(v.value2)(r(v.value3)(z)));
         }
-
         ;
         throw new Error("Failed pattern match at Data.FingerTree (line 95, column 1 - line 100, column 56): " + [r.constructor.name, z.constructor.name, v.constructor.name]);
       };
@@ -15591,21 +13018,16 @@ var PS = {};
         if (v1 instanceof Empty) {
           return z;
         }
-
         ;
-
         if (v1 instanceof Single) {
           return v(z)(v1.value0);
         }
-
         ;
-
         if (v1 instanceof Deep) {
           var leftFold = Data_Foldable.foldl(Data_FingerTree_Digit.foldableDigit)(v);
           var deepLeftFold = Data_Foldable.foldl(foldableFingerTree)(Data_Foldable.foldl(foldableNode)(v));
           return leftFold(deepLeftFold(leftFold(z)(v1.value1))(Data_Lazy.force(v1.value2)))(v1.value3);
         }
-
         ;
         throw new Error("Failed pattern match at Data.FingerTree (line 188, column 1 - line 212, column 56): " + [v.constructor.name, z.constructor.name, v1.constructor.name]);
       };
@@ -15616,28 +13038,22 @@ var PS = {};
         if (v1 instanceof Empty) {
           return z;
         }
-
         ;
-
         if (v1 instanceof Single) {
           return v(v1.value0)(z);
         }
-
         ;
-
         if (v1 instanceof Deep) {
           var flipFoldr$prime = Data_Function.flip(Data_Foldable.foldr(Data_FingerTree_Digit.foldableDigit)(v));
           var flipFoldr = Data_Function.flip(Data_Foldable.foldr(Data_FingerTree_Digit.foldableDigit)(v));
           var deepFlipFoldr = Data_Function.flip(Data_Foldable.foldr(foldableFingerTree)(Data_Function.flip(Data_Foldable.foldr(foldableNode)(v))));
           return flipFoldr$prime(v1.value1)(deepFlipFoldr(Data_Lazy.force(v1.value2))(flipFoldr(v1.value3)(z)));
         }
-
         ;
         throw new Error("Failed pattern match at Data.FingerTree (line 188, column 1 - line 212, column 56): " + [v.constructor.name, z.constructor.name, v1.constructor.name]);
       };
     };
   });
-
   var deep = function deep(dictMonoid) {
     return function (dictMeasured) {
       return function (pr) {
@@ -15651,7 +13067,6 @@ var PS = {};
       };
     };
   };
-
   var snoc = function snoc(dictMonoid) {
     return function (dictMeasured) {
       return function (v) {
@@ -15659,36 +13074,28 @@ var PS = {};
           if (v instanceof Empty) {
             return new Single(a);
           }
-
           ;
-
           if (v instanceof Single) {
             return deep(dictMonoid)(dictMeasured)(Data_FingerTree_Digit.mkDigit1(v.value0))(lazyEmpty)(Data_FingerTree_Digit.mkDigit1(a));
           }
-
           ;
-
           if (v instanceof Deep) {
             var v1 = Data_FingerTree_Digit.runDigit(v.value3);
-
             if (v1.length === 4) {
               var forcedM = Data_Lazy.force(v.value2);
               return deep(dictMonoid)(dictMeasured)(v.value1)(Data_Lazy.defer(function (v2) {
                 return snoc(dictMonoid)(measuredNode)(forcedM)(node3(dictMonoid)(dictMeasured)(v1[0])(v1[1])(v1[2]));
               }))(Data_FingerTree_Digit.mkDigit2(v1[3])(a));
             }
-
             ;
             return deep(dictMonoid)(dictMeasured)(v.value1)(v.value2)(Data_FingerTree_Digit.snocDigit()(v.value3)(a));
           }
-
           ;
           throw new Error("Failed pattern match at Data.FingerTree (line 262, column 1 - line 263, column 40): " + [v.constructor.name, a.constructor.name]);
         };
       };
     };
   };
-
   var snocAll = function snocAll(dictMonoid) {
     return function (dictMeasured) {
       return function (dictFoldable) {
@@ -15696,7 +13103,6 @@ var PS = {};
       };
     };
   };
-
   var toFingerTree = function toFingerTree(dictMonoid) {
     return function (dictMeasured) {
       return function (dictFoldable) {
@@ -15706,64 +13112,49 @@ var PS = {};
       };
     };
   };
-
   var viewL = function viewL(dictMonoid) {
     return function (dictMeasured) {
       return function (v) {
         if (v instanceof Empty) {
           return NilL.value;
         }
-
         ;
-
         if (v instanceof Single) {
           return new ConsL(v.value0, lazyEmpty);
         }
-
         ;
-
         if (v instanceof Deep) {
           return new ConsL(Data_FingerTree_Digit.headDigit(v.value1), Data_Lazy.defer(function (v1) {
             return deepL(dictMonoid)(dictMeasured)(Data_FingerTree_Digit.tailDigit(v.value1))(v.value2)(v.value3);
           }));
         }
-
         ;
         throw new Error("Failed pattern match at Data.FingerTree (line 294, column 1 - line 295, column 50): " + [v.constructor.name]);
       };
     };
   };
-
   var deepL = function deepL(dictMonoid) {
     return function (dictMeasured) {
       return function (pr$prime) {
         return function (m) {
           return function (sf) {
             var v = Data_FingerTree_Digit.mkDigitMay(pr$prime);
-
             if (v instanceof Data_Maybe.Just) {
               return deep(dictMonoid)(dictMeasured)(v.value0)(m)(sf);
             }
-
             ;
-
             if (v instanceof Data_Maybe.Nothing) {
               var v1 = viewL(dictMonoid)(measuredNode)(Data_Lazy.force(m));
-
               if (v1 instanceof NilL) {
                 return toFingerTree(dictMonoid)(dictMeasured)(Data_FingerTree_Digit.foldableDigit)(sf);
               }
-
               ;
-
               if (v1 instanceof ConsL) {
                 return deep(dictMonoid)(dictMeasured)(nodeToDigit(v1.value0))(v1.value1)(sf);
               }
-
               ;
               throw new Error("Failed pattern match at Data.FingerTree (line 321, column 7 - line 323, column 49): " + [v1.constructor.name]);
             }
-
             ;
             throw new Error("Failed pattern match at Data.FingerTree (line 317, column 3 - line 323, column 49): " + [v.constructor.name]);
           };
@@ -15771,7 +13162,6 @@ var PS = {};
       };
     };
   };
-
   var cons = function cons(dictMonoid) {
     return function (dictMeasured) {
       return function (a) {
@@ -15779,37 +13169,29 @@ var PS = {};
           if (v instanceof Empty) {
             return new Single(a);
           }
-
           ;
-
           if (v instanceof Single) {
             return deep(dictMonoid)(dictMeasured)(Data_FingerTree_Digit.mkDigit1(a))(lazyEmpty)(Data_FingerTree_Digit.mkDigit1(v.value0));
           }
-
           ;
-
           if (v instanceof Deep) {
             var v1 = Data_FingerTree_Digit.runDigit(v.value1);
-
             if (v1.length === 4) {
               var forcedM = Data_Lazy.force(v.value2);
               return deep(dictMonoid)(dictMeasured)(Data_FingerTree_Digit.mkDigit2(a)(v1[0]))(Data_Lazy.defer(function (v2) {
                 return cons(dictMonoid)(measuredNode)(node3(dictMonoid)(dictMeasured)(v1[1])(v1[2])(v1[3]))(forcedM);
               }))(v.value3);
             }
-
             ;
             var pr$prime = Data_FingerTree_Digit.consDigit()(a)(v.value1);
             return deep(dictMonoid)(dictMeasured)(pr$prime)(v.value2)(v.value3);
           }
-
           ;
           throw new Error("Failed pattern match at Data.FingerTree (line 234, column 1 - line 235, column 40): " + [a.constructor.name, v.constructor.name]);
         };
       };
     };
   };
-
   var consAll = function consAll(dictMonoid) {
     return function (dictMeasured) {
       return function (dictFoldable) {
@@ -15817,7 +13199,6 @@ var PS = {};
       };
     };
   };
-
   var app3 = function app3(dictMonoid) {
     return function (dictMeasured) {
       return function (v) {
@@ -15826,35 +13207,25 @@ var PS = {};
             if (v instanceof Empty) {
               return consAll(dictMonoid)(dictMeasured)(Data_Foldable.foldableArray)(ts)(v1);
             }
-
             ;
-
             if (v1 instanceof Empty) {
               return snocAll(dictMonoid)(dictMeasured)(Data_Foldable.foldableArray)(v)(ts);
             }
-
             ;
-
             if (v instanceof Single) {
               return cons(dictMonoid)(dictMeasured)(v.value0)(consAll(dictMonoid)(dictMeasured)(Data_Foldable.foldableArray)(ts)(v1));
             }
-
             ;
-
             if (v1 instanceof Single) {
               return snoc(dictMonoid)(dictMeasured)(snocAll(dictMonoid)(dictMeasured)(Data_Foldable.foldableArray)(v)(ts))(v1.value0);
             }
-
             ;
-
             if (v instanceof Deep && v1 instanceof Deep) {
               var computeM$prime = function computeM$prime(v2) {
                 return app3(dictMonoid)(measuredNode)(Data_Lazy.force(v.value2))(nodes(dictMonoid)(dictMeasured)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Data_FingerTree_Digit.runDigit(v.value3))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(ts)(Data_FingerTree_Digit.runDigit(v1.value1)))))(Data_Lazy.force(v1.value2));
               };
-
               return deep(dictMonoid)(dictMeasured)(v.value1)(Data_Lazy.defer(computeM$prime))(v1.value3);
             }
-
             ;
             throw new Error("Failed pattern match at Data.FingerTree (line 372, column 1 - line 373, column 70): " + [v.constructor.name, ts.constructor.name, v1.constructor.name]);
           };
@@ -15862,7 +13233,6 @@ var PS = {};
       };
     };
   };
-
   var append = function append(dictMonoid) {
     return function (dictMeasured) {
       return function (xs) {
@@ -15872,7 +13242,6 @@ var PS = {};
       };
     };
   };
-
   exports["Empty"] = Empty;
   exports["cons"] = cons;
   exports["snoc"] = snoc;
@@ -15883,7 +13252,6 @@ var PS = {};
   exports["functorFingerTree"] = functorFingerTree;
   exports["foldableFingerTree"] = foldableFingerTree;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -15893,7 +13261,6 @@ var PS = {};
   var Data_Monoid = $PS["Data.Monoid"];
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Semiring = $PS["Data.Semiring"];
-
   var semigroupAdditive = function semigroupAdditive(dictSemiring) {
     return new Data_Semigroup.Semigroup(function (v) {
       return function (v1) {
@@ -15901,16 +13268,13 @@ var PS = {};
       };
     });
   };
-
   var monoidAdditive = function monoidAdditive(dictSemiring) {
     return new Data_Monoid.Monoid(function () {
       return semigroupAdditive(dictSemiring);
     }, Data_Semiring.zero(dictSemiring));
   };
-
   exports["monoidAdditive"] = monoidAdditive;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -15927,36 +13291,28 @@ var PS = {};
   var Data_Semiring = $PS["Data.Semiring"];
   var Data_Sequence_Internal = $PS["Data.Sequence.Internal"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var uncons = function uncons(v) {
     var v1 = Data_FingerTree.viewL(Data_Monoid_Additive.monoidAdditive(Data_Semiring.semiringInt))(Data_Sequence_Internal.measuredElem)(v);
-
     if (v1 instanceof Data_FingerTree.NilL) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
-
     if (v1 instanceof Data_FingerTree.ConsL) {
       return new Data_Maybe.Just(new Data_Tuple.Tuple(Data_Sequence_Internal.getElem(v1.value0), Data_Lazy.force(v1.value1)));
     }
-
     ;
     throw new Error("Failed pattern match at Data.Sequence (line 218, column 3 - line 220, column 65): " + [v1.constructor.name]);
   };
-
   var snoc = function snoc(v) {
     return function (x) {
       return Data_FingerTree.snoc(Data_Monoid_Additive.monoidAdditive(Data_Semiring.semiringInt))(Data_Sequence_Internal.measuredElem)(v)(x);
     };
   };
-
   var map = function map(f) {
     return function (v) {
       return Data_Functor.map(Data_FingerTree.functorFingerTree)(f)(v);
     };
   };
-
   var functorSeq = new Data_Functor.Functor(map);
   var foldableSeq = new Data_Foldable.Foldable(function (dictMonoid) {
     return function (f) {
@@ -15978,19 +13334,16 @@ var PS = {};
     };
   });
   var empty = Data_FingerTree.Empty.value;
-
   var cons = function cons(x) {
     return function (v) {
       return Data_FingerTree.cons(Data_Monoid_Additive.monoidAdditive(Data_Semiring.semiringInt))(Data_Sequence_Internal.measuredElem)(x)(v);
     };
   };
-
   var append = function append(v) {
     return function (v1) {
       return Data_FingerTree.append(Data_Monoid_Additive.monoidAdditive(Data_Semiring.semiringInt))(Data_Sequence_Internal.measuredElem)(v)(v1);
     };
   };
-
   var semigroupSeq = new Data_Semigroup.Semigroup(append);
   exports["empty"] = empty;
   exports["cons"] = cons;
@@ -16000,7 +13353,6 @@ var PS = {};
   exports["foldableSeq"] = foldableSeq;
   exports["functorSeq"] = functorSeq;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -16012,42 +13364,33 @@ var PS = {};
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Semigroup_Foldable = $PS["Data.Semigroup.Foldable"];
   var Data_Sequence = $PS["Data.Sequence"];
-
   var Seq = function () {
     function Seq(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Seq.create = function (value0) {
       return function (value1) {
         return new Seq(value0, value1);
       };
     };
-
     return Seq;
   }();
-
   var toPlain = function toPlain(v) {
     return Data_Sequence.cons(v.value0)(v.value1);
   };
-
   var tail = function tail(v) {
     return v.value1;
   };
-
   var snoc = function snoc(v) {
     return function (y) {
       return new Seq(v.value0, Data_Sequence.snoc(v.value1)(y));
     };
   };
-
   var singleton = function singleton(x) {
     return new Seq(x, Data_Sequence.empty);
   };
-
   var semigroupSeq = new Data_Semigroup.Semigroup(function (v) {
     return function (v1) {
       return new Seq(v.value0, Data_Semigroup.append(Data_Sequence.semigroupSeq)(Data_Sequence.snoc(v.value1)(v1.value0))(v1.value1));
@@ -16058,11 +13401,9 @@ var PS = {};
       return new Seq(f(v.value0), Data_Functor.map(Data_Sequence.functorSeq)(f)(v.value1));
     };
   });
-
   var fromFoldable1 = function fromFoldable1(dictFoldable1) {
     return Data_Semigroup_Foldable.foldMap1(dictFoldable1)(semigroupSeq)(singleton);
   };
-
   var foldableSeq = new Data_Foldable.Foldable(function (dictMonoid) {
     return function (f) {
       var $157 = Data_Foldable.foldMap(Data_Sequence.foldableSeq)(dictMonoid)(f);
@@ -16085,19 +13426,16 @@ var PS = {};
       };
     };
   });
-
   var cons = function cons(x) {
     return function (v) {
       return new Seq(x, Data_Sequence.cons(v.value0)(v.value1));
     };
   };
-
   var append = function append(v) {
     return function (v1) {
       return new Seq(v.value0, Data_Semigroup.append(Data_Sequence.semigroupSeq)(Data_Sequence.snoc(v.value1)(v1.value0))(v1.value1));
     };
   };
-
   exports["Seq"] = Seq;
   exports["singleton"] = singleton;
   exports["fromFoldable1"] = fromFoldable1;
@@ -16105,18 +13443,15 @@ var PS = {};
   exports["functorSeq"] = functorSeq;
   exports["foldableSeq"] = foldableSeq;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Type.Ap"] = $PS["Type.Ap"] || {};
   var exports = $PS["Type.Ap"];
-
   var withAp = function withAp(v) {
     return v;
   };
-
   var mkAp = function mkAp(x) {
     return function (y) {
       return function (f) {
@@ -16124,11 +13459,9 @@ var PS = {};
       };
     };
   };
-
   exports["mkAp"] = mkAp;
   exports["withAp"] = withAp;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -16141,43 +13474,32 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Type_Ap = $PS["Type.Ap"];
   var Type_Equiv = $PS["Type.Equiv"];
-
   var Nil = function () {
     function Nil(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Nil.create = function (value0) {
       return new Nil(value0);
     };
-
     return Nil;
   }();
-
   var Cons = function () {
     function Cons(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Cons.create = function (value0) {
       return new Cons(value0);
     };
-
     return Cons;
   }();
-
   var runChain = function runChain(f) {
     var go = function go(v) {
       if (v instanceof Nil) {
         return Type_Equiv.equivToF(v.value0);
       }
-
       ;
-
       if (v instanceof Cons) {
         return function (x) {
           return Type_Ap.withAp(v.value0)(function (y) {
@@ -16187,31 +13509,24 @@ var PS = {};
           });
         };
       }
-
       ;
       throw new Error("Failed pattern match at Type.Chain (line 59, column 10 - line 61, column 56): " + [v.constructor.name]);
     };
-
     return go;
   };
-
   var nil = new Nil(Type_Equiv.refl);
-
   var cons = function cons(x) {
     return function (xs) {
       return new Cons(Type_Ap.mkAp(x)(xs));
     };
   };
-
   var hoistChainA = function hoistChainA(dictApplicative) {
     return function (f) {
       var go = function go(v) {
         if (v instanceof Nil) {
           return Control_Applicative.pure(dictApplicative)(new Nil(v.value0));
         }
-
         ;
-
         if (v instanceof Cons) {
           return Type_Ap.withAp(v.value0)(function (x) {
             return function (xs) {
@@ -16219,24 +13534,19 @@ var PS = {};
             };
           });
         }
-
         ;
         throw new Error("Failed pattern match at Type.Chain (line 78, column 10 - line 80, column 61): " + [v.constructor.name]);
       };
-
       return go;
     };
   };
-
   var snoc = function snoc(v) {
     if (v instanceof Nil) {
       return function (x) {
         return cons(Type_Equiv.equivFromF2(v.value0)(x))(nil);
       };
     }
-
     ;
-
     if (v instanceof Cons) {
       return function (y) {
         return Type_Ap.withAp(v.value0)(function (x) {
@@ -16246,26 +13556,20 @@ var PS = {};
         });
       };
     }
-
     ;
     throw new Error("Failed pattern match at Type.Chain (line 33, column 8 - line 35, column 61): " + [v.constructor.name]);
   };
-
   var splitAt = function splitAt(n) {
     return function (xs) {
       if (n <= 0) {
         return Type_Ap.mkAp(nil)(xs);
       }
-
       ;
-
       if (Data_Boolean.otherwise) {
         if (xs instanceof Nil) {
           return Type_Equiv.equivToF(xs.value0)(Type_Ap.mkAp(nil)(nil));
         }
-
         ;
-
         if (xs instanceof Cons) {
           return Type_Ap.withAp(xs.value0)(function (x) {
             return function (xs2) {
@@ -16277,16 +13581,13 @@ var PS = {};
             };
           });
         }
-
         ;
         throw new Error("Failed pattern match at Type.Chain (line 128, column 19 - line 134, column 10): " + [xs.constructor.name]);
       }
-
       ;
       throw new Error("Failed pattern match at Type.Chain (line 121, column 1 - line 125, column 34): " + [n.constructor.name, xs.constructor.name]);
     };
   };
-
   exports["Nil"] = Nil;
   exports["Cons"] = Cons;
   exports["nil"] = nil;
@@ -16296,7 +13597,6 @@ var PS = {};
   exports["hoistChainA"] = hoistChainA;
   exports["splitAt"] = splitAt;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -16341,174 +13641,132 @@ var PS = {};
   var Type_DSum = $PS["Type.DSum"];
   var Type_Equiv = $PS["Type.Equiv"];
   var Type_GCompare = $PS["Type.GCompare"];
-
   var I2N = function () {
     function I2N(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     I2N.create = function (value0) {
       return function (value1) {
         return new I2N(value0, value1);
       };
     };
-
     return I2N;
   }();
-
   var N2N = function () {
     function N2N(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     N2N.create = function (value0) {
       return function (value1) {
         return new N2N(value0, value1);
       };
     };
-
     return N2N;
   }();
-
   var P2P = function () {
     function P2P(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     P2P.create = function (value0) {
       return function (value1) {
         return new P2P(value0, value1);
       };
     };
-
     return P2P;
   }();
-
   var TC = function TC(x) {
     return x;
   };
-
   var After = function () {
     function After() {}
-
     ;
     After.value = new After();
     return After;
   }();
-
   var Before = function () {
     function Before() {}
-
     ;
     Before.value = new Before();
     return Before;
   }();
-
   var AtLeast = function () {
     function AtLeast(value0) {
       this.value0 = value0;
     }
-
     ;
-
     AtLeast.create = function (value0) {
       return new AtLeast(value0);
     };
-
     return AtLeast;
   }();
-
   var AtMost = function () {
     function AtMost(value0) {
       this.value0 = value0;
     }
-
     ;
-
     AtMost.create = function (value0) {
       return new AtMost(value0);
     };
-
     return AtMost;
   }();
-
   var Delta = function () {
     function Delta(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Delta.create = function (value0) {
       return function (value1) {
         return new Delta(value0, value1);
       };
     };
-
     return Delta;
   }();
-
   var PGrowth = function () {
     function PGrowth(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     PGrowth.create = function (value0) {
       return function (value1) {
         return new PGrowth(value0, value1);
       };
     };
-
     return PGrowth;
   }();
-
   var Window = function () {
     function Window(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Window.create = function (value0) {
       return function (value1) {
         return new Window(value0, value1);
       };
     };
-
     return Window;
   }();
-
   var PMax = function () {
     function PMax(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     PMax.create = function (value0) {
       return function (value1) {
         return new PMax(value0, value1);
       };
     };
-
     return PMax;
   }();
-
   var Restrict = function () {
     function Restrict(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -16516,9 +13774,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Restrict.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -16528,19 +13784,15 @@ var PS = {};
         };
       };
     };
-
     return Restrict;
   }();
-
   var Take = function () {
     function Take(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     Take.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -16548,191 +13800,142 @@ var PS = {};
         };
       };
     };
-
     return Take;
   }();
-
   var Lag = function () {
     function Lag(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Lag.create = function (value0) {
       return function (value1) {
         return new Lag(value0, value1);
       };
     };
-
     return Lag;
   }();
-
   var DayNumber = function () {
     function DayNumber(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     DayNumber.create = function (value0) {
       return function (value1) {
         return new DayNumber(value0, value1);
       };
     };
-
     return DayNumber;
   }();
-
   var PerCapita = function () {
     function PerCapita(value0) {
       this.value0 = value0;
     }
-
     ;
-
     PerCapita.create = function (value0) {
       return new PerCapita(value0);
     };
-
     return PerCapita;
   }();
-
   var PointDate = function () {
     function PointDate(value0) {
       this.value0 = value0;
     }
-
     ;
-
     PointDate.create = function (value0) {
       return new PointDate(value0);
     };
-
     return PointDate;
   }();
-
   var Time = function () {
     function Time(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Time.create = function (value0) {
       return new Time(value0);
     };
-
     return Time;
   }();
-
   var Confirmed = function () {
     function Confirmed(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Confirmed.create = function (value0) {
       return new Confirmed(value0);
     };
-
     return Confirmed;
   }();
-
   var Deaths = function () {
     function Deaths(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Deaths.create = function (value0) {
       return new Deaths(value0);
     };
-
     return Deaths;
   }();
-
   var Recovered = function () {
     function Recovered(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Recovered.create = function (value0) {
       return new Recovered(value0);
     };
-
     return Recovered;
   }();
-
   var Active = function () {
     function Active(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Active.create = function (value0) {
       return new Active(value0);
     };
-
     return Active;
   }();
-
   var withProjection = function withProjection(v) {
     return v;
   };
-
   var withConsec = function withConsec(f) {
     return function (xs) {
       var xs$prime = Data_List.fromFoldable(Data_Foldable.foldableArray)(xs);
       return Data_List.toUnfoldable(Data_Unfoldable.unfoldableArray)(Data_List.zipWith(f)(xs$prime)(Data_List.drop(1)(xs$prime)));
     };
   };
-
   var windows = function windows(n) {
     var go = function go(xs) {
       return function (x) {
         var v = Data_Sequence.uncons(Data_Sequence_NonEmpty.tail(xs));
-
         if (v instanceof Data_Maybe.Nothing) {
           return Data_Sequence_NonEmpty.singleton(x);
         }
-
         ;
-
         if (v instanceof Data_Maybe.Just) {
           return new Data_Sequence_NonEmpty.Seq(v.value0.value0, Data_Sequence.snoc(v.value0.value1)(x));
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart (line 319, column 15 - line 321, column 55): " + [v.constructor.name]);
       };
     };
-
     return function (v) {
       if (v instanceof Data_List_Types.Cons) {
         var zs = Data_List.drop(2 * n | 0)(v.value1);
         var ys = Data_Sequence_NonEmpty.fromFoldable1(Data_NonEmpty.foldable1NonEmpty(Data_List_Types.foldableList))(new Data_NonEmpty.NonEmpty(v.value0, Data_List.take(2 * n | 0)(v.value1)));
         return new Data_List_Types.Cons(ys, Data_Traversable.scanl(Data_List_Types.traversableList)(go)(ys)(zs));
       }
-
       ;
-
       if (v instanceof Data_List_Types.Nil) {
         return Data_List_Types.Nil.value;
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart (line 311, column 13 - line 316, column 19): " + [v.constructor.name]);
     };
   };
-
   var withWindow = function withWindow(n) {
     return function (f) {
       var $365 = Data_List.toUnfoldable(Data_Unfoldable.unfoldableArray);
@@ -16744,287 +13947,209 @@ var PS = {};
       };
     };
   };
-
   var toFractionalOut = function toFractionalOut(v) {
     if (v instanceof I2N) {
       return new D3_Scatter_Type.NNumber(v.value1);
     }
-
     ;
-
     if (v instanceof N2N) {
       return new D3_Scatter_Type.NNumber(v.value1);
     }
-
     ;
-
     if (v instanceof P2P) {
       return new D3_Scatter_Type.NPercent(v.value1);
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 190, column 19 - line 193, column 26): " + [v.constructor.name]);
   };
-
   var toFractionalIn = function toFractionalIn(v) {
     if (v instanceof I2N) {
       return new D3_Scatter_Type.NInt(v.value0);
     }
-
     ;
-
     if (v instanceof N2N) {
       return new D3_Scatter_Type.NNumber(v.value0);
     }
-
     ;
-
     if (v instanceof P2P) {
       return new D3_Scatter_Type.NPercent(v.value0);
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 185, column 18 - line 188, column 26): " + [v.constructor.name]);
   };
-
   var toFractional = function toFractional(v) {
     if (v instanceof D3_Scatter_Type.NInt) {
       return Data_Exists.mkExists(new I2N(v.value0, Type_Equiv.refl));
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.NNumber) {
       return Data_Exists.mkExists(new N2N(v.value0, v.value0));
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.NPercent) {
       return Data_Exists.mkExists(new P2P(v.value0, v.value0));
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 178, column 16 - line 181, column 37): " + [v.constructor.name]);
   };
-
   var showCutoffType = new Data_Show.Show(function (v) {
     if (v instanceof After) {
       return "After";
     }
-
     ;
-
     if (v instanceof Before) {
       return "Before";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 231, column 12 - line 233, column 25): " + [v.constructor.name]);
   });
-
   var projection = function projection(x) {
     return function (f) {
       return f(x);
     };
   };
-
   var percentGrowth = function percentGrowth(x) {
     return function (y) {
       if (x === 0) {
         return Data_Number.nan;
       }
-
       ;
-
       if (Data_Boolean.otherwise) {
         return (y - x) / x;
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart (line 277, column 1 - line 280, column 15): " + [x.constructor.name, y.constructor.name]);
     };
   };
-
   var operationType = function operationType(v) {
     if (v instanceof Delta) {
       return Type_Equiv.equivToF(v.value1);
     }
-
     ;
-
     if (v instanceof PGrowth) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value1)(D3_Scatter_Type.sPercent);
       };
     }
-
     ;
-
     if (v instanceof Window) {
       return function (v1) {
         return D3_Scatter_Type.fromNType(toFractionalOut(v.value0));
       };
     }
-
     ;
-
     if (v instanceof PMax) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value1)(D3_Scatter_Type.sPercent);
       };
     }
-
     ;
-
     if (v instanceof Restrict) {
       return Type_Equiv.equivToF(v.value1);
     }
-
     ;
-
     if (v instanceof Take) {
       return Type_Equiv.equivToF(v.value0);
     }
-
     ;
-
     if (v instanceof Lag) {
       return Type_Equiv.equivToF(v.value0);
     }
-
     ;
-
     if (v instanceof DayNumber) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value0)(D3_Scatter_Type.sDays);
       };
     }
-
     ;
-
     if (v instanceof PerCapita) {
       return function (v1) {
         return D3_Scatter_Type.fromNType(toFractionalOut(v.value0));
       };
     }
-
     ;
-
     if (v instanceof PointDate) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value0)(D3_Scatter_Type.sDay);
       };
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 265, column 17 - line 275, column 48): " + [v.constructor.name]);
   };
-
   var operationLabel = function operationLabel(v) {
     if (v instanceof Delta) {
       return "Daily Change in";
     }
-
     ;
-
     if (v instanceof PGrowth) {
       return "Daily Percent Growth in";
     }
-
     ;
-
     if (v instanceof Window) {
       return "";
     }
-
     ;
-
     if (v instanceof PMax) {
       return "Percent of maximum of";
     }
-
     ;
-
     if (v instanceof Restrict) {
       return "";
     }
-
     ;
-
     if (v instanceof Take) {
       var cStr = function () {
         if (v.value2 instanceof After) {
           return "first";
         }
-
         ;
-
         if (v.value2 instanceof Before) {
           return "last";
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart (line 483, column 18 - line 485, column 29): " + [v.value2.constructor.name]);
       }();
-
       return "Keeping the " + (cStr + (" " + (Data_Show.show(Data_Show.showInt)(v.value1) + " points of")));
     }
-
     ;
-
     if (v instanceof Lag) {
       return Data_Show.show(Data_Show.showInt)(v.value1) + "-day Lagged";
     }
-
     ;
-
     if (v instanceof DayNumber) {
       if (v.value1 instanceof After) {
         return "Days of";
       }
-
       ;
-
       if (v.value1 instanceof Before) {
         return "Days left of";
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart (line 488, column 22 - line 490, column 31): " + [v.value1.constructor.name]);
     }
-
     ;
-
     if (v instanceof PerCapita) {
       return "Per-Million";
     }
-
     ;
-
     if (v instanceof PointDate) {
       return "Date for value of";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 466, column 18 - line 492, column 39): " + [v.constructor.name]);
   };
-
   var operationsLabel = function operationsLabel(c) {
     var go = function go(o) {
       return function (v) {
         return operationLabel(o) + (" " + v);
       };
     };
-
     var v = Type_Chain.runChain(go)(c)("");
     return v;
   };
-
   var ncTC = new Data_Newtype.Newtype(function (n) {
     return n;
   }, TC);
-
   var mkTimeCounts = function mkTimeCounts(start) {
     return function (dat) {
       var maxLen = Data_Ord.max(Data_Ord.ordInt)(Data_Ord.max(Data_Ord.ordInt)(Data_Array.length(dat.counts.confirmed))(Data_Array.length(dat.counts.deaths)))(Data_Array.length(dat.counts.recovered));
@@ -17038,83 +14163,59 @@ var PS = {};
       };
     };
   };
-
   var gshowCondition = function gshowCondition(t) {
     return function (v) {
       if (v instanceof AtLeast) {
         return "AtLeast " + D3_Scatter_Type.sTypeShow(t)(v.value0);
       }
-
       ;
-
       if (v instanceof AtMost) {
         return "AtMost " + D3_Scatter_Type.sTypeShow(t)(v.value0);
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart (line 217, column 20 - line 219, column 46): " + [v.constructor.name]);
     };
   };
-
   var gshow2Operation = new Type_GCompare.GShow2(function (v) {
     if (v instanceof Delta) {
       return "Delta";
     }
-
     ;
-
     if (v instanceof PGrowth) {
       return "PGrowth";
     }
-
     ;
-
     if (v instanceof Window) {
       return "Window " + Data_Show.show(Data_Show.showInt)(v.value1);
     }
-
     ;
-
     if (v instanceof PMax) {
       return "PMax";
     }
-
     ;
-
     if (v instanceof Restrict) {
       return "Restrict " + (Data_Show.show(showCutoffType)(v.value2) + (" (" + (gshowCondition(v.value0)(v.value3) + ")")));
     }
-
     ;
-
     if (v instanceof Take) {
       return "Take " + (Data_Show.show(Data_Show.showInt)(v.value1) + (" " + Data_Show.show(showCutoffType)(v.value2)));
     }
-
     ;
-
     if (v instanceof Lag) {
       return "Lag " + Data_Show.show(Data_Show.showInt)(v.value1);
     }
-
     ;
-
     if (v instanceof DayNumber) {
       return "DayNumber " + Data_Show.show(showCutoffType)(v.value1);
     }
-
     ;
-
     if (v instanceof PerCapita) {
       return "PerCapita";
     }
-
     ;
-
     if (v instanceof PointDate) {
       return "PointDate";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 248, column 14 - line 258, column 33): " + [v.constructor.name]);
   });
@@ -17123,13 +14224,10 @@ var PS = {};
       if (v instanceof AtLeast) {
         return new AtLeast(f(v.value0));
       }
-
       ;
-
       if (v instanceof AtMost) {
         return new AtMost(f(v.value0));
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart (line 207, column 13 - line 209, column 32): " + [v.constructor.name]);
     };
@@ -17139,156 +14237,119 @@ var PS = {};
       if (x instanceof After && y instanceof After) {
         return true;
       }
-
       ;
-
       if (x instanceof Before && y instanceof Before) {
         return true;
       }
-
       ;
       return false;
     };
   });
-
   var eqCondition = function eqCondition(dictEq) {
     return new Data_Eq.Eq(function (x) {
       return function (y) {
         if (x instanceof AtLeast && y instanceof AtLeast) {
           return Data_Eq.eq(dictEq)(x.value0)(y.value0);
         }
-
         ;
-
         if (x instanceof AtMost && y instanceof AtMost) {
           return Data_Eq.eq(dictEq)(x.value0)(y.value0);
         }
-
         ;
         return false;
       };
     });
   };
-
   var decideBaseProjection = new Type_Equiv.Decide(function (v) {
     if (v instanceof Time) {
       return function (v1) {
         if (v1 instanceof Time) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof Confirmed) {
       return function (v1) {
         if (v1 instanceof Confirmed) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof Deaths) {
       return function (v1) {
         if (v1 instanceof Deaths) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof Recovered) {
       return function (v1) {
         if (v1 instanceof Recovered) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
-
     if (v instanceof Active) {
       return function (v1) {
         if (v1 instanceof Active) {
           return new Data_Maybe.Just(Type_Equiv.equivFromF(v1.value0)(v.value0));
         }
-
         ;
         return Data_Maybe.Nothing.value;
       };
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 111, column 14 - line 126, column 27): " + [v.constructor.name]);
   });
   var geqBaseProjection = new Type_GCompare.GEq(function () {
     return decideBaseProjection;
   }, Type_Equiv.decide(decideBaseProjection));
-
   var conditionValue = function conditionValue(v) {
     if (v instanceof AtLeast) {
       return v.value0;
     }
-
     ;
-
     if (v instanceof AtMost) {
       return v.value0;
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 222, column 18 - line 224, column 19): " + [v.constructor.name]);
   };
-
   var baseType = function baseType(v) {
     if (v instanceof Time) {
       return new D3_Scatter_Type.SDay(v.value0);
     }
-
     ;
-
     if (v instanceof Confirmed) {
       return new D3_Scatter_Type.SInt(v.value0);
     }
-
     ;
-
     if (v instanceof Deaths) {
       return new D3_Scatter_Type.SInt(v.value0);
     }
-
     ;
-
     if (v instanceof Recovered) {
       return new D3_Scatter_Type.SInt(v.value0);
     }
-
     ;
-
     if (v instanceof Active) {
       return new D3_Scatter_Type.SInt(v.value0);
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 72, column 12 - line 77, column 32): " + [v.constructor.name]);
   };
-
   var setBase = function setBase(base) {
     return function (dp) {
       var tA = baseType(base);
@@ -17297,23 +14358,19 @@ var PS = {};
           return withProjection(spr)(function (pr) {
             var tC = baseType(pr.base);
             var v = Type_Equiv.decide(D3_Scatter_Type.decideSType)(tA)(tC);
-
             if (v instanceof Data_Maybe.Just) {
               return Type_DSum.dsum(tB)(projection({
                 base: Type_Equiv.equivToF(v.value0)(base),
                 operations: pr.operations
               }));
             }
-
             ;
-
             if (v instanceof Data_Maybe.Nothing) {
               return Type_DSum.dsum(tA)(projection({
                 base: base,
                 operations: Type_Chain.nil
               }));
             }
-
             ;
             throw new Error("Failed pattern match at Corona.Chart (line 565, column 13 - line 573, column 18): " + [v.constructor.name]);
           });
@@ -17321,53 +14378,40 @@ var PS = {};
       });
     };
   };
-
   var baseProjectionLabel = function baseProjectionLabel(v) {
     if (v instanceof Time) {
       return "Date";
     }
-
     ;
-
     if (v instanceof Confirmed) {
       return "Confirmed Cases";
     }
-
     ;
-
     if (v instanceof Deaths) {
       return "Deaths";
     }
-
     ;
-
     if (v instanceof Recovered) {
       return "Recovered Cases";
     }
-
     ;
-
     if (v instanceof Active) {
       return "Active Cases";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 458, column 23 - line 463, column 34): " + [v.constructor.name]);
   };
-
   var projectionLabel = function projectionLabel(spr) {
     return withProjection(spr)(function (pr) {
       return operationsLabel(pr.operations) + baseProjectionLabel(pr.base);
     });
   };
-
   var toAxisConf = function toAxisConf(v) {
     return {
       scale: v.scale,
       label: projectionLabel(v.projection)
     };
   };
-
   var baseProjection = function baseProjection(pr) {
     return withProjection(pr)(function ($371) {
       return Data_Exists.mkExists(function (v) {
@@ -17375,7 +14419,6 @@ var PS = {};
       }($371));
     });
   };
-
   var applyCondition = function applyCondition(t) {
     return function (v) {
       if (v instanceof AtLeast) {
@@ -17383,30 +14426,24 @@ var PS = {};
           return Data_Eq.eq(Data_Ordering.eqOrdering)(D3_Scatter_Type.sTypeCompare(t)(x)(v.value0))(Data_Ordering.GT.value);
         };
       }
-
       ;
-
       if (v instanceof AtMost) {
         return function (x) {
           return Data_Eq.eq(Data_Ordering.eqOrdering)(D3_Scatter_Type.sTypeCompare(t)(x)(v.value0))(Data_Ordering.LT.value);
         };
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart (line 397, column 20 - line 399, column 48): " + [v.constructor.name]);
     };
   };
-
   var applyOperation = function applyOperation(dictFunctor) {
     return function (pop) {
       var pMax = function pMax(b) {
         var maxAbs = Data_Maybe.maybe(1.0)(Data_Newtype.unwrap(Data_Ord_Max.newtypeMax))(Data_Function.flip(Data_Foldable.foldMap(Data_Dated.foldedableDated)(Data_Maybe.monoidMaybe(Data_Ord_Max.semigroupMax(Data_Ord.ordNumber))))(Data_Newtype.unwrap(Data_Bundle.newtypeBundle)(b).principal)(function (y) {
           var $320 = y === 0 || Data_Number["isNaN"](y);
-
           if ($320) {
             return Data_Maybe.Nothing.value;
           }
-
           ;
           return new Data_Maybe.Just(Data_Ord.abs(Data_Ord.ordNumber)(Data_Ring.ringNumber)(y));
         }));
@@ -17416,7 +14453,6 @@ var PS = {};
           }($372));
         }))(b);
       };
-
       return function (v) {
         if (v instanceof Delta) {
           return Data_Bundle.hoistBundle(dictFunctor)(function (v1) {
@@ -17430,9 +14466,7 @@ var PS = {};
             };
           });
         }
-
         ;
-
         if (v instanceof PGrowth) {
           return Data_Bundle.hoistBundle(dictFunctor)(function (v1) {
             return {
@@ -17445,9 +14479,7 @@ var PS = {};
             };
           });
         }
-
         ;
-
         if (v instanceof Window) {
           return Data_Bundle.hoistBundle(dictFunctor)(function (v1) {
             return {
@@ -17458,9 +14490,7 @@ var PS = {};
             };
           });
         }
-
         ;
-
         if (v instanceof PMax) {
           var $373 = Type_Equiv.equivFromF(v.value1);
           var $374 = Data_Bundle.hoistBundle(dictFunctor)(Data_Functor.map(Data_Dated.functorDated)(D3_Scatter_Type.nTypeNumber(v.value0)));
@@ -17468,9 +14498,7 @@ var PS = {};
             return $373(pMax($374($375)));
           };
         }
-
         ;
-
         if (v instanceof Restrict) {
           var $376 = Type_Equiv.equivToF(v.value1);
           var $377 = Data_Bundle.mapPrincipal(function () {
@@ -17478,26 +14506,20 @@ var PS = {};
               if (v.value2 instanceof After) {
                 return Data_Dated.dropUntil;
               }
-
               ;
-
               if (v.value2 instanceof Before) {
                 return Data_Dated.dropUntilEnd;
               }
-
               ;
               throw new Error("Failed pattern match at Corona.Chart (line 352, column 23 - line 354, column 39): " + [v.value2.constructor.name]);
             }();
-
             return dropper(applyCondition(v.value0)(v.value3));
           }());
           return function ($378) {
             return $376($377($378));
           };
         }
-
         ;
-
         if (v instanceof Take) {
           var $379 = Type_Equiv.equivToF(v.value0);
           var $380 = Data_Bundle.mapPrincipal(function () {
@@ -17505,26 +14527,20 @@ var PS = {};
               if (v.value2 instanceof After) {
                 return Data_Dated.take;
               }
-
               ;
-
               if (v.value2 instanceof Before) {
                 return Data_Dated.takeEnd;
               }
-
               ;
               throw new Error("Failed pattern match at Corona.Chart (line 358, column 23 - line 360, column 34): " + [v.value2.constructor.name]);
             }();
-
             return dropper(v.value1);
           }());
           return function ($381) {
             return $379($380($381));
           };
         }
-
         ;
-
         if (v instanceof Lag) {
           var $382 = Type_Equiv.equivToF(v.value0);
           var $383 = Data_Bundle.hoistBundle(dictFunctor)(function (v1) {
@@ -17537,9 +14553,7 @@ var PS = {};
             return $382($383($384));
           };
         }
-
         ;
-
         if (v instanceof DayNumber) {
           return function (bundle) {
             return Type_Equiv.equivFromF(v.value0)(Data_Maybe.fromMaybe(Data_Bundle.hoistBundle(dictFunctor)(Data_Dated.clearDated)(bundle))(function () {
@@ -17552,9 +14566,7 @@ var PS = {};
                   }))(bundle);
                 });
               }
-
               ;
-
               if (v.value1 instanceof Before) {
                 return Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(Data_Dated.findLast(Data_Bundle.bundlePrincipal(bundle)))(function (v1) {
                   return Data_Bundle.hoistBundle(dictFunctor)(Data_FunctorWithIndex.mapWithIndex(Data_Dated.functorWithIndexDated)(function (i) {
@@ -17564,15 +14576,12 @@ var PS = {};
                   }))(bundle);
                 });
               }
-
               ;
               throw new Error("Failed pattern match at Corona.Chart (line 367, column 51 - line 371, column 79): " + [v.value1.constructor.name]);
             }()));
           };
         }
-
         ;
-
         if (v instanceof PerCapita) {
           return Data_Bundle.hoistBundle(dictFunctor)(Data_Functor.map(Data_Dated.functorDated)(function () {
             var $385 = D3_Scatter_Type.numberNType(toFractionalOut(v.value0));
@@ -17586,9 +14595,7 @@ var PS = {};
             };
           }()));
         }
-
         ;
-
         if (v instanceof PointDate) {
           return Data_Bundle.hoistBundle(dictFunctor)(function () {
             var $388 = Type_Equiv.equivFromF(v.value0);
@@ -17598,28 +14605,23 @@ var PS = {};
             };
           }());
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart (line 329, column 22 - line 377, column 73): " + [v.constructor.name]);
       };
     };
   };
-
   var applyOperations = function applyOperations(dictFunctor) {
     return function (pop) {
       return Type_Chain.runChain(applyOperation(dictFunctor)(pop));
     };
   };
-
   var applyBaseProjection = function applyBaseProjection(v) {
     if (v instanceof Time) {
       return function (v1) {
         return Data_Dated.generate(v1.start)(v1.timespan)(Type_Equiv.equivFrom(v.value0));
       };
     }
-
     ;
-
     if (v instanceof Confirmed) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value0)({
@@ -17628,9 +14630,7 @@ var PS = {};
         });
       };
     }
-
     ;
-
     if (v instanceof Deaths) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value0)({
@@ -17639,9 +14639,7 @@ var PS = {};
         });
       };
     }
-
     ;
-
     if (v instanceof Recovered) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value0)({
@@ -17650,9 +14648,7 @@ var PS = {};
         });
       };
     }
-
     ;
-
     if (v instanceof Active) {
       return function (v1) {
         return Type_Equiv.equivFromF(v.value0)({
@@ -17661,11 +14657,9 @@ var PS = {};
         });
       };
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart (line 431, column 23 - line 440, column 64): " + [v.constructor.name]);
   };
-
   var applyProjection = function applyProjection(dictFunctor) {
     return function (spr) {
       return function (allDat) {
@@ -17677,7 +14671,6 @@ var PS = {};
       };
     };
   };
-
   var toSeries = function toSeries(dictFunctor) {
     return function (projs) {
       return function (bs) {
@@ -17706,7 +14699,6 @@ var PS = {};
       };
     };
   };
-
   var allBaseProjections = [Data_Exists.mkExists(new Time(Type_Equiv.refl)), Data_Exists.mkExists(new Confirmed(Type_Equiv.refl)), Data_Exists.mkExists(new Deaths(Type_Equiv.refl)), Data_Exists.mkExists(new Recovered(Type_Equiv.refl)), Data_Exists.mkExists(new Active(Type_Equiv.refl))];
   exports["Time"] = Time;
   exports["Confirmed"] = Confirmed;
@@ -17751,7 +14743,6 @@ var PS = {};
   exports["eqCutoffType"] = eqCutoffType;
   exports["gshow2Operation"] = gshow2Operation;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -17783,29 +14774,22 @@ var PS = {};
   var Foreign_Object = $PS["Foreign.Object"];
   var Global = $PS["Global"];
   var $$Math = $PS["Math"];
-
   var MTLinear = function () {
     function MTLinear(value0) {
       this.value0 = value0;
     }
-
     ;
-
     MTLinear.create = function (value0) {
       return new MTLinear(value0);
     };
-
     return MTLinear;
   }();
-
   var MTQuadratic = function () {
     function MTQuadratic() {}
-
     ;
     MTQuadratic.value = new MTQuadratic();
     return MTQuadratic;
   }();
-
   var preparePoint = function preparePoint(i) {
     return function (v) {
       return {
@@ -17814,77 +14798,62 @@ var PS = {};
       };
     };
   };
-
   var modelFitParams = function () {
     var reDate = function reDate($49) {
       return Data_ModifiedJulianDay.fromModifiedJulianDay(function (v) {
         return v + 58870 | 0;
       }(Data_Int.round($49)));
     };
-
     return function (v) {
       if (v instanceof D3_Scatter_Type.LinFit) {
         return function (lr) {
-          return Foreign_Object.singleton("Daily Change")(D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta));
+          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Daily Change", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta)), new Data_Tuple.Tuple("Alpha", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.alpha)), new Data_Tuple.Tuple("Beta", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta))]);
         };
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.ExpFit) {
         return function (lr) {
-          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Daily % Growth", D3_Scatter_Type.someValue(D3_Scatter_Type.stPercent)($$Math.exp(lr.beta) - 1.0)), new Data_Tuple.Tuple("Doubling Time (Days)", D3_Scatter_Type.someValue(D3_Scatter_Type.stDays)(Data_Int.round($$Math.log(2.0) / lr.beta)))]);
+          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Daily % Growth", D3_Scatter_Type.someValue(D3_Scatter_Type.stPercent)($$Math.exp(lr.beta) - 1.0)), new Data_Tuple.Tuple("Doubling Time (Days)", D3_Scatter_Type.someValue(D3_Scatter_Type.stDays)(Data_Int.round($$Math.log(2.0) / lr.beta))), new Data_Tuple.Tuple("Alpha", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.alpha)), new Data_Tuple.Tuple("Beta", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta))]);
         };
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.DecFit) {
         return function (lr) {
-          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Halving Time", D3_Scatter_Type.someValue(D3_Scatter_Type.stDays)(Data_Int.round($$Math.abs($$Math.log(2.0) / lr.beta)))), new Data_Tuple.Tuple("95% Date", D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(($$Math.log(5.0e-2) - lr.alpha) / lr.beta)))]);
+          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Halving Time", D3_Scatter_Type.someValue(D3_Scatter_Type.stDays)(Data_Int.round($$Math.abs($$Math.log(2.0) / lr.beta)))), new Data_Tuple.Tuple("95% Date", D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(($$Math.log(5.0e-2) - lr.alpha) / lr.beta))), new Data_Tuple.Tuple("Alpha", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.alpha)), new Data_Tuple.Tuple("Beta", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta))]);
         };
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.LogFit) {
         return function (lr) {
-          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Date of Peak", D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(-lr.alpha / lr.beta))), new Data_Tuple.Tuple("95% Date", D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(($$Math.log(5.0e-2 / 0.95) - lr.alpha) / lr.beta)))]);
+          return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Date of Peak", D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(-lr.alpha / lr.beta))), new Data_Tuple.Tuple("95% Date", D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(($$Math.log(5.0e-2 / 0.95) - lr.alpha) / lr.beta))), new Data_Tuple.Tuple("Alpha", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.alpha)), new Data_Tuple.Tuple("Beta", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta))]);
         };
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.QuadFit) {
         return function (lr) {
           return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)(function () {
             var v1 = function () {
               var $20 = lr.beta >= 0.0;
-
               if ($20) {
                 return {
                   accLabel: "Acceleration",
                   vertLabel: "Vertex Date"
                 };
               }
-
               ;
               return {
                 accLabel: "Deceleration",
                 vertLabel: "End Date"
               };
             }();
-
-            return [new Data_Tuple.Tuple(v1.accLabel, D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta)), new Data_Tuple.Tuple(v1.vertLabel, D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(-lr.alpha / lr.beta)))];
+            return [new Data_Tuple.Tuple(v1.accLabel, D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta)), new Data_Tuple.Tuple(v1.vertLabel, D3_Scatter_Type.someValue(D3_Scatter_Type.stDay)(reDate(-lr.alpha / lr.beta))), new Data_Tuple.Tuple("Alpha", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.alpha)), new Data_Tuple.Tuple("Beta", D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(lr.beta))];
           }());
         };
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Chart.Model (line 109, column 18 - line 136, column 11): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Chart.Model (line 109, column 18 - line 162, column 11): " + [v.constructor.name]);
     };
   }();
-
   var findCap = function findCap(capper) {
     return function (xs) {
       var vals = Data_Dated.datedValues(Data_Function.flip(Data_FunctorWithIndex.mapWithIndex(Data_Dated.functorWithIndexDated))(xs)(function (i) {
@@ -17895,11 +14864,9 @@ var PS = {};
           };
         };
       }));
-
       var getR2 = function getR2(cap) {
         return Corona_Analyze_LinReg.linRegTrans(capper(cap))(vals).r2;
       };
-
       return Control_Bind.bind(Data_Maybe.bindMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(function (v) {
         return v + 1.0;
       })(Data_Array.last(Data_Dated.datedValues(xs))))(function (capMin) {
@@ -17913,34 +14880,28 @@ var PS = {};
       });
     };
   };
-
   var modelFitTrans = function modelFitTrans(n) {
     return function (dat) {
       var finder = function finder(def) {
         return function (mkT) {
           var v = findCap(mkT)(Data_Dated.takeEnd(n)(dat));
-
           if (v instanceof Data_Maybe.Nothing) {
             return {
               params: Foreign_Object.singleton("Final Total")(D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(Global.infinity)),
               trans: new MTLinear(def)
             };
           }
-
           ;
-
           if (v instanceof Data_Maybe.Just) {
             return {
               params: Foreign_Object.singleton("Final Total")(D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(v.value0)),
               trans: new MTLinear(mkT(v.value0))
             };
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Chart.Model (line 160, column 22 - line 168, column 10): " + [v.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Chart.Model (line 186, column 22 - line 194, column 10): " + [v.constructor.name]);
         };
       };
-
       return function (v) {
         if (v instanceof D3_Scatter_Type.LinFit) {
           return {
@@ -17948,50 +14909,39 @@ var PS = {};
             trans: new MTLinear(Corona_Analyze_Transform.idTrans)
           };
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.ExpFit) {
           return {
             params: Foreign_Object.empty,
             trans: new MTLinear(Corona_Analyze_Transform.expTrans)
           };
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.DecFit) {
           return finder(Corona_Analyze_Transform.idTrans)(Corona_Analyze_Transform.decayTrans);
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.LogFit) {
           return finder(Corona_Analyze_Transform.expTrans)(Corona_Analyze_Transform.logisticTrans);
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.QuadFit) {
           return {
             params: Foreign_Object.empty,
             trans: MTQuadratic.value
           };
         }
-
         ;
-        throw new Error("Failed pattern match at Corona.Chart.Model (line 153, column 23 - line 158, column 55): " + [v.constructor.name]);
+        throw new Error("Failed pattern match at Corona.Chart.Model (line 179, column 23 - line 184, column 55): " + [v.constructor.name]);
       };
     };
   };
-
   var dqr = function dqr(qr) {
     return {
       alpha: qr.beta,
       beta: qr.alpha * 2.0
     };
   };
-
   var modelBaseData = function modelBaseData(tr) {
     return function (mkP) {
       return function (n) {
@@ -18004,7 +14954,6 @@ var PS = {};
                 y: p.y
               };
             })(Data_Dated.datedValues(Data_FunctorWithIndex.mapWithIndex(Data_Dated.functorWithIndexDated)(preparePoint)(ys)));
-
             var v = function () {
               if (tr instanceof MTLinear) {
                 var v1 = Corona_Analyze_LinReg.linRegTrans(tr.value0)(prepared);
@@ -18014,9 +14963,7 @@ var PS = {};
                   mkDat: Corona_Analyze_LinReg.applyLinRegTrans(Data_Semiring.semiringNumber)(tr.value0)(v1.linReg)
                 };
               }
-
               ;
-
               if (tr instanceof MTQuadratic) {
                 var v1 = Corona_Analyze_QuadReg.quadReg(prepared);
                 return {
@@ -18025,11 +14972,9 @@ var PS = {};
                   mkDat: Corona_Analyze_QuadReg.applyQuadReg(Data_Semiring.semiringNumber)(v1.quadReg)
                 };
               }
-
               ;
-              throw new Error("Failed pattern match at Corona.Chart.Model (line 191, column 29 - line 200, column 14): " + [tr.constructor.name]);
+              throw new Error("Failed pattern match at Corona.Chart.Model (line 217, column 29 - line 226, column 14): " + [tr.constructor.name]);
             }();
-
             return {
               modelInfo: {
                 params: v.params,
@@ -18046,30 +14991,23 @@ var PS = {};
       };
     };
   };
-
   var modelBase = function modelBase(v) {
     return function (baseData) {
       var paramTrans = modelFitTrans(v.tail)(baseData)(v.fit);
       var out = modelBaseData(paramTrans.trans)(modelFitParams(v.fit))(v.tail)(v.forecast)(baseData);
       var inf = D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(Global.infinity);
-
       var capInfinity = function () {
         var v1 = Foreign_Object.lookup("Final Total")(paramTrans.params);
-
         if (v1 instanceof Data_Maybe.Nothing) {
           return false;
         }
-
         ;
-
         if (v1 instanceof Data_Maybe.Just) {
           return D3_Scatter_Type.eqSomeValue(v1.value0)(inf);
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.Model (line 95, column 19 - line 97, column 38): " + [v1.constructor.name]);
       }();
-
       var touchup = function () {
         if (v.fit instanceof D3_Scatter_Type.LogFit) {
           if (capInfinity) {
@@ -18079,18 +15017,13 @@ var PS = {};
               return $52($53($54));
             };
           }
-
           ;
-
           if (Data_Boolean.otherwise) {
             return Control_Category.identity(Control_Category.categoryFn);
           }
-
           ;
         }
-
         ;
-
         if (v.fit instanceof D3_Scatter_Type.DecFit) {
           if (capInfinity) {
             var $55 = Foreign_Object.insert("Halving Time")(D3_Scatter_Type.someValue(D3_Scatter_Type.stNumber)(Global.infinity));
@@ -18099,20 +15032,15 @@ var PS = {};
               return $55($56($57));
             };
           }
-
           ;
-
           if (Data_Boolean.otherwise) {
             return Control_Category.identity(Control_Category.categoryFn);
           }
-
           ;
         }
-
         ;
         return Control_Category.identity(Control_Category.categoryFn);
       }();
-
       return {
         modelInfo: {
           params: Foreign_Object.union(touchup(out.modelInfo.params))(paramTrans.params),
@@ -18122,7 +15050,6 @@ var PS = {};
       };
     };
   };
-
   var fitTimeCounts = function fitTimeCounts(info) {
     return function (v) {
       var fittedCounts = Data_Function.flip(function () {
@@ -18156,10 +15083,8 @@ var PS = {};
       };
     };
   };
-
   exports["fitTimeCounts"] = fitTimeCounts;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -18177,15 +15102,12 @@ var PS = {};
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unfoldable = $PS["Data.Unfoldable"];
-
   var Leaf = function () {
     function Leaf() {}
-
     ;
     Leaf.value = new Leaf();
     return Leaf;
   }();
-
   var Two = function () {
     function Two(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -18193,9 +15115,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Two.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18205,10 +15125,8 @@ var PS = {};
         };
       };
     };
-
     return Two;
   }();
-
   var Three = function () {
     function Three(value0, value1, value2, value3, value4, value5, value6) {
       this.value0 = value0;
@@ -18219,9 +15137,7 @@ var PS = {};
       this.value5 = value5;
       this.value6 = value6;
     }
-
     ;
-
     Three.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18237,19 +15153,15 @@ var PS = {};
         };
       };
     };
-
     return Three;
   }();
-
   var TwoLeft = function () {
     function TwoLeft(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     TwoLeft.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18257,19 +15169,15 @@ var PS = {};
         };
       };
     };
-
     return TwoLeft;
   }();
-
   var TwoRight = function () {
     function TwoRight(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     TwoRight.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18277,10 +15185,8 @@ var PS = {};
         };
       };
     };
-
     return TwoRight;
   }();
-
   var ThreeLeft = function () {
     function ThreeLeft(value0, value1, value2, value3, value4, value5) {
       this.value0 = value0;
@@ -18290,9 +15196,7 @@ var PS = {};
       this.value4 = value4;
       this.value5 = value5;
     }
-
     ;
-
     ThreeLeft.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18306,10 +15210,8 @@ var PS = {};
         };
       };
     };
-
     return ThreeLeft;
   }();
-
   var ThreeMiddle = function () {
     function ThreeMiddle(value0, value1, value2, value3, value4, value5) {
       this.value0 = value0;
@@ -18319,9 +15221,7 @@ var PS = {};
       this.value4 = value4;
       this.value5 = value5;
     }
-
     ;
-
     ThreeMiddle.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18335,10 +15235,8 @@ var PS = {};
         };
       };
     };
-
     return ThreeMiddle;
   }();
-
   var ThreeRight = function () {
     function ThreeRight(value0, value1, value2, value3, value4, value5) {
       this.value0 = value0;
@@ -18348,9 +15246,7 @@ var PS = {};
       this.value4 = value4;
       this.value5 = value5;
     }
-
     ;
-
     ThreeRight.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18364,10 +15260,8 @@ var PS = {};
         };
       };
     };
-
     return ThreeRight;
   }();
-
   var KickUp = function () {
     function KickUp(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -18375,9 +15269,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     KickUp.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -18387,198 +15279,147 @@ var PS = {};
         };
       };
     };
-
     return KickUp;
   }();
-
   var values = function values(v) {
     if (v instanceof Leaf) {
       return Data_List_Types.Nil.value;
     }
-
     ;
-
     if (v instanceof Two) {
       return Data_Semigroup.append(Data_List_Types.semigroupList)(values(v.value0))(Data_Semigroup.append(Data_List_Types.semigroupList)(Control_Applicative.pure(Data_List_Types.applicativeList)(v.value2))(values(v.value3)));
     }
-
     ;
-
     if (v instanceof Three) {
       return Data_Semigroup.append(Data_List_Types.semigroupList)(values(v.value0))(Data_Semigroup.append(Data_List_Types.semigroupList)(Control_Applicative.pure(Data_List_Types.applicativeList)(v.value2))(Data_Semigroup.append(Data_List_Types.semigroupList)(values(v.value3))(Data_Semigroup.append(Data_List_Types.semigroupList)(Control_Applicative.pure(Data_List_Types.applicativeList)(v.value5))(values(v.value6)))));
     }
-
     ;
     throw new Error("Failed pattern match at Data.Map.Internal (line 612, column 1 - line 612, column 40): " + [v.constructor.name]);
   };
-
   var singleton = function singleton(k) {
     return function (v) {
       return new Two(Leaf.value, k, v, Leaf.value);
     };
   };
-
   var toUnfoldable = function toUnfoldable(dictUnfoldable) {
     return function (m) {
       var go = function go($copy_v) {
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(v) {
           if (v instanceof Data_List_Types.Nil) {
             $tco_done = true;
             return Data_Maybe.Nothing.value;
           }
-
           ;
-
           if (v instanceof Data_List_Types.Cons) {
             if (v.value0 instanceof Leaf) {
               $copy_v = v.value1;
               return;
             }
-
             ;
-
             if (v.value0 instanceof Two && v.value0.value0 instanceof Leaf && v.value0.value3 instanceof Leaf) {
               $tco_done = true;
               return Data_Maybe.Just.create(new Data_Tuple.Tuple(new Data_Tuple.Tuple(v.value0.value1, v.value0.value2), v.value1));
             }
-
             ;
-
             if (v.value0 instanceof Two && v.value0.value0 instanceof Leaf) {
               $tco_done = true;
               return Data_Maybe.Just.create(new Data_Tuple.Tuple(new Data_Tuple.Tuple(v.value0.value1, v.value0.value2), new Data_List_Types.Cons(v.value0.value3, v.value1)));
             }
-
             ;
-
             if (v.value0 instanceof Two) {
               $copy_v = new Data_List_Types.Cons(v.value0.value0, new Data_List_Types.Cons(singleton(v.value0.value1)(v.value0.value2), new Data_List_Types.Cons(v.value0.value3, v.value1)));
               return;
             }
-
             ;
-
             if (v.value0 instanceof Three) {
               $copy_v = new Data_List_Types.Cons(v.value0.value0, new Data_List_Types.Cons(singleton(v.value0.value1)(v.value0.value2), new Data_List_Types.Cons(v.value0.value3, new Data_List_Types.Cons(singleton(v.value0.value4)(v.value0.value5), new Data_List_Types.Cons(v.value0.value6, v.value1)))));
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Data.Map.Internal (line 577, column 18 - line 586, column 71): " + [v.value0.constructor.name]);
           }
-
           ;
           throw new Error("Failed pattern match at Data.Map.Internal (line 576, column 3 - line 576, column 19): " + [v.constructor.name]);
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($copy_v);
         }
-
         ;
         return $tco_result;
       };
-
       return Data_Unfoldable.unfoldr(dictUnfoldable)(go)(new Data_List_Types.Cons(m, Data_List_Types.Nil.value));
     };
   };
-
   var lookup = function lookup(dictOrd) {
     return function (k) {
       var comp = Data_Ord.compare(dictOrd);
-
       var go = function go($copy_v) {
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(v) {
           if (v instanceof Leaf) {
             $tco_done = true;
             return Data_Maybe.Nothing.value;
           }
-
           ;
-
           if (v instanceof Two) {
             var v2 = comp(k)(v.value1);
-
             if (v2 instanceof Data_Ordering.EQ) {
               $tco_done = true;
               return new Data_Maybe.Just(v.value2);
             }
-
             ;
-
             if (v2 instanceof Data_Ordering.LT) {
               $copy_v = v.value0;
               return;
             }
-
             ;
             $copy_v = v.value3;
             return;
           }
-
           ;
-
           if (v instanceof Three) {
             var v3 = comp(k)(v.value1);
-
             if (v3 instanceof Data_Ordering.EQ) {
               $tco_done = true;
               return new Data_Maybe.Just(v.value2);
             }
-
             ;
             var v4 = comp(k)(v.value4);
-
             if (v4 instanceof Data_Ordering.EQ) {
               $tco_done = true;
               return new Data_Maybe.Just(v.value5);
             }
-
             ;
-
             if (v3 instanceof Data_Ordering.LT) {
               $copy_v = v.value0;
               return;
             }
-
             ;
-
             if (v4 instanceof Data_Ordering.GT) {
               $copy_v = v.value6;
               return;
             }
-
             ;
             $copy_v = v.value3;
             return;
           }
-
           ;
           throw new Error("Failed pattern match at Data.Map.Internal (line 200, column 5 - line 200, column 22): " + [v.constructor.name]);
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($copy_v);
         }
-
         ;
         return $tco_result;
       };
-
       return go;
     };
   };
-
   var member = function member(dictOrd) {
     return function (k) {
       return function (m) {
@@ -18586,51 +15427,38 @@ var PS = {};
       };
     };
   };
-
   var keys = function keys(v) {
     if (v instanceof Leaf) {
       return Data_List_Types.Nil.value;
     }
-
     ;
-
     if (v instanceof Two) {
       return Data_Semigroup.append(Data_List_Types.semigroupList)(keys(v.value0))(Data_Semigroup.append(Data_List_Types.semigroupList)(Control_Applicative.pure(Data_List_Types.applicativeList)(v.value1))(keys(v.value3)));
     }
-
     ;
-
     if (v instanceof Three) {
       return Data_Semigroup.append(Data_List_Types.semigroupList)(keys(v.value0))(Data_Semigroup.append(Data_List_Types.semigroupList)(Control_Applicative.pure(Data_List_Types.applicativeList)(v.value1))(Data_Semigroup.append(Data_List_Types.semigroupList)(keys(v.value3))(Data_Semigroup.append(Data_List_Types.semigroupList)(Control_Applicative.pure(Data_List_Types.applicativeList)(v.value4))(keys(v.value6)))));
     }
-
     ;
     throw new Error("Failed pattern match at Data.Map.Internal (line 606, column 1 - line 606, column 38): " + [v.constructor.name]);
   };
-
   var functorMap = new Data_Functor.Functor(function (v) {
     return function (v1) {
       if (v1 instanceof Leaf) {
         return Leaf.value;
       }
-
       ;
-
       if (v1 instanceof Two) {
         return new Two(Data_Functor.map(functorMap)(v)(v1.value0), v1.value1, v(v1.value2), Data_Functor.map(functorMap)(v)(v1.value3));
       }
-
       ;
-
       if (v1 instanceof Three) {
         return new Three(Data_Functor.map(functorMap)(v)(v1.value0), v1.value1, v(v1.value2), Data_Functor.map(functorMap)(v)(v1.value3), v1.value4, v(v1.value5), Data_Functor.map(functorMap)(v)(v1.value6));
       }
-
       ;
       throw new Error("Failed pattern match at Data.Map.Internal (line 96, column 1 - line 99, column 110): " + [v.constructor.name, v1.constructor.name]);
     };
   });
-
   var fromZipper = function fromZipper($copy_dictOrd) {
     return function ($copy_v) {
       return function ($copy_tree) {
@@ -18638,15 +15466,12 @@ var PS = {};
         var $tco_var_v = $copy_v;
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(dictOrd, v, tree) {
           if (v instanceof Data_List_Types.Nil) {
             $tco_done = true;
             return tree;
           }
-
           ;
-
           if (v instanceof Data_List_Types.Cons) {
             if (v.value0 instanceof TwoLeft) {
               $tco_var_dictOrd = dictOrd;
@@ -18654,63 +15479,49 @@ var PS = {};
               $copy_tree = new Two(tree, v.value0.value0, v.value0.value1, v.value0.value2);
               return;
             }
-
             ;
-
             if (v.value0 instanceof TwoRight) {
               $tco_var_dictOrd = dictOrd;
               $tco_var_v = v.value1;
               $copy_tree = new Two(v.value0.value0, v.value0.value1, v.value0.value2, tree);
               return;
             }
-
             ;
-
             if (v.value0 instanceof ThreeLeft) {
               $tco_var_dictOrd = dictOrd;
               $tco_var_v = v.value1;
               $copy_tree = new Three(tree, v.value0.value0, v.value0.value1, v.value0.value2, v.value0.value3, v.value0.value4, v.value0.value5);
               return;
             }
-
             ;
-
             if (v.value0 instanceof ThreeMiddle) {
               $tco_var_dictOrd = dictOrd;
               $tco_var_v = v.value1;
               $copy_tree = new Three(v.value0.value0, v.value0.value1, v.value0.value2, tree, v.value0.value3, v.value0.value4, v.value0.value5);
               return;
             }
-
             ;
-
             if (v.value0 instanceof ThreeRight) {
               $tco_var_dictOrd = dictOrd;
               $tco_var_v = v.value1;
               $copy_tree = new Three(v.value0.value0, v.value0.value1, v.value0.value2, v.value0.value3, v.value0.value4, v.value0.value5, tree);
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Data.Map.Internal (line 418, column 3 - line 423, column 88): " + [v.value0.constructor.name]);
           }
-
           ;
           throw new Error("Failed pattern match at Data.Map.Internal (line 415, column 1 - line 415, column 80): " + [v.constructor.name, tree.constructor.name]);
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($tco_var_dictOrd, $tco_var_v, $copy_tree);
         }
-
         ;
         return $tco_result;
       };
     };
   };
-
   var insert = function insert(dictOrd) {
     return function (k) {
       return function (v) {
@@ -18719,169 +15530,128 @@ var PS = {};
             var $tco_var_v1 = $copy_v1;
             var $tco_done = false;
             var $tco_result;
-
             function $tco_loop(v1, v2) {
               if (v1 instanceof Data_List_Types.Nil) {
                 $tco_done = true;
                 return new Two(v2.value0, v2.value1, v2.value2, v2.value3);
               }
-
               ;
-
               if (v1 instanceof Data_List_Types.Cons) {
                 if (v1.value0 instanceof TwoLeft) {
                   $tco_done = true;
                   return fromZipper(dictOrd)(v1.value1)(new Three(v2.value0, v2.value1, v2.value2, v2.value3, v1.value0.value0, v1.value0.value1, v1.value0.value2));
                 }
-
                 ;
-
                 if (v1.value0 instanceof TwoRight) {
                   $tco_done = true;
                   return fromZipper(dictOrd)(v1.value1)(new Three(v1.value0.value0, v1.value0.value1, v1.value0.value2, v2.value0, v2.value1, v2.value2, v2.value3));
                 }
-
                 ;
-
                 if (v1.value0 instanceof ThreeLeft) {
                   $tco_var_v1 = v1.value1;
                   $copy_v2 = new KickUp(new Two(v2.value0, v2.value1, v2.value2, v2.value3), v1.value0.value0, v1.value0.value1, new Two(v1.value0.value2, v1.value0.value3, v1.value0.value4, v1.value0.value5));
                   return;
                 }
-
                 ;
-
                 if (v1.value0 instanceof ThreeMiddle) {
                   $tco_var_v1 = v1.value1;
                   $copy_v2 = new KickUp(new Two(v1.value0.value0, v1.value0.value1, v1.value0.value2, v2.value0), v2.value1, v2.value2, new Two(v2.value3, v1.value0.value3, v1.value0.value4, v1.value0.value5));
                   return;
                 }
-
                 ;
-
                 if (v1.value0 instanceof ThreeRight) {
                   $tco_var_v1 = v1.value1;
                   $copy_v2 = new KickUp(new Two(v1.value0.value0, v1.value0.value1, v1.value0.value2, v1.value0.value3), v1.value0.value4, v1.value0.value5, new Two(v2.value0, v2.value1, v2.value2, v2.value3));
                   return;
                 }
-
                 ;
                 throw new Error("Failed pattern match at Data.Map.Internal (line 454, column 5 - line 459, column 108): " + [v1.value0.constructor.name, v2.constructor.name]);
               }
-
               ;
               throw new Error("Failed pattern match at Data.Map.Internal (line 451, column 3 - line 451, column 56): " + [v1.constructor.name, v2.constructor.name]);
             }
-
             ;
-
             while (!$tco_done) {
               $tco_result = $tco_loop($tco_var_v1, $copy_v2);
             }
-
             ;
             return $tco_result;
           };
         };
-
         var comp = Data_Ord.compare(dictOrd);
-
         var down = function down($copy_ctx) {
           return function ($copy_v1) {
             var $tco_var_ctx = $copy_ctx;
             var $tco_done = false;
             var $tco_result;
-
             function $tco_loop(ctx, v1) {
               if (v1 instanceof Leaf) {
                 $tco_done = true;
                 return up(ctx)(new KickUp(Leaf.value, k, v, Leaf.value));
               }
-
               ;
-
               if (v1 instanceof Two) {
                 var v2 = comp(k)(v1.value1);
-
                 if (v2 instanceof Data_Ordering.EQ) {
                   $tco_done = true;
                   return fromZipper(dictOrd)(ctx)(new Two(v1.value0, k, v, v1.value3));
                 }
-
                 ;
-
                 if (v2 instanceof Data_Ordering.LT) {
                   $tco_var_ctx = new Data_List_Types.Cons(new TwoLeft(v1.value1, v1.value2, v1.value3), ctx);
                   $copy_v1 = v1.value0;
                   return;
                 }
-
                 ;
                 $tco_var_ctx = new Data_List_Types.Cons(new TwoRight(v1.value0, v1.value1, v1.value2), ctx);
                 $copy_v1 = v1.value3;
                 return;
               }
-
               ;
-
               if (v1 instanceof Three) {
                 var v3 = comp(k)(v1.value1);
-
                 if (v3 instanceof Data_Ordering.EQ) {
                   $tco_done = true;
                   return fromZipper(dictOrd)(ctx)(new Three(v1.value0, k, v, v1.value3, v1.value4, v1.value5, v1.value6));
                 }
-
                 ;
                 var v4 = comp(k)(v1.value4);
-
                 if (v4 instanceof Data_Ordering.EQ) {
                   $tco_done = true;
                   return fromZipper(dictOrd)(ctx)(new Three(v1.value0, v1.value1, v1.value2, v1.value3, k, v, v1.value6));
                 }
-
                 ;
-
                 if (v3 instanceof Data_Ordering.LT) {
                   $tco_var_ctx = new Data_List_Types.Cons(new ThreeLeft(v1.value1, v1.value2, v1.value3, v1.value4, v1.value5, v1.value6), ctx);
                   $copy_v1 = v1.value0;
                   return;
                 }
-
                 ;
-
                 if (v3 instanceof Data_Ordering.GT && v4 instanceof Data_Ordering.LT) {
                   $tco_var_ctx = new Data_List_Types.Cons(new ThreeMiddle(v1.value0, v1.value1, v1.value2, v1.value4, v1.value5, v1.value6), ctx);
                   $copy_v1 = v1.value3;
                   return;
                 }
-
                 ;
                 $tco_var_ctx = new Data_List_Types.Cons(new ThreeRight(v1.value0, v1.value1, v1.value2, v1.value3, v1.value4, v1.value5), ctx);
                 $copy_v1 = v1.value6;
                 return;
               }
-
               ;
               throw new Error("Failed pattern match at Data.Map.Internal (line 434, column 3 - line 434, column 55): " + [ctx.constructor.name, v1.constructor.name]);
             }
-
             ;
-
             while (!$tco_done) {
               $tco_result = $tco_loop($tco_var_ctx, $copy_v1);
             }
-
             ;
             return $tco_result;
           };
         };
-
         return down(Data_List_Types.Nil.value);
       };
     };
   };
-
   var pop = function pop(dictOrd) {
     return function (k) {
       var up = function up($copy_ctxs) {
@@ -18889,208 +15659,154 @@ var PS = {};
           var $tco_var_ctxs = $copy_ctxs;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(ctxs, tree) {
             if (ctxs instanceof Data_List_Types.Nil) {
               $tco_done = true;
               return tree;
             }
-
             ;
-
             if (ctxs instanceof Data_List_Types.Cons) {
               if (ctxs.value0 instanceof TwoLeft && ctxs.value0.value2 instanceof Leaf && tree instanceof Leaf) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(Leaf.value, ctxs.value0.value0, ctxs.value0.value1, Leaf.value));
               }
-
               ;
-
               if (ctxs.value0 instanceof TwoRight && ctxs.value0.value0 instanceof Leaf && tree instanceof Leaf) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(Leaf.value, ctxs.value0.value1, ctxs.value0.value2, Leaf.value));
               }
-
               ;
-
               if (ctxs.value0 instanceof TwoLeft && ctxs.value0.value2 instanceof Two) {
                 $tco_var_ctxs = ctxs.value1;
                 $copy_tree = new Three(tree, ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2.value0, ctxs.value0.value2.value1, ctxs.value0.value2.value2, ctxs.value0.value2.value3);
                 return;
               }
-
               ;
-
               if (ctxs.value0 instanceof TwoRight && ctxs.value0.value0 instanceof Two) {
                 $tco_var_ctxs = ctxs.value1;
                 $copy_tree = new Three(ctxs.value0.value0.value0, ctxs.value0.value0.value1, ctxs.value0.value0.value2, ctxs.value0.value0.value3, ctxs.value0.value1, ctxs.value0.value2, tree);
                 return;
               }
-
               ;
-
               if (ctxs.value0 instanceof TwoLeft && ctxs.value0.value2 instanceof Three) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(new Two(tree, ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2.value0), ctxs.value0.value2.value1, ctxs.value0.value2.value2, new Two(ctxs.value0.value2.value3, ctxs.value0.value2.value4, ctxs.value0.value2.value5, ctxs.value0.value2.value6)));
               }
-
               ;
-
               if (ctxs.value0 instanceof TwoRight && ctxs.value0.value0 instanceof Three) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(new Two(ctxs.value0.value0.value0, ctxs.value0.value0.value1, ctxs.value0.value0.value2, ctxs.value0.value0.value3), ctxs.value0.value0.value4, ctxs.value0.value0.value5, new Two(ctxs.value0.value0.value6, ctxs.value0.value1, ctxs.value0.value2, tree)));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeLeft && ctxs.value0.value2 instanceof Leaf && ctxs.value0.value5 instanceof Leaf && tree instanceof Leaf) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(Leaf.value, ctxs.value0.value0, ctxs.value0.value1, Leaf.value, ctxs.value0.value3, ctxs.value0.value4, Leaf.value));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeMiddle && ctxs.value0.value0 instanceof Leaf && ctxs.value0.value5 instanceof Leaf && tree instanceof Leaf) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(Leaf.value, ctxs.value0.value1, ctxs.value0.value2, Leaf.value, ctxs.value0.value3, ctxs.value0.value4, Leaf.value));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeRight && ctxs.value0.value0 instanceof Leaf && ctxs.value0.value3 instanceof Leaf && tree instanceof Leaf) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(Leaf.value, ctxs.value0.value1, ctxs.value0.value2, Leaf.value, ctxs.value0.value4, ctxs.value0.value5, Leaf.value));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeLeft && ctxs.value0.value2 instanceof Two) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(new Three(tree, ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2.value0, ctxs.value0.value2.value1, ctxs.value0.value2.value2, ctxs.value0.value2.value3), ctxs.value0.value3, ctxs.value0.value4, ctxs.value0.value5));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeMiddle && ctxs.value0.value0 instanceof Two) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(new Three(ctxs.value0.value0.value0, ctxs.value0.value0.value1, ctxs.value0.value0.value2, ctxs.value0.value0.value3, ctxs.value0.value1, ctxs.value0.value2, tree), ctxs.value0.value3, ctxs.value0.value4, ctxs.value0.value5));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeMiddle && ctxs.value0.value5 instanceof Two) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2, new Three(tree, ctxs.value0.value3, ctxs.value0.value4, ctxs.value0.value5.value0, ctxs.value0.value5.value1, ctxs.value0.value5.value2, ctxs.value0.value5.value3)));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeRight && ctxs.value0.value3 instanceof Two) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Two(ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2, new Three(ctxs.value0.value3.value0, ctxs.value0.value3.value1, ctxs.value0.value3.value2, ctxs.value0.value3.value3, ctxs.value0.value4, ctxs.value0.value5, tree)));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeLeft && ctxs.value0.value2 instanceof Three) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(new Two(tree, ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2.value0), ctxs.value0.value2.value1, ctxs.value0.value2.value2, new Two(ctxs.value0.value2.value3, ctxs.value0.value2.value4, ctxs.value0.value2.value5, ctxs.value0.value2.value6), ctxs.value0.value3, ctxs.value0.value4, ctxs.value0.value5));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeMiddle && ctxs.value0.value0 instanceof Three) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(new Two(ctxs.value0.value0.value0, ctxs.value0.value0.value1, ctxs.value0.value0.value2, ctxs.value0.value0.value3), ctxs.value0.value0.value4, ctxs.value0.value0.value5, new Two(ctxs.value0.value0.value6, ctxs.value0.value1, ctxs.value0.value2, tree), ctxs.value0.value3, ctxs.value0.value4, ctxs.value0.value5));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeMiddle && ctxs.value0.value5 instanceof Three) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2, new Two(tree, ctxs.value0.value3, ctxs.value0.value4, ctxs.value0.value5.value0), ctxs.value0.value5.value1, ctxs.value0.value5.value2, new Two(ctxs.value0.value5.value3, ctxs.value0.value5.value4, ctxs.value0.value5.value5, ctxs.value0.value5.value6)));
               }
-
               ;
-
               if (ctxs.value0 instanceof ThreeRight && ctxs.value0.value3 instanceof Three) {
                 $tco_done = true;
                 return fromZipper(dictOrd)(ctxs.value1)(new Three(ctxs.value0.value0, ctxs.value0.value1, ctxs.value0.value2, new Two(ctxs.value0.value3.value0, ctxs.value0.value3.value1, ctxs.value0.value3.value2, ctxs.value0.value3.value3), ctxs.value0.value3.value4, ctxs.value0.value3.value5, new Two(ctxs.value0.value3.value6, ctxs.value0.value4, ctxs.value0.value5, tree)));
               }
-
               ;
               throw new Error("Failed pattern match at Data.Map.Internal (line 511, column 9 - line 528, column 136): " + [ctxs.value0.constructor.name, tree.constructor.name]);
             }
-
             ;
             throw new Error("Failed pattern match at Data.Map.Internal (line 508, column 5 - line 528, column 136): " + [ctxs.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_ctxs, $copy_tree);
           }
-
           ;
           return $tco_result;
         };
       };
-
       var removeMaxNode = function removeMaxNode($copy_ctx) {
         return function ($copy_m) {
           var $tco_var_ctx = $copy_ctx;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(ctx, m) {
             if (m instanceof Two && m.value0 instanceof Leaf && m.value3 instanceof Leaf) {
               $tco_done = true;
               return up(ctx)(Leaf.value);
             }
-
             ;
-
             if (m instanceof Two) {
               $tco_var_ctx = new Data_List_Types.Cons(new TwoRight(m.value0, m.value1, m.value2), ctx);
               $copy_m = m.value3;
               return;
             }
-
             ;
-
             if (m instanceof Three && m.value0 instanceof Leaf && m.value3 instanceof Leaf && m.value6 instanceof Leaf) {
               $tco_done = true;
               return up(new Data_List_Types.Cons(new TwoRight(Leaf.value, m.value1, m.value2), ctx))(Leaf.value);
             }
-
             ;
-
             if (m instanceof Three) {
               $tco_var_ctx = new Data_List_Types.Cons(new ThreeRight(m.value0, m.value1, m.value2, m.value3, m.value4, m.value5), ctx);
               $copy_m = m.value6;
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Data.Map.Internal (line 540, column 5 - line 544, column 107): " + [m.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_ctx, $copy_m);
           }
-
           ;
           return $tco_result;
         };
       };
-
       var maxNode = function maxNode($copy_m) {
         var $tco_done = false;
         var $tco_result;
-
         function $tco_loop(m) {
           if (m instanceof Two && m.value3 instanceof Leaf) {
             $tco_done = true;
@@ -19099,16 +15815,12 @@ var PS = {};
               value: m.value2
             };
           }
-
           ;
-
           if (m instanceof Two) {
             $copy_m = m.value3;
             return;
           }
-
           ;
-
           if (m instanceof Three && m.value6 instanceof Leaf) {
             $tco_done = true;
             return {
@@ -19116,158 +15828,119 @@ var PS = {};
               value: m.value5
             };
           }
-
           ;
-
           if (m instanceof Three) {
             $copy_m = m.value6;
             return;
           }
-
           ;
           throw new Error("Failed pattern match at Data.Map.Internal (line 531, column 33 - line 535, column 45): " + [m.constructor.name]);
         }
-
         ;
-
         while (!$tco_done) {
           $tco_result = $tco_loop($copy_m);
         }
-
         ;
         return $tco_result;
       };
-
       var comp = Data_Ord.compare(dictOrd);
-
       var down = function down($copy_ctx) {
         return function ($copy_m) {
           var $tco_var_ctx = $copy_ctx;
           var $tco_done = false;
           var $tco_result;
-
           function $tco_loop(ctx, m) {
             if (m instanceof Leaf) {
               $tco_done = true;
               return Data_Maybe.Nothing.value;
             }
-
             ;
-
             if (m instanceof Two) {
               var v = comp(k)(m.value1);
-
               if (m.value3 instanceof Leaf && v instanceof Data_Ordering.EQ) {
                 $tco_done = true;
                 return new Data_Maybe.Just(new Data_Tuple.Tuple(m.value2, up(ctx)(Leaf.value)));
               }
-
               ;
-
               if (v instanceof Data_Ordering.EQ) {
                 var max = maxNode(m.value0);
                 $tco_done = true;
                 return new Data_Maybe.Just(new Data_Tuple.Tuple(m.value2, removeMaxNode(new Data_List_Types.Cons(new TwoLeft(max.key, max.value, m.value3), ctx))(m.value0)));
               }
-
               ;
-
               if (v instanceof Data_Ordering.LT) {
                 $tco_var_ctx = new Data_List_Types.Cons(new TwoLeft(m.value1, m.value2, m.value3), ctx);
                 $copy_m = m.value0;
                 return;
               }
-
               ;
               $tco_var_ctx = new Data_List_Types.Cons(new TwoRight(m.value0, m.value1, m.value2), ctx);
               $copy_m = m.value3;
               return;
             }
-
             ;
-
             if (m instanceof Three) {
               var leaves = function () {
                 if (m.value0 instanceof Leaf && m.value3 instanceof Leaf && m.value6 instanceof Leaf) {
                   return true;
                 }
-
                 ;
                 return false;
               }();
-
               var v = comp(k)(m.value4);
               var v3 = comp(k)(m.value1);
-
               if (leaves && v3 instanceof Data_Ordering.EQ) {
                 $tco_done = true;
                 return new Data_Maybe.Just(new Data_Tuple.Tuple(m.value2, fromZipper(dictOrd)(ctx)(new Two(Leaf.value, m.value4, m.value5, Leaf.value))));
               }
-
               ;
-
               if (leaves && v instanceof Data_Ordering.EQ) {
                 $tco_done = true;
                 return new Data_Maybe.Just(new Data_Tuple.Tuple(m.value5, fromZipper(dictOrd)(ctx)(new Two(Leaf.value, m.value1, m.value2, Leaf.value))));
               }
-
               ;
-
               if (v3 instanceof Data_Ordering.EQ) {
                 var max = maxNode(m.value0);
                 $tco_done = true;
                 return new Data_Maybe.Just(new Data_Tuple.Tuple(m.value2, removeMaxNode(new Data_List_Types.Cons(new ThreeLeft(max.key, max.value, m.value3, m.value4, m.value5, m.value6), ctx))(m.value0)));
               }
-
               ;
-
               if (v instanceof Data_Ordering.EQ) {
                 var max = maxNode(m.value3);
                 $tco_done = true;
                 return new Data_Maybe.Just(new Data_Tuple.Tuple(m.value5, removeMaxNode(new Data_List_Types.Cons(new ThreeMiddle(m.value0, m.value1, m.value2, max.key, max.value, m.value6), ctx))(m.value3)));
               }
-
               ;
-
               if (v3 instanceof Data_Ordering.LT) {
                 $tco_var_ctx = new Data_List_Types.Cons(new ThreeLeft(m.value1, m.value2, m.value3, m.value4, m.value5, m.value6), ctx);
                 $copy_m = m.value0;
                 return;
               }
-
               ;
-
               if (v3 instanceof Data_Ordering.GT && v instanceof Data_Ordering.LT) {
                 $tco_var_ctx = new Data_List_Types.Cons(new ThreeMiddle(m.value0, m.value1, m.value2, m.value4, m.value5, m.value6), ctx);
                 $copy_m = m.value3;
                 return;
               }
-
               ;
               $tco_var_ctx = new Data_List_Types.Cons(new ThreeRight(m.value0, m.value1, m.value2, m.value3, m.value4, m.value5), ctx);
               $copy_m = m.value6;
               return;
             }
-
             ;
             throw new Error("Failed pattern match at Data.Map.Internal (line 481, column 34 - line 504, column 80): " + [m.constructor.name]);
           }
-
           ;
-
           while (!$tco_done) {
             $tco_result = $tco_loop($tco_var_ctx, $copy_m);
           }
-
           ;
           return $tco_result;
         };
       };
-
       return down(Data_List_Types.Nil.value);
     };
   };
-
   var foldableMap = new Data_Foldable.Foldable(function (dictMonoid) {
     return function (f) {
       return function (m) {
@@ -19288,7 +15961,6 @@ var PS = {};
     };
   });
   var empty = Leaf.value;
-
   var fromFoldable = function fromFoldable(dictOrd) {
     return function (dictFoldable) {
       return Data_Foldable.foldl(dictFoldable)(function (m) {
@@ -19298,7 +15970,6 @@ var PS = {};
       })(empty);
     };
   };
-
   var intersectionWith = function intersectionWith(dictOrd) {
     return function (f) {
       return function (m1) {
@@ -19310,76 +15981,59 @@ var PS = {};
                 var $tco_var_v1 = $copy_v1;
                 var $tco_done = false;
                 var $tco_result;
-
                 function $tco_loop(v, v1, m) {
                   if (v instanceof Data_List_Types.Nil) {
                     $tco_done = true;
                     return m;
                   }
-
                   ;
-
                   if (v1 instanceof Data_List_Types.Nil) {
                     $tco_done = true;
                     return m;
                   }
-
                   ;
-
                   if (v instanceof Data_List_Types.Cons && v1 instanceof Data_List_Types.Cons) {
                     var v2 = Data_Ord.compare(dictOrd)(v.value0.value0)(v1.value0.value0);
-
                     if (v2 instanceof Data_Ordering.LT) {
                       $tco_var_v = v.value1;
                       $tco_var_v1 = v1;
                       $copy_m = m;
                       return;
                     }
-
                     ;
-
                     if (v2 instanceof Data_Ordering.EQ) {
                       $tco_var_v = v.value1;
                       $tco_var_v1 = v1.value1;
                       $copy_m = insert(dictOrd)(v.value0.value0)(f(v.value0.value1)(v1.value0.value1))(m);
                       return;
                     }
-
                     ;
-
                     if (v2 instanceof Data_Ordering.GT) {
                       $tco_var_v = v;
                       $tco_var_v1 = v1.value1;
                       $copy_m = m;
                       return;
                     }
-
                     ;
                     throw new Error("Failed pattern match at Data.Map.Internal (line 641, column 5 - line 644, column 27): " + [v2.constructor.name]);
                   }
-
                   ;
                   throw new Error("Failed pattern match at Data.Map.Internal (line 638, column 3 - line 638, column 17): " + [v.constructor.name, v1.constructor.name, m.constructor.name]);
                 }
-
                 ;
-
                 while (!$tco_done) {
                   $tco_result = $tco_loop($tco_var_v, $tco_var_v1, $copy_m);
                 }
-
                 ;
                 return $tco_result;
               };
             };
           };
-
           return go(toUnfoldable(Data_List_Types.unfoldableList)(m1))(toUnfoldable(Data_List_Types.unfoldableList)(m2))(empty);
         };
       };
     };
   };
-
   var $$delete = function $$delete(dictOrd) {
     return function (k) {
       return function (m) {
@@ -19387,30 +16041,24 @@ var PS = {};
       };
     };
   };
-
   var alter = function alter(dictOrd) {
     return function (f) {
       return function (k) {
         return function (m) {
           var v = f(lookup(dictOrd)(k)(m));
-
           if (v instanceof Data_Maybe.Nothing) {
             return $$delete(dictOrd)(k)(m);
           }
-
           ;
-
           if (v instanceof Data_Maybe.Just) {
             return insert(dictOrd)(k)(v.value0)(m);
           }
-
           ;
           throw new Error("Failed pattern match at Data.Map.Internal (line 549, column 15 - line 551, column 25): " + [v.constructor.name]);
         };
       };
     };
   };
-
   var unionWith = function unionWith(dictOrd) {
     return function (f) {
       return function (m1) {
@@ -19425,17 +16073,14 @@ var PS = {};
               }())(v.value0)(m);
             };
           };
-
           return Data_Foldable.foldl(Data_List_Types.foldableList)(go)(m2)(toUnfoldable(Data_List_Types.unfoldableList)(m1));
         };
       };
     };
   };
-
   var union = function union(dictOrd) {
     return unionWith(dictOrd)(Data_Function["const"]);
   };
-
   exports["empty"] = empty;
   exports["insert"] = insert;
   exports["lookup"] = lookup;
@@ -19451,7 +16096,6 @@ var PS = {};
   exports["functorMap"] = functorMap;
   exports["foldableMap"] = foldableMap;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -19464,7 +16108,6 @@ var PS = {};
   var Data_Map_Internal = $PS["Data.Map.Internal"];
   var Data_Semigroup = $PS["Data.Semigroup"];
   var Data_Unit = $PS["Data.Unit"];
-
   var union = function union(dictOrd) {
     return function (v) {
       return function (v1) {
@@ -19472,15 +16115,12 @@ var PS = {};
       };
     };
   };
-
   var toList = function toList(v) {
     return Data_Map_Internal.keys(v);
   };
-
   var semigroupSet = function semigroupSet(dictOrd) {
     return new Data_Semigroup.Semigroup(union(dictOrd));
   };
-
   var insert = function insert(dictOrd) {
     return function (a) {
       return function (v) {
@@ -19488,7 +16128,6 @@ var PS = {};
       };
     };
   };
-
   var foldableSet = new Data_Foldable.Foldable(function (dictMonoid) {
     return function (f) {
       var $65 = Data_Foldable.foldMap(Data_List_Types.foldableList)(dictMonoid)(f);
@@ -19512,7 +16151,6 @@ var PS = {};
     };
   });
   var empty = Data_Map_Internal.empty;
-
   var fromFoldable = function fromFoldable(dictFoldable) {
     return function (dictOrd) {
       return Data_Foldable.foldl(dictFoldable)(function (m) {
@@ -19522,7 +16160,6 @@ var PS = {};
       })(empty);
     };
   };
-
   var $$delete = function $$delete(dictOrd) {
     return function (a) {
       return function (v) {
@@ -19530,7 +16167,6 @@ var PS = {};
       };
     };
   };
-
   var difference = function difference(dictOrd) {
     return function (s1) {
       return function (s2) {
@@ -19538,7 +16174,6 @@ var PS = {};
       };
     };
   };
-
   exports["fromFoldable"] = fromFoldable;
   exports["empty"] = empty;
   exports["insert"] = insert;
@@ -19547,7 +16182,6 @@ var PS = {};
   exports["semigroupSet"] = semigroupSet;
   exports["foldableSet"] = foldableSet;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -19577,7 +16211,6 @@ var PS = {};
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unfoldable = $PS["Data.Unfoldable"];
   var Foreign_Object = $PS["Foreign.Object"];
-
   var toScatterPlot = function toScatterPlot(dat) {
     return function (mspecs) {
       return function (pss) {
@@ -19589,50 +16222,38 @@ var PS = {};
               values: v.value1.value1
             };
           };
-
           var projections = Data_Point.hoistPointF(function (v) {
             return v.projection;
           })(pss);
           var bY = Corona_Chart.baseProjection(projections.y);
           var bX = Corona_Chart.baseProjection(projections.x);
-
           var assembleCdr = function assembleCdr(cdr) {
             return Data_Functor.map(Foreign_Object.functorObject)(Data_Lazy.force)(Foreign_Object.fromFoldable(Data_Foldable.foldableArray)(Data_Function.flip(Data_Array.mapMaybe)([bX, bY])(Data_Exists.runExists(function (bp) {
               return Data_Functor.map(Data_Maybe.functorMaybe)(Data_Tuple.Tuple.create(Corona_Chart.baseProjectionLabel(bp)))(function () {
                 if (bp instanceof Corona_Chart.Time) {
                   return Data_Maybe.Nothing.value;
                 }
-
                 ;
-
                 if (bp instanceof Corona_Chart.Confirmed) {
                   return new Data_Maybe.Just(cdr.confirmed);
                 }
-
                 ;
-
                 if (bp instanceof Corona_Chart.Deaths) {
                   return new Data_Maybe.Just(cdr.deaths);
                 }
-
                 ;
-
                 if (bp instanceof Corona_Chart.Recovered) {
                   return new Data_Maybe.Just(cdr.recovered);
                 }
-
                 ;
-
                 if (bp instanceof Corona_Chart.Active) {
                   return new Data_Maybe.Just(cdr.active);
                 }
-
                 ;
                 throw new Error("Failed pattern match at Corona.Chart.Assemble (line 83, column 46 - line 88, column 43): " + [bp.constructor.name]);
               }());
             }))));
           };
-
           return {
             axis: Data_Point.hoistPointF(Corona_Chart.toAxisConf)(pss),
             series: Data_Function.flip(Data_Array.mapMaybe)(Data_Array.fromFoldable(Data_Set.foldableSet)(ctrys))(function (ctry) {
@@ -19675,32 +16296,25 @@ var PS = {};
       };
     };
   };
-
   exports["toScatterPlot"] = toScatterPlot;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.fullPagename = function () {
     return window.location.href.split("?")[0];
   };
-
   exports.execCopy = function () {
     document.execCommand("copy");
   };
-
   var linkifier = function linkifier(selector, addTitle, callback) {
     var links = document.querySelectorAll("a" + selector);
-
     var _iterator3 = _createForOfIteratorHelper(links),
-        _step3;
-
+      _step3;
     try {
       var _loop = function _loop() {
         var a = _step3.value;
         var targ = a.getAttribute('href');
-
         if (targ) {
           // const aNew = a.cloneNode(true);
           // a.parentNode.replaceChild(aNew, a);
@@ -19710,7 +16324,6 @@ var PS = {};
           });
         }
       };
-
       for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
         _loop();
       }
@@ -19720,7 +16333,6 @@ var PS = {};
       _iterator3.f();
     }
   };
-
   exports.linkify = function (dataview, copylink, saveimage) {
     return function () {
       linkifier(".dataview", "Load me!", function (s) {
@@ -19734,19 +16346,15 @@ var PS = {};
       });
     };
   };
-
   exports.helpify = function (loader, unloader) {
     return function () {
       var links = document.querySelectorAll("a.helptip-link");
-
       var _iterator4 = _createForOfIteratorHelper(links),
-          _step4;
-
+        _step4;
       try {
         var _loop2 = function _loop2() {
           var a = _step4.value;
           var targ = a.getAttribute('href');
-
           if (targ) {
             d3.select(a).on('mouseenter', null).on('mouseenter', function () {
               loader(targ)({
@@ -19757,8 +16365,7 @@ var PS = {};
               unloader();
             }).on('touchenter', null).on('touchenter', function () {
               var _iterator5 = _createForOfIteratorHelper(d3.event.targetTouches),
-                  _step5;
-
+                _step5;
               try {
                 for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
                   var t = _step5.value;
@@ -19778,7 +16385,6 @@ var PS = {};
             });
           }
         };
-
         for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
           _loop2();
         }
@@ -19789,7 +16395,6 @@ var PS = {};
       }
     };
   };
-
   exports.cutInnerHTML = function (e) {
     return function () {
       var x = e.innerHTML;
@@ -19797,7 +16402,6 @@ var PS = {};
       return x;
     };
   };
-
   exports.toast = function (str) {
     return function () {
       Toastify({
@@ -19808,13 +16412,11 @@ var PS = {};
       }).showToast();
     };
   };
-
   exports.scrollToTop = function (callback) {
     return function () {
       var scroller = function scroller() {
         var scrollAnimation;
         var position = document.body.scrollTop || document.documentElement.scrollTop;
-
         if (position) {
           window.scrollBy(0, -Math.max(1, Math.floor(position / 5)));
           scrollAnimation = setTimeout(scroller, 15);
@@ -19822,17 +16424,13 @@ var PS = {};
           if (scrollAnimation) {
             clearTimeout(scrollAnimation);
           }
-
           callback();
         }
-
         ;
       };
-
       scroller();
     };
   };
-
   exports.setPos = function (el, pos) {
     return function () {
       if (screen.width > 800) {
@@ -19840,337 +16438,245 @@ var PS = {};
       } else {
         el.style.removeProperty('left');
       }
-
       el.style.top = pos.y + "px";
     };
   };
 })(PS["Corona.Chart.UI"] = PS["Corona.Chart.UI"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["DOM.HTML.Indexed.InputType"] = $PS["DOM.HTML.Indexed.InputType"] || {};
   var exports = $PS["DOM.HTML.Indexed.InputType"];
-
   var InputButton = function () {
     function InputButton() {}
-
     ;
     InputButton.value = new InputButton();
     return InputButton;
   }();
-
   var InputCheckbox = function () {
     function InputCheckbox() {}
-
     ;
     InputCheckbox.value = new InputCheckbox();
     return InputCheckbox;
   }();
-
   var InputColor = function () {
     function InputColor() {}
-
     ;
     InputColor.value = new InputColor();
     return InputColor;
   }();
-
   var InputDate = function () {
     function InputDate() {}
-
     ;
     InputDate.value = new InputDate();
     return InputDate;
   }();
-
   var InputDatetimeLocal = function () {
     function InputDatetimeLocal() {}
-
     ;
     InputDatetimeLocal.value = new InputDatetimeLocal();
     return InputDatetimeLocal;
   }();
-
   var InputEmail = function () {
     function InputEmail() {}
-
     ;
     InputEmail.value = new InputEmail();
     return InputEmail;
   }();
-
   var InputFile = function () {
     function InputFile() {}
-
     ;
     InputFile.value = new InputFile();
     return InputFile;
   }();
-
   var InputHidden = function () {
     function InputHidden() {}
-
     ;
     InputHidden.value = new InputHidden();
     return InputHidden;
   }();
-
   var InputImage = function () {
     function InputImage() {}
-
     ;
     InputImage.value = new InputImage();
     return InputImage;
   }();
-
   var InputMonth = function () {
     function InputMonth() {}
-
     ;
     InputMonth.value = new InputMonth();
     return InputMonth;
   }();
-
   var InputNumber = function () {
     function InputNumber() {}
-
     ;
     InputNumber.value = new InputNumber();
     return InputNumber;
   }();
-
   var InputPassword = function () {
     function InputPassword() {}
-
     ;
     InputPassword.value = new InputPassword();
     return InputPassword;
   }();
-
   var InputRadio = function () {
     function InputRadio() {}
-
     ;
     InputRadio.value = new InputRadio();
     return InputRadio;
   }();
-
   var InputRange = function () {
     function InputRange() {}
-
     ;
     InputRange.value = new InputRange();
     return InputRange;
   }();
-
   var InputReset = function () {
     function InputReset() {}
-
     ;
     InputReset.value = new InputReset();
     return InputReset;
   }();
-
   var InputSearch = function () {
     function InputSearch() {}
-
     ;
     InputSearch.value = new InputSearch();
     return InputSearch;
   }();
-
   var InputSubmit = function () {
     function InputSubmit() {}
-
     ;
     InputSubmit.value = new InputSubmit();
     return InputSubmit;
   }();
-
   var InputTel = function () {
     function InputTel() {}
-
     ;
     InputTel.value = new InputTel();
     return InputTel;
   }();
-
   var InputText = function () {
     function InputText() {}
-
     ;
     InputText.value = new InputText();
     return InputText;
   }();
-
   var InputTime = function () {
     function InputTime() {}
-
     ;
     InputTime.value = new InputTime();
     return InputTime;
   }();
-
   var InputUrl = function () {
     function InputUrl() {}
-
     ;
     InputUrl.value = new InputUrl();
     return InputUrl;
   }();
-
   var InputWeek = function () {
     function InputWeek() {}
-
     ;
     InputWeek.value = new InputWeek();
     return InputWeek;
   }();
-
   var renderInputType = function renderInputType(v) {
     if (v instanceof InputButton) {
       return "button";
     }
-
     ;
-
     if (v instanceof InputCheckbox) {
       return "checkbox";
     }
-
     ;
-
     if (v instanceof InputColor) {
       return "color";
     }
-
     ;
-
     if (v instanceof InputDate) {
       return "date";
     }
-
     ;
-
     if (v instanceof InputDatetimeLocal) {
       return "datetime-local";
     }
-
     ;
-
     if (v instanceof InputEmail) {
       return "email";
     }
-
     ;
-
     if (v instanceof InputFile) {
       return "file";
     }
-
     ;
-
     if (v instanceof InputHidden) {
       return "hidden";
     }
-
     ;
-
     if (v instanceof InputImage) {
       return "image";
     }
-
     ;
-
     if (v instanceof InputMonth) {
       return "month";
     }
-
     ;
-
     if (v instanceof InputNumber) {
       return "number";
     }
-
     ;
-
     if (v instanceof InputPassword) {
       return "password";
     }
-
     ;
-
     if (v instanceof InputRadio) {
       return "radio";
     }
-
     ;
-
     if (v instanceof InputRange) {
       return "range";
     }
-
     ;
-
     if (v instanceof InputReset) {
       return "reset";
     }
-
     ;
-
     if (v instanceof InputSearch) {
       return "search";
     }
-
     ;
-
     if (v instanceof InputSubmit) {
       return "submit";
     }
-
     ;
-
     if (v instanceof InputTel) {
       return "tel";
     }
-
     ;
-
     if (v instanceof InputText) {
       return "text";
     }
-
     ;
-
     if (v instanceof InputTime) {
       return "time";
     }
-
     ;
-
     if (v instanceof InputUrl) {
       return "url";
     }
-
     ;
-
     if (v instanceof InputWeek) {
       return "week";
     }
-
     ;
     throw new Error("Failed pattern match at DOM.HTML.Indexed.InputType (line 28, column 19 - line 50, column 22): " + [v.constructor.name]);
   };
-
   exports["InputCheckbox"] = InputCheckbox;
   exports["InputDate"] = InputDate;
   exports["InputNumber"] = InputNumber;
   exports["InputText"] = InputText;
   exports["renderInputType"] = renderInputType;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20180,28 +16686,22 @@ var PS = {};
   var Control_Category = $PS["Control.Category"];
   var Data_Exists = $PS["Data.Exists"];
   var Data_Functor = $PS["Data.Functor"];
-
   var CoyonedaF = function () {
     function CoyonedaF(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     CoyonedaF.create = function (value0) {
       return function (value1) {
         return new CoyonedaF(value0, value1);
       };
     };
-
     return CoyonedaF;
   }();
-
   var Coyoneda = function Coyoneda(x) {
     return x;
   };
-
   var unCoyoneda = function unCoyoneda(f) {
     return function (v) {
       return Data_Exists.runExists(function (v1) {
@@ -20209,13 +16709,11 @@ var PS = {};
       })(v);
     };
   };
-
   var coyoneda = function coyoneda(k) {
     return function (fi) {
       return Coyoneda(Data_Exists.mkExists(new CoyonedaF(k, fi)));
     };
   };
-
   var functorCoyoneda = new Data_Functor.Functor(function (f) {
     return function (v) {
       return Data_Exists.runExists(function (v1) {
@@ -20225,7 +16723,6 @@ var PS = {};
       })(v);
     };
   });
-
   var hoistCoyoneda = function hoistCoyoneda(nat) {
     return function (v) {
       return Data_Exists.runExists(function (v1) {
@@ -20233,14 +16730,12 @@ var PS = {};
       })(v);
     };
   };
-
   var liftCoyoneda = coyoneda(Control_Category.identity(Control_Category.categoryFn));
   exports["unCoyoneda"] = unCoyoneda;
   exports["liftCoyoneda"] = liftCoyoneda;
   exports["hoistCoyoneda"] = hoistCoyoneda;
   exports["functorCoyoneda"] = functorCoyoneda;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20249,16 +16744,13 @@ var PS = {};
   var exports = $PS["Halogen.Data.OrdBox"];
   var Data_Eq = $PS["Data.Eq"];
   var Data_Ord = $PS["Data.Ord"];
-
   var OrdBox = function () {
     function OrdBox(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     OrdBox.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -20266,14 +16758,11 @@ var PS = {};
         };
       };
     };
-
     return OrdBox;
   }();
-
   var mkOrdBox = function mkOrdBox(dictOrd) {
     return OrdBox.create(Data_Eq.eq(dictOrd.Eq0()))(Data_Ord.compare(dictOrd));
   };
-
   var eqOrdBox = new Data_Eq.Eq(function (v) {
     return function (v1) {
       return v.value0(v.value2)(v1.value2);
@@ -20289,7 +16778,6 @@ var PS = {};
   exports["mkOrdBox"] = mkOrdBox;
   exports["ordOrdBox"] = ordOrdBox;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20302,7 +16790,6 @@ var PS = {};
   var Data_Symbol = $PS["Data.Symbol"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Halogen_Data_OrdBox = $PS["Halogen.Data.OrdBox"];
-
   var pop = function pop(dictCons) {
     return function (dictIsSymbol) {
       return function (dictOrd) {
@@ -20316,7 +16803,6 @@ var PS = {};
       };
     };
   };
-
   var lookup = function lookup(dictCons) {
     return function (dictIsSymbol) {
       return function (dictOrd) {
@@ -20330,7 +16816,6 @@ var PS = {};
       };
     };
   };
-
   var insert = function insert(dictCons) {
     return function (dictIsSymbol) {
       return function (dictOrd) {
@@ -20346,7 +16831,6 @@ var PS = {};
       };
     };
   };
-
   var foreachSlot = function foreachSlot(dictApplicative) {
     return function (v) {
       return function (k) {
@@ -20356,7 +16840,6 @@ var PS = {};
       };
     };
   };
-
   var empty = Data_Map_Internal.empty;
   exports["empty"] = empty;
   exports["lookup"] = lookup;
@@ -20364,7 +16847,6 @@ var PS = {};
   exports["pop"] = pop;
   exports["foreachSlot"] = foreachSlot;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20373,25 +16855,20 @@ var PS = {};
   var exports = $PS["Effect.Aff.Class"];
   var Control_Category = $PS["Control.Category"];
   var Effect_Aff = $PS["Effect.Aff"];
-
   var MonadAff = function MonadAff(MonadEffect0, liftAff) {
     this.MonadEffect0 = MonadEffect0;
     this.liftAff = liftAff;
   };
-
   var monadAffAff = new MonadAff(function () {
     return Effect_Aff.monadEffectAff;
   }, Control_Category.identity(Control_Category.categoryFn));
-
   var liftAff = function liftAff(dict) {
     return dict.liftAff;
   };
-
   exports["liftAff"] = liftAff;
   exports["MonadAff"] = MonadAff;
   exports["monadAffAff"] = monadAffAff;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20399,16 +16876,13 @@ var PS = {};
   $PS["Halogen.Query.ChildQuery"] = $PS["Halogen.Query.ChildQuery"] || {};
   var exports = $PS["Halogen.Query.ChildQuery"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var ChildQuery = function () {
     function ChildQuery(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     ChildQuery.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -20416,17 +16890,14 @@ var PS = {};
         };
       };
     };
-
     return ChildQuery;
   }();
-
   var unChildQueryBox = Unsafe_Coerce.unsafeCoerce;
   var mkChildQueryBox = Unsafe_Coerce.unsafeCoerce;
   exports["ChildQuery"] = ChildQuery;
   exports["mkChildQueryBox"] = mkChildQueryBox;
   exports["unChildQueryBox"] = unChildQueryBox;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20444,187 +16915,141 @@ var PS = {};
   var Effect_Class = $PS["Effect.Class"];
   var Halogen_Data_Slot = $PS["Halogen.Data.Slot"];
   var Halogen_Query_ChildQuery = $PS["Halogen.Query.ChildQuery"];
-
   var SubscriptionId = function SubscriptionId(x) {
     return x;
   };
-
   var ForkId = function ForkId(x) {
     return x;
   };
-
   var State = function () {
     function State(value0) {
       this.value0 = value0;
     }
-
     ;
-
     State.create = function (value0) {
       return new State(value0);
     };
-
     return State;
   }();
-
   var Subscribe = function () {
     function Subscribe(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Subscribe.create = function (value0) {
       return function (value1) {
         return new Subscribe(value0, value1);
       };
     };
-
     return Subscribe;
   }();
-
   var Unsubscribe = function () {
     function Unsubscribe(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Unsubscribe.create = function (value0) {
       return function (value1) {
         return new Unsubscribe(value0, value1);
       };
     };
-
     return Unsubscribe;
   }();
-
   var Lift = function () {
     function Lift(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Lift.create = function (value0) {
       return new Lift(value0);
     };
-
     return Lift;
   }();
-
   var ChildQuery = function () {
     function ChildQuery(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ChildQuery.create = function (value0) {
       return new ChildQuery(value0);
     };
-
     return ChildQuery;
   }();
-
   var Raise = function () {
     function Raise(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Raise.create = function (value0) {
       return function (value1) {
         return new Raise(value0, value1);
       };
     };
-
     return Raise;
   }();
-
   var Par = function () {
     function Par(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Par.create = function (value0) {
       return new Par(value0);
     };
-
     return Par;
   }();
-
   var Fork = function () {
     function Fork(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Fork.create = function (value0) {
       return function (value1) {
         return new Fork(value0, value1);
       };
     };
-
     return Fork;
   }();
-
   var Kill = function () {
     function Kill(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Kill.create = function (value0) {
       return function (value1) {
         return new Kill(value0, value1);
       };
     };
-
     return Kill;
   }();
-
   var GetRef = function () {
     function GetRef(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     GetRef.create = function (value0) {
       return function (value1) {
         return new GetRef(value0, value1);
       };
     };
-
     return GetRef;
   }();
-
   var HalogenM = function HalogenM(x) {
     return x;
   };
-
   var subscribe = function subscribe(es) {
     return HalogenM(Control_Monad_Free.liftF(new Subscribe(function (v) {
       return es;
     }, Control_Category.identity(Control_Category.categoryFn))));
   };
-
   var raise = function raise(o) {
     return HalogenM(Control_Monad_Free.liftF(new Raise(o, Data_Unit.unit)));
   };
-
   var query = function query(dictCons) {
     return function (dictIsSymbol) {
       return function (dictOrd) {
@@ -20646,7 +17071,6 @@ var PS = {};
       };
     };
   };
-
   var ordSubscriptionId = Data_Ord.ordInt;
   var ordForkId = Data_Ord.ordInt;
   var monadHalogenM = Control_Monad_Free.freeMonad;
@@ -20655,7 +17079,6 @@ var PS = {};
   }, function ($139) {
     return HalogenM(Control_Monad_Free.liftF(State.create($139)));
   });
-
   var monadEffectHalogenM = function monadEffectHalogenM(dictMonadEffect) {
     return new Effect_Class.MonadEffect(function () {
       return monadHalogenM;
@@ -20666,7 +17089,6 @@ var PS = {};
       };
     }());
   };
-
   var monadAffHalogenM = function monadAffHalogenM(dictMonadAff) {
     return new Effect_Aff_Class.MonadAff(function () {
       return monadEffectHalogenM(dictMonadAff.MonadEffect0());
@@ -20677,11 +17099,9 @@ var PS = {};
       };
     }());
   };
-
   var getRef = function getRef(p) {
     return HalogenM(Control_Monad_Free.liftF(new GetRef(p, Control_Category.identity(Control_Category.categoryFn))));
   };
-
   var functorHalogenM = Control_Monad_Free.freeFunctor;
   var bindHalogenM = Control_Monad_Free.freeBind;
   var applicativeHalogenM = Control_Monad_Free.freeApplicative;
@@ -20711,100 +17131,77 @@ var PS = {};
   exports["ordSubscriptionId"] = ordSubscriptionId;
   exports["ordForkId"] = ordForkId;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Halogen.Query.HalogenQ"] = $PS["Halogen.Query.HalogenQ"] || {};
   var exports = $PS["Halogen.Query.HalogenQ"];
-
   var Initialize = function () {
     function Initialize(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Initialize.create = function (value0) {
       return new Initialize(value0);
     };
-
     return Initialize;
   }();
-
   var Finalize = function () {
     function Finalize(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Finalize.create = function (value0) {
       return new Finalize(value0);
     };
-
     return Finalize;
   }();
-
   var Receive = function () {
     function Receive(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Receive.create = function (value0) {
       return function (value1) {
         return new Receive(value0, value1);
       };
     };
-
     return Receive;
   }();
-
   var Action = function () {
     function Action(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Action.create = function (value0) {
       return function (value1) {
         return new Action(value0, value1);
       };
     };
-
     return Action;
   }();
-
   var Query = function () {
     function Query(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Query.create = function (value0) {
       return function (value1) {
         return new Query(value0, value1);
       };
     };
-
     return Query;
   }();
-
   exports["Initialize"] = Initialize;
   exports["Finalize"] = Finalize;
   exports["Receive"] = Receive;
   exports["Action"] = Action;
   exports["Query"] = Query;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -20822,64 +17219,46 @@ var PS = {};
   var Halogen_Query_HalogenM = $PS["Halogen.Query.HalogenM"];
   var Halogen_Query_HalogenQ = $PS["Halogen.Query.HalogenQ"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var ComponentSlot = function () {
     function ComponentSlot(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ComponentSlot.create = function (value0) {
       return new ComponentSlot(value0);
     };
-
     return ComponentSlot;
   }();
-
   var ThunkSlot = function () {
     function ThunkSlot(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ThunkSlot.create = function (value0) {
       return new ThunkSlot(value0);
     };
-
     return ThunkSlot;
   }();
-
   var unComponentSlot = Unsafe_Coerce.unsafeCoerce;
   var unComponent = Unsafe_Coerce.unsafeCoerce;
-
   var mkEval = function mkEval(args) {
     return function (v) {
       if (v instanceof Halogen_Query_HalogenQ.Initialize) {
         return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Data_Foldable.traverse_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(args.handleAction)(args.initialize))(v.value0);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Finalize) {
         return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Data_Foldable.traverse_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(args.handleAction)(args.finalize))(v.value0);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Receive) {
         return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Data_Foldable.traverse_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(args.handleAction)(args.receive(v.value0)))(v.value1);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Action) {
         return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(args.handleAction(v.value0))(v.value1);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Query) {
         return Data_Coyoneda.unCoyoneda(function (g) {
           var $28 = Data_Functor.map(Halogen_Query_HalogenM.functorHalogenM)(Data_Maybe.maybe(v.value1(Data_Unit.unit))(g));
@@ -20888,12 +17267,10 @@ var PS = {};
           };
         })(v.value0);
       }
-
       ;
       throw new Error("Failed pattern match at Halogen.Component (line 172, column 15 - line 182, column 70): " + [v.constructor.name]);
     };
   };
-
   var mkComponentSlot = Unsafe_Coerce.unsafeCoerce;
   var mkComponent = Unsafe_Coerce.unsafeCoerce;
   var defaultEval = {
@@ -20903,7 +17280,6 @@ var PS = {};
     initialize: Data_Maybe.Nothing.value,
     finalize: Data_Maybe.Nothing.value
   };
-
   var componentSlot = function componentSlot(dictCons) {
     return function (dictIsSymbol) {
       return function (dictOrd) {
@@ -20928,7 +17304,6 @@ var PS = {};
       };
     };
   };
-
   exports["mkComponent"] = mkComponent;
   exports["unComponent"] = unComponent;
   exports["mkEval"] = mkEval;
@@ -20938,63 +17313,48 @@ var PS = {};
   exports["componentSlot"] = componentSlot;
   exports["unComponentSlot"] = unComponentSlot;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["DOM.HTML.Indexed.ButtonType"] = $PS["DOM.HTML.Indexed.ButtonType"] || {};
   var exports = $PS["DOM.HTML.Indexed.ButtonType"];
-
   var ButtonButton = function () {
     function ButtonButton() {}
-
     ;
     ButtonButton.value = new ButtonButton();
     return ButtonButton;
   }();
-
   var ButtonSubmit = function () {
     function ButtonSubmit() {}
-
     ;
     ButtonSubmit.value = new ButtonSubmit();
     return ButtonSubmit;
   }();
-
   var ButtonReset = function () {
     function ButtonReset() {}
-
     ;
     ButtonReset.value = new ButtonReset();
     return ButtonReset;
   }();
-
   var renderButtonType = function renderButtonType(v) {
     if (v instanceof ButtonButton) {
       return "button";
     }
-
     ;
-
     if (v instanceof ButtonSubmit) {
       return "submit";
     }
-
     ;
-
     if (v instanceof ButtonReset) {
       return "reset";
     }
-
     ;
     throw new Error("Failed pattern match at DOM.HTML.Indexed.ButtonType (line 9, column 20 - line 12, column 25): " + [v.constructor.name]);
   };
-
   exports["ButtonButton"] = ButtonButton;
   exports["renderButtonType"] = renderButtonType;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21002,7 +17362,6 @@ var PS = {};
   $PS["Halogen.VDom.Machine"] = $PS["Halogen.VDom.Machine"] || {};
   var exports = $PS["Halogen.VDom.Machine"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var Step = function () {
     function Step(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -21010,9 +17369,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Step.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -21022,22 +17379,16 @@ var PS = {};
         };
       };
     };
-
     return Step;
   }();
-
   var unStep = Unsafe_Coerce.unsafeCoerce;
-
   var step = function step(v, a) {
     return v.value2(v.value1, a);
   };
-
   var mkStep = Unsafe_Coerce.unsafeCoerce;
-
   var halt = function halt(v) {
     return v.value3(v.value1);
   };
-
   var extract = unStep(function (v) {
     return v.value0;
   });
@@ -21048,53 +17399,42 @@ var PS = {};
   exports["step"] = step;
   exports["halt"] = halt;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.unsafeGetAny = function (key, obj) {
     return obj[key];
   };
-
   exports.unsafeHasAny = function (key, obj) {
     return obj.hasOwnProperty(key);
   };
-
   exports.unsafeSetAny = function (key, val, obj) {
     obj[key] = val;
   };
-
   exports.forE = function (a, f) {
     var b = [];
-
     for (var i = 0; i < a.length; i++) {
       b.push(f(i, a[i]));
     }
-
     return b;
   };
-
   exports.forEachE = function (a, f) {
     for (var i = 0; i < a.length; i++) {
       f(a[i]);
     }
   };
-
   exports.forInE = function (o, f) {
     var ks = Object.keys(o);
-
     for (var i = 0; i < ks.length; i++) {
       var k = ks[i];
       f(k, o[k]);
     }
   };
-
   exports.diffWithIxE = function (a1, a2, f1, f2, f3) {
     var a3 = [];
     var l1 = a1.length;
     var l2 = a2.length;
     var i = 0;
-
     while (1) {
       if (i < l1) {
         if (i < l2) {
@@ -21107,62 +17447,47 @@ var PS = {};
       } else {
         break;
       }
-
       i++;
     }
-
     return a3;
   };
-
   exports.strMapWithIxE = function (as, fk, f) {
     var o = {};
-
     for (var i = 0; i < as.length; i++) {
       var a = as[i];
       var k = fk(a);
       o[k] = f(k, i, a);
     }
-
     return o;
   };
-
   exports.diffWithKeyAndIxE = function (o1, as, fk, f1, f2, f3) {
     var o2 = {};
-
     for (var i = 0; i < as.length; i++) {
       var a = as[i];
       var k = fk(a);
-
       if (o1.hasOwnProperty(k)) {
         o2[k] = f1(k, i, o1[k], a);
       } else {
         o2[k] = f3(k, i, a);
       }
     }
-
     for (var k in o1) {
       if (k in o2) {
         continue;
       }
-
       f2(k, o1[k]);
     }
-
     return o2;
   };
-
   exports.refEq = function (a, b) {
     return a === b;
   };
-
   exports.createTextNode = function (s, doc) {
     return doc.createTextNode(s);
   };
-
   exports.setTextContent = function (s, n) {
     n.textContent = s;
   };
-
   exports.createElement = function (ns, name, doc) {
     if (ns != null) {
       return doc.createElementNS(ns, name);
@@ -21170,25 +17495,20 @@ var PS = {};
       return doc.createElement(name);
     }
   };
-
   exports.insertChildIx = function (i, a, b) {
     var n = b.childNodes.item(i) || null;
-
     if (n !== a) {
       b.insertBefore(a, n);
     }
   };
-
   exports.removeChild = function (a, b) {
     if (b && a.parentNode === b) {
       b.removeChild(a);
     }
   };
-
   exports.parentNode = function (a) {
     return a.parentNode;
   };
-
   exports.setAttribute = function (ns, attr, val, el) {
     if (ns != null) {
       el.setAttributeNS(ns, attr, val);
@@ -21196,7 +17516,6 @@ var PS = {};
       el.setAttribute(attr, val);
     }
   };
-
   exports.removeAttribute = function (ns, attr, el) {
     if (ns != null) {
       el.removeAttributeNS(ns, attr);
@@ -21204,7 +17523,6 @@ var PS = {};
       el.removeAttribute(attr);
     }
   };
-
   exports.hasAttribute = function (ns, attr, el) {
     if (ns != null) {
       return el.hasAttributeNS(ns, attr);
@@ -21212,18 +17530,14 @@ var PS = {};
       return el.hasAttribute(attr);
     }
   };
-
   exports.addEventListener = function (ev, listener, el) {
     el.addEventListener(ev, listener, false);
   };
-
   exports.removeEventListener = function (ev, listener, el) {
     el.removeEventListener(ev, listener, false);
   };
-
   exports.jsUndefined = void 0;
 })(PS["Halogen.VDom.Util"] = PS["Halogen.VDom.Util"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21264,7 +17578,6 @@ var PS = {};
   exports["removeEventListener"] = $foreign.removeEventListener;
   exports["jsUndefined"] = $foreign.jsUndefined;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -21275,7 +17588,6 @@ var PS = {};
       };
     };
   };
-
   exports.addEventListener = function (type) {
     return function (listener) {
       return function (useCapture) {
@@ -21287,7 +17599,6 @@ var PS = {};
       };
     };
   };
-
   exports.removeEventListener = function (type) {
     return function (listener) {
       return function (useCapture) {
@@ -21300,7 +17611,6 @@ var PS = {};
     };
   };
 })(PS["Web.Event.EventTarget"] = PS["Web.Event.EventTarget"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21312,7 +17622,6 @@ var PS = {};
   exports["addEventListener"] = $foreign.addEventListener;
   exports["removeEventListener"] = $foreign.removeEventListener;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21330,44 +17639,33 @@ var PS = {};
   var Halogen_VDom_Util = $PS["Halogen.VDom.Util"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
   var Web_Event_EventTarget = $PS["Web.Event.EventTarget"];
-
   var Created = function () {
     function Created(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Created.create = function (value0) {
       return new Created(value0);
     };
-
     return Created;
   }();
-
   var Removed = function () {
     function Removed(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Removed.create = function (value0) {
       return new Removed(value0);
     };
-
     return Removed;
   }();
-
   var Attribute = function () {
     function Attribute(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     Attribute.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -21375,127 +17673,92 @@ var PS = {};
         };
       };
     };
-
     return Attribute;
   }();
-
   var Property = function () {
     function Property(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Property.create = function (value0) {
       return function (value1) {
         return new Property(value0, value1);
       };
     };
-
     return Property;
   }();
-
   var Handler = function () {
     function Handler(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Handler.create = function (value0) {
       return function (value1) {
         return new Handler(value0, value1);
       };
     };
-
     return Handler;
   }();
-
   var Ref = function () {
     function Ref(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Ref.create = function (value0) {
       return new Ref(value0);
     };
-
     return Ref;
   }();
-
   var unsafeGetProperty = Halogen_VDom_Util.unsafeGetAny;
   var setProperty = Halogen_VDom_Util.unsafeSetAny;
-
   var removeProperty = function removeProperty(key, el) {
     var v = Halogen_VDom_Util.hasAttribute(Data_Nullable["null"], key, el);
-
     if (v) {
       return Halogen_VDom_Util.removeAttribute(Data_Nullable["null"], key, el);
     }
-
     ;
     var v1 = Foreign.typeOf(Halogen_VDom_Util.unsafeGetAny(key, el));
-
     if (v1 === "string") {
       return Halogen_VDom_Util.unsafeSetAny(key, "", el);
     }
-
     ;
-
     if (key === "rowSpan") {
       return Halogen_VDom_Util.unsafeSetAny(key, 1, el);
     }
-
     ;
-
     if (key === "colSpan") {
       return Halogen_VDom_Util.unsafeSetAny(key, 1, el);
     }
-
     ;
     return Halogen_VDom_Util.unsafeSetAny(key, Halogen_VDom_Util.jsUndefined, el);
   };
-
   var propToStrKey = function propToStrKey(v) {
     if (v instanceof Attribute && v.value0 instanceof Data_Maybe.Just) {
       return "attr/" + (v.value0.value0 + (":" + v.value1));
     }
-
     ;
-
     if (v instanceof Attribute) {
       return "attr/:" + v.value1;
     }
-
     ;
-
     if (v instanceof Property) {
       return "prop/" + v.value0;
     }
-
     ;
-
     if (v instanceof Handler) {
       return "handler/" + v.value0;
     }
-
     ;
-
     if (v instanceof Ref) {
       return "ref";
     }
-
     ;
     throw new Error("Failed pattern match at Halogen.VDom.DOM.Prop (line 182, column 16 - line 187, column 16): " + [v.constructor.name]);
   };
-
   var propFromString = Unsafe_Coerce.unsafeCoerce;
   var propFromBoolean = Unsafe_Coerce.unsafeCoerce;
-
   var buildProp = function buildProp(emit) {
     return function (el) {
       var removeProp = function removeProp(prevEvents) {
@@ -21503,132 +17766,99 @@ var PS = {};
           if (v1 instanceof Attribute) {
             return Halogen_VDom_Util.removeAttribute(Data_Nullable.toNullable(v1.value0), v1.value1, el);
           }
-
           ;
-
           if (v1 instanceof Property) {
             return removeProperty(v1.value0, el);
           }
-
           ;
-
           if (v1 instanceof Handler) {
             var handler = Halogen_VDom_Util.unsafeLookup(v1.value0, prevEvents);
             return Halogen_VDom_Util.removeEventListener(v1.value0, Data_Tuple.fst(handler), el);
           }
-
           ;
-
           if (v1 instanceof Ref) {
             return Data_Unit.unit;
           }
-
           ;
           throw new Error("Failed pattern match at Halogen.VDom.DOM.Prop (line 169, column 5 - line 179, column 18): " + [v1.constructor.name]);
         };
       };
-
       var mbEmit = function mbEmit(v) {
         if (v instanceof Data_Maybe.Just) {
           return emit(v.value0)();
         }
-
         ;
         return Data_Unit.unit;
       };
-
       var haltProp = function haltProp(state) {
         var v = Foreign_Object.lookup("ref")(state.props);
-
         if (v instanceof Data_Maybe.Just && v.value0 instanceof Ref) {
           return mbEmit(v.value0.value0(new Removed(el)));
         }
-
         ;
         return Data_Unit.unit;
       };
-
       var diffProp = function diffProp(prevEvents, events) {
         return function (v, v1, v11, v2) {
           if (v11 instanceof Attribute && v2 instanceof Attribute) {
             var $56 = v11.value2 === v2.value2;
-
             if ($56) {
               return v2;
             }
-
             ;
             Halogen_VDom_Util.setAttribute(Data_Nullable.toNullable(v2.value0), v2.value1, v2.value2, el);
             return v2;
           }
-
           ;
-
           if (v11 instanceof Property && v2 instanceof Property) {
             var v4 = Halogen_VDom_Util.refEq(v11.value1, v2.value1);
-
             if (v4) {
               return v2;
             }
-
             ;
-
             if (v2.value0 === "value") {
               var elVal = unsafeGetProperty("value", el);
               var $65 = Halogen_VDom_Util.refEq(elVal, v2.value1);
-
               if ($65) {
                 return v2;
               }
-
               ;
               setProperty(v2.value0, v2.value1, el);
               return v2;
             }
-
             ;
             setProperty(v2.value0, v2.value1, el);
             return v2;
           }
-
           ;
-
           if (v11 instanceof Handler && v2 instanceof Handler) {
             var handler = Halogen_VDom_Util.unsafeLookup(v2.value0, prevEvents);
             Effect_Ref.write(v2.value1)(Data_Tuple.snd(handler))();
             Halogen_VDom_Util.pokeMutMap(v2.value0, handler, events);
             return v2;
           }
-
           ;
           return v2;
         };
       };
-
       var applyProp = function applyProp(events) {
         return function (v, v1, v2) {
           if (v2 instanceof Attribute) {
             Halogen_VDom_Util.setAttribute(Data_Nullable.toNullable(v2.value0), v2.value1, v2.value2, el);
             return v2;
           }
-
           ;
-
           if (v2 instanceof Property) {
             setProperty(v2.value0, v2.value1, el);
             return v2;
           }
-
           ;
-
           if (v2 instanceof Handler) {
             var v3 = Halogen_VDom_Util.unsafeGetAny(v2.value0, events);
-
             if (Halogen_VDom_Util.unsafeHasAny(v2.value0, events)) {
               Effect_Ref.write(v2.value1)(Data_Tuple.snd(v3))();
               return v2;
             }
-
             ;
             var ref = Effect_Ref["new"](v2.value1)();
             var listener = Web_Event_EventTarget.eventListener(function (ev) {
@@ -21641,19 +17871,15 @@ var PS = {};
             Halogen_VDom_Util.addEventListener(v2.value0, listener, el);
             return v2;
           }
-
           ;
-
           if (v2 instanceof Ref) {
             mbEmit(v2.value0(new Created(el)));
             return v2;
           }
-
           ;
           throw new Error("Failed pattern match at Halogen.VDom.DOM.Prop (line 113, column 5 - line 135, column 15): " + [v2.constructor.name]);
         };
       };
-
       var patchProp = function patchProp(state, ps2) {
         var events = Halogen_VDom_Util.newMutMap();
         var onThis = removeProp(state.events);
@@ -21666,7 +17892,6 @@ var PS = {};
         };
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(Data_Unit.unit, nextState, patchProp, haltProp));
       };
-
       var renderProp = function renderProp(ps1) {
         var events = Halogen_VDom_Util.newMutMap();
         var ps1$prime = Halogen_VDom_Util.strMapWithIxE(ps1, propToStrKey, applyProp(events));
@@ -21676,11 +17901,9 @@ var PS = {};
         };
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(Data_Unit.unit, state, patchProp, haltProp));
       };
-
       return renderProp;
     };
   };
-
   exports["Property"] = Property;
   exports["Handler"] = Handler;
   exports["Ref"] = Ref;
@@ -21690,7 +17913,6 @@ var PS = {};
   exports["propFromBoolean"] = propFromBoolean;
   exports["buildProp"] = buildProp;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21701,21 +17923,16 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
-
   var Text = function () {
     function Text(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Text.create = function (value0) {
       return new Text(value0);
     };
-
     return Text;
   }();
-
   var Elem = function () {
     function Elem(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -21723,9 +17940,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Elem.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -21735,10 +17950,8 @@ var PS = {};
         };
       };
     };
-
     return Elem;
   }();
-
   var Keyed = function () {
     function Keyed(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -21746,9 +17959,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Keyed.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -21758,47 +17969,35 @@ var PS = {};
         };
       };
     };
-
     return Keyed;
   }();
-
   var Widget = function () {
     function Widget(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Widget.create = function (value0) {
       return new Widget(value0);
     };
-
     return Widget;
   }();
-
   var Grafted = function () {
     function Grafted(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Grafted.create = function (value0) {
       return new Grafted(value0);
     };
-
     return Grafted;
   }();
-
   var Graft = function () {
     function Graft(value0, value1, value2) {
       this.value0 = value0;
       this.value1 = value1;
       this.value2 = value2;
     }
-
     ;
-
     Graft.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -21806,16 +18005,13 @@ var PS = {};
         };
       };
     };
-
     return Graft;
   }();
-
   var unGraft = function unGraft(f) {
     return function ($58) {
       return f($58);
     };
   };
-
   var graft = Unsafe_Coerce.unsafeCoerce;
   var bifunctorGraft = new Data_Bifunctor.Bifunctor(function (f) {
     return function (g) {
@@ -21833,35 +18029,25 @@ var PS = {};
       if (v2 instanceof Text) {
         return new Text(v2.value0);
       }
-
       ;
-
       if (v2 instanceof Elem) {
         return new Elem(v2.value0, v2.value1, v.value0(v2.value2), Data_Functor.map(Data_Functor.functorArray)(go)(v2.value3));
       }
-
       ;
-
       if (v2 instanceof Keyed) {
         return new Keyed(v2.value0, v2.value1, v.value0(v2.value2), Data_Functor.map(Data_Functor.functorArray)(Data_Functor.map(Data_Tuple.functorTuple)(go))(v2.value3));
       }
-
       ;
-
       if (v2 instanceof Widget) {
         return new Widget(v.value1(v2.value0));
       }
-
       ;
-
       if (v2 instanceof Grafted) {
         return new Grafted(Data_Bifunctor.bimap(bifunctorGraft)(v.value0)(v.value1)(v2.value0));
       }
-
       ;
       throw new Error("Failed pattern match at Halogen.VDom.Types (line 86, column 7 - line 86, column 27): " + [v2.constructor.name]);
     };
-
     return go(v.value2);
   });
   exports["Text"] = Text;
@@ -21871,7 +18057,6 @@ var PS = {};
   exports["Grafted"] = Grafted;
   exports["runGraft"] = runGraft;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21884,50 +18069,39 @@ var PS = {};
   var Data_Newtype = $PS["Data.Newtype"];
   var Halogen_VDom_DOM_Prop = $PS["Halogen.VDom.DOM.Prop"];
   var Halogen_VDom_Types = $PS["Halogen.VDom.Types"];
-
   var HTML = function HTML(x) {
     return x;
   };
-
   var ClassName = function ClassName(x) {
     return x;
   };
-
   var IsProp = function IsProp(toPropValue) {
     this.toPropValue = toPropValue;
   };
-
   var widget = function widget($30) {
     return HTML(Halogen_VDom_Types.Widget.create($30));
   };
-
   var toPropValue = function toPropValue(dict) {
     return dict.toPropValue;
   };
-
   var text = function text($31) {
     return HTML(Halogen_VDom_Types.Text.create($31));
   };
-
   var ref = function ref(f) {
     return Halogen_VDom_DOM_Prop.Ref.create(function ($32) {
       return f(function (v) {
         if (v instanceof Halogen_VDom_DOM_Prop.Created) {
           return new Data_Maybe.Just(v.value0);
         }
-
         ;
-
         if (v instanceof Halogen_VDom_DOM_Prop.Removed) {
           return Data_Maybe.Nothing.value;
         }
-
         ;
         throw new Error("Failed pattern match at Halogen.HTML.Core (line 104, column 21 - line 106, column 23): " + [v.constructor.name]);
       }($32));
     });
   };
-
   var prop = function prop(dictIsProp) {
     return function (v) {
       var $33 = Halogen_VDom_DOM_Prop.Property.create(v);
@@ -21937,7 +18111,6 @@ var PS = {};
       };
     };
   };
-
   var newtypeHTML = new Data_Newtype.Newtype(function (n) {
     return n;
   }, HTML);
@@ -21953,7 +18126,6 @@ var PS = {};
   });
   var isPropBoolean = new IsProp(Halogen_VDom_DOM_Prop.propFromBoolean);
   var handler = Halogen_VDom_DOM_Prop.Handler.create;
-
   var element = function element(ns) {
     return function (name) {
       return function (props) {
@@ -21963,7 +18135,6 @@ var PS = {};
       };
     };
   };
-
   exports["widget"] = widget;
   exports["text"] = text;
   exports["element"] = element;
@@ -21977,7 +18148,6 @@ var PS = {};
   exports["isPropInputType"] = isPropInputType;
   exports["newtypeClassName"] = newtypeClassName;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -21991,11 +18161,9 @@ var PS = {};
   var h2_ = h2([]);
   var h3 = element("h3");
   var h3_ = h3([]);
-
   var input = function input(props) {
     return element("input")(props)([]);
   };
-
   var label = element("label");
   var label_ = label([]);
   var li = element("li");
@@ -22029,7 +18197,6 @@ var PS = {};
   exports["ul"] = ul;
   exports["ul_"] = ul_;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -22037,7 +18204,6 @@ var PS = {};
     return value == null ? f : s(value[key]);
   };
 })(PS["Foreign.Index"] = PS["Foreign.Index"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22049,59 +18215,46 @@ var PS = {};
   var Control_Monad_Except_Trans = $PS["Control.Monad.Except.Trans"];
   var Data_Identity = $PS["Data.Identity"];
   var Foreign = $PS["Foreign"];
-
   var unsafeReadProp = function unsafeReadProp(k) {
     return function (value) {
       return $foreign.unsafeReadPropImpl(Foreign.fail(new Foreign.TypeMismatch("object", Foreign.typeOf(value))), Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Data_Identity.monadIdentity)), k, value);
     };
   };
-
   var readProp = unsafeReadProp;
   exports["readProp"] = readProp;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Halogen.Query.Input"] = $PS["Halogen.Query.Input"] || {};
   var exports = $PS["Halogen.Query.Input"];
-
   var RefUpdate = function () {
     function RefUpdate(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     RefUpdate.create = function (value0) {
       return function (value1) {
         return new RefUpdate(value0, value1);
       };
     };
-
     return RefUpdate;
   }();
-
   var Action = function () {
     function Action(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Action.create = function (value0) {
       return new Action(value0);
     };
-
     return Action;
   }();
-
   exports["RefUpdate"] = RefUpdate;
   exports["Action"] = Action;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -22109,7 +18262,6 @@ var PS = {};
     return e.currentTarget;
   };
 })(PS["Web.Event.Event"] = PS["Web.Event.Event"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22118,14 +18270,11 @@ var PS = {};
   var exports = $PS["Web.Event.Event"];
   var $foreign = $PS["Web.Event.Event"];
   var Data_Nullable = $PS["Data.Nullable"];
-
   var currentTarget = function currentTarget($8) {
     return Data_Nullable.toMaybe($foreign["_currentTarget"]($8));
   };
-
   exports["currentTarget"] = currentTarget;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22137,7 +18286,6 @@ var PS = {};
   exports["change"] = change;
   exports["domcontentloaded"] = domcontentloaded;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22151,7 +18299,6 @@ var PS = {};
   exports["mouseout"] = mouseout;
   exports["mouseover"] = mouseover;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22175,7 +18322,6 @@ var PS = {};
   var Web_HTML_Event_EventTypes = $PS["Web.HTML.Event.EventTypes"];
   var Web_UIEvent_MouseEvent_EventTypes = $PS["Web.UIEvent.MouseEvent.EventTypes"];
   var mouseHandler = Unsafe_Coerce.unsafeCoerce;
-
   var handler = function handler(et) {
     var $1 = Halogen_HTML_Core.handler(et);
     var $2 = Data_Functor.map(Data_Functor.functorFn)(Data_Functor.map(Data_Maybe.functorMaybe)(Halogen_Query_Input.Action.create));
@@ -22183,28 +18329,24 @@ var PS = {};
       return $1($2($3));
     };
   };
-
   var onClick = function () {
     var $4 = handler(Web_UIEvent_MouseEvent_EventTypes.click);
     return function ($5) {
       return $4(mouseHandler($5));
     };
   }();
-
   var onMouseOut = function () {
     var $24 = handler(Web_UIEvent_MouseEvent_EventTypes.mouseout);
     return function ($25) {
       return $24(mouseHandler($25));
     };
   }();
-
   var onMouseOver = function () {
     var $26 = handler(Web_UIEvent_MouseEvent_EventTypes.mouseover);
     return function ($27) {
       return $26(mouseHandler($27));
     };
   }();
-
   var addForeignPropHandler = function addForeignPropHandler(key) {
     return function (prop) {
       return function (reader) {
@@ -22212,7 +18354,6 @@ var PS = {};
           var go = function go(a) {
             return Control_Bind.composeKleisliFlipped(Control_Monad_Except_Trans.bindExceptT(Data_Identity.monadIdentity))(reader)(Foreign_Index.readProp(prop))(Foreign.unsafeToForeign(a));
           };
-
           return handler(key)(Control_Bind.composeKleisli(Data_Maybe.bindMaybe)(Web_Event_Event.currentTarget)(function (e) {
             return Data_Either.either(Data_Function["const"](Data_Maybe.Nothing.value))(f)(Control_Monad_Except.runExcept(go(e)));
           }));
@@ -22220,7 +18361,6 @@ var PS = {};
       };
     };
   };
-
   var onChecked = addForeignPropHandler(Web_HTML_Event_EventTypes.change)("checked")(Foreign.readBoolean);
   var onSelectedIndexChange = addForeignPropHandler(Web_HTML_Event_EventTypes.change)("selectedIndex")(Foreign.readInt);
   var onValueChange = addForeignPropHandler(Web_HTML_Event_EventTypes.change)("value")(Foreign.readString);
@@ -22231,7 +18371,6 @@ var PS = {};
   exports["onSelectedIndexChange"] = onSelectedIndexChange;
   exports["onChecked"] = onChecked;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22242,36 +18381,29 @@ var PS = {};
   var Data_Newtype = $PS["Data.Newtype"];
   var Halogen_HTML_Core = $PS["Halogen.HTML.Core"];
   var Halogen_Query_Input = $PS["Halogen.Query.Input"];
-
   var ref = function () {
     var go = function go(p) {
       return function (mel) {
         return new Data_Maybe.Just(new Halogen_Query_Input.RefUpdate(p, mel));
       };
     };
-
     return function ($11) {
       return Halogen_HTML_Core.ref(go($11));
     };
   }();
-
   var prop = function prop(dictIsProp) {
     return Halogen_HTML_Core.prop(dictIsProp);
   };
-
   var readOnly = prop(Halogen_HTML_Core.isPropBoolean)("readOnly");
   var selected = prop(Halogen_HTML_Core.isPropBoolean)("selected");
   var title = prop(Halogen_HTML_Core.isPropString)("title");
-
   var type_ = function type_(dictIsProp) {
     return prop(dictIsProp)("type");
   };
-
   var value = prop(Halogen_HTML_Core.isPropString)("value");
   var placeholder = prop(Halogen_HTML_Core.isPropString)("placeholder");
   var id_ = prop(Halogen_HTML_Core.isPropString)("id");
   var href = prop(Halogen_HTML_Core.isPropString)("href");
-
   var class_ = function () {
     var $18 = prop(Halogen_HTML_Core.isPropString)("className");
     var $19 = Data_Newtype.unwrap(Halogen_HTML_Core.newtypeClassName);
@@ -22279,7 +18411,6 @@ var PS = {};
       return $18($19($20));
     };
   }();
-
   var checked = prop(Halogen_HTML_Core.isPropBoolean)("checked");
   exports["prop"] = prop;
   exports["ref"] = ref;
@@ -22294,7 +18425,6 @@ var PS = {};
   exports["selected"] = selected;
   exports["placeholder"] = placeholder;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22305,42 +18435,31 @@ var PS = {};
   var Halogen_Component = $PS["Halogen.Component"];
   var Halogen_HTML_Properties = $PS["Halogen.HTML.Properties"];
   var Halogen_Query_HalogenQ = $PS["Halogen.Query.HalogenQ"];
-
   var reHalogenQ = function reHalogenQ(f) {
     return function (v) {
       if (v instanceof Halogen_Query_HalogenQ.Initialize) {
         return new Halogen_Query_HalogenQ.Initialize(v.value0);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Finalize) {
         return new Halogen_Query_HalogenQ.Finalize(v.value0);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Receive) {
         return new Halogen_Query_HalogenQ.Receive(v.value0, v.value1);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Action) {
         return new Halogen_Query_HalogenQ.Action(v.value0, v.value1);
       }
-
       ;
-
       if (v instanceof Halogen_Query_HalogenQ.Query) {
         return new Halogen_Query_HalogenQ.Query(Data_Coyoneda.hoistCoyoneda(f)(v.value0), v.value1);
       }
-
       ;
       throw new Error("Failed pattern match at Halogen.Util (line 25, column 16 - line 30, column 45): " + [v.constructor.name]);
     };
   };
-
   var hoistQuery = function hoistQuery(f) {
     return Halogen_Component.unComponent(function (c) {
       return Halogen_Component.mkComponent({
@@ -22355,15 +18474,12 @@ var PS = {};
       });
     });
   };
-
   var classProp = function classProp(cl) {
     return Halogen_HTML_Properties.class_(cl);
   };
-
   exports["hoistQuery"] = hoistQuery;
   exports["classProp"] = classProp;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -22402,77 +18518,56 @@ var PS = {};
   var Halogen_Util = $PS["Halogen.Util"];
   var Type_DSum = $PS["Type.DSum"];
   var Type_Equiv = $PS["Type.Equiv"];
-
   var TASetType = function () {
     function TASetType(value0) {
       this.value0 = value0;
     }
-
     ;
-
     TASetType.create = function (value0) {
       return new TASetType(value0);
     };
-
     return TASetType;
   }();
-
   var TASetAmount = function () {
     function TASetAmount(value0) {
       this.value0 = value0;
     }
-
     ;
-
     TASetAmount.create = function (value0) {
       return new TASetAmount(value0);
     };
-
     return TASetAmount;
   }();
-
   var RASetType = function () {
     function RASetType(value0) {
       this.value0 = value0;
     }
-
     ;
-
     RASetType.create = function (value0) {
       return new RASetType(value0);
     };
-
     return RASetType;
   }();
-
   var RASetCondType = function () {
     function RASetCondType(value0) {
       this.value0 = value0;
     }
-
     ;
-
     RASetCondType.create = function (value0) {
       return new RASetCondType(value0);
     };
-
     return RASetCondType;
   }();
-
   var RASetLimit = function () {
     function RASetLimit(value0) {
       this.value0 = value0;
     }
-
     ;
-
     RASetLimit.create = function (value0) {
       return new RASetLimit(value0);
     };
-
     return RASetLimit;
   }();
-
   var mkPickOp = function mkPickOp(mpo) {
     return {
       label: mpo.label,
@@ -22505,7 +18600,6 @@ var PS = {};
       }
     };
   };
-
   var perCapitaPickOp = function perCapitaPickOp(tf) {
     return mkPickOp({
       label: "Per Million People",
@@ -22516,7 +18610,6 @@ var PS = {};
         if (v instanceof Corona_Chart.PerCapita) {
           return new Data_Maybe.Just(Data_Unit.unit);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22527,7 +18620,6 @@ var PS = {};
       defaultState: Data_Unit.unit
     });
   };
-
   var pgrowthPickOp = function pgrowthPickOp(nt) {
     return mkPickOp({
       label: "Percent Growth",
@@ -22538,7 +18630,6 @@ var PS = {};
         if (v instanceof Corona_Chart.PGrowth) {
           return new Data_Maybe.Just(Data_Unit.unit);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22549,7 +18640,6 @@ var PS = {};
       defaultState: Data_Unit.unit
     });
   };
-
   var pmaxPickOp = function pmaxPickOp(nt) {
     return mkPickOp({
       label: "Percent of Maximum",
@@ -22560,7 +18650,6 @@ var PS = {};
         if (v instanceof Corona_Chart.PMax) {
           return new Data_Maybe.Just(Data_Unit.unit);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22571,7 +18660,6 @@ var PS = {};
       defaultState: Data_Unit.unit
     });
   };
-
   var pointDatePickOp = mkPickOp({
     label: "Date Observed",
     render: function render(v) {
@@ -22581,7 +18669,6 @@ var PS = {};
       if (v instanceof Corona_Chart.PointDate) {
         return new Data_Maybe.Just(Data_Unit.unit);
       }
-
       ;
       return Data_Maybe.Nothing.value;
     },
@@ -22591,7 +18678,6 @@ var PS = {};
     },
     defaultState: Data_Unit.unit
   });
-
   var windowPickOp = function windowPickOp(tf) {
     var parseWindow = function () {
       var $122 = Data_Functor.map(Data_Maybe.functorMaybe)(function () {
@@ -22604,7 +18690,6 @@ var PS = {};
         return $122(Data_Number.fromString($123));
       };
     }();
-
     return mkPickOp({
       label: "Moving Average",
       render: function render(st) {
@@ -22614,7 +18699,6 @@ var PS = {};
         if (v instanceof Corona_Chart.Window) {
           return new Data_Maybe.Just(v.value1);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22623,7 +18707,6 @@ var PS = {};
       defaultState: 1
     });
   };
-
   var lagPickOp = function () {
     var parseAmount = function () {
       var $126 = Data_Functor.map(Data_Maybe.functorMaybe)(Data_Int.round);
@@ -22631,7 +18714,6 @@ var PS = {};
         return $126(Data_Number.fromString($127));
       };
     }();
-
     return mkPickOp({
       label: "Lag",
       render: function render(st) {
@@ -22641,7 +18723,6 @@ var PS = {};
         if (v instanceof Corona_Chart.Lag) {
           return new Data_Maybe.Just(v.value1);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22650,25 +18731,20 @@ var PS = {};
       defaultState: 13
     });
   }();
-
   var inputField = function inputField(t) {
     var showPrecision = function showPrecision(x) {
       var $61 = Data_Int.toNumber(Data_Int.round(x)) === x;
-
       if ($61) {
         return Data_Show.show(Data_Show.showInt)(Data_Int.round(x));
       }
-
       ;
       return Data_Show.show(Data_Show.showNumber)(x);
     };
-
     return {
       inputType: function () {
         if (t instanceof D3_Scatter_Type.SDay) {
           return DOM_HTML_Indexed_InputType.InputDate.value;
         }
-
         ;
         return DOM_HTML_Indexed_InputType.InputNumber.value;
       }(),
@@ -22679,9 +18755,7 @@ var PS = {};
             return $128(Data_ModifiedJulianDay.fromISO8601($129));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SDays) {
           var $130 = Data_Functor.map(Data_Maybe.functorMaybe)(function () {
             var $132 = Type_Equiv.equivFrom(t.value0);
@@ -22693,9 +18767,7 @@ var PS = {};
             return $130(Data_Number.fromString($131));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SInt) {
           var $134 = Data_Functor.map(Data_Maybe.functorMaybe)(function () {
             var $136 = Type_Equiv.equivFrom(t.value0);
@@ -22707,18 +18779,14 @@ var PS = {};
             return $134(Data_Number.fromString($135));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SNumber) {
           var $138 = Data_Functor.map(Data_Maybe.functorMaybe)(Type_Equiv.equivFrom(t.value0));
           return function ($139) {
             return $138(Data_Number.fromString($139));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SPercent) {
           var $140 = Data_Functor.map(Data_Maybe.functorMaybe)(function () {
             var $142 = Type_Equiv.equivFrom(t.value0);
@@ -22732,7 +18800,6 @@ var PS = {};
             return $140(Data_Number.fromString($141));
           };
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 423, column 19 - line 429, column 38): " + [t.constructor.name]);
       }(),
@@ -22743,9 +18810,7 @@ var PS = {};
             return Data_ModifiedJulianDay.toISO8601($144($145));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SDays) {
           var $146 = Data_Show.show(Data_Show.showInt);
           var $147 = Type_Equiv.equivTo(t.value0);
@@ -22753,9 +18818,7 @@ var PS = {};
             return $146(D3_Scatter_Type.unDays($147($148)));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SInt) {
           var $149 = Data_Show.show(Data_Show.showInt);
           var $150 = Type_Equiv.equivTo(t.value0);
@@ -22763,18 +18826,14 @@ var PS = {};
             return $149($150($151));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SNumber) {
           var $152 = Type_Equiv.equivTo(t.value0);
           return function ($153) {
             return showPrecision($152($153));
           };
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SPercent) {
           var $154 = Type_Equiv.equivTo(t.value0);
           return function ($155) {
@@ -22783,13 +18842,11 @@ var PS = {};
             }(D3_Scatter_Type.unPercent($154($155))));
           };
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 430, column 18 - line 435, column 83): " + [t.constructor.name]);
       }()
     };
   };
-
   var deltaPickOp = function deltaPickOp(nt) {
     return mkPickOp({
       label: "Daily Change",
@@ -22800,7 +18857,6 @@ var PS = {};
         if (v instanceof Corona_Chart.Delta) {
           return new Data_Maybe.Just(Data_Unit.unit);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22811,25 +18867,19 @@ var PS = {};
       defaultState: Data_Unit.unit
     });
   };
-
   var cutoffList = [Corona_Chart.After.value, Corona_Chart.Before.value];
-
   var dayNumberPickOp = function () {
     var showCutoff = function showCutoff(v) {
       if (v instanceof Corona_Chart.After) {
         return "first day";
       }
-
       ;
-
       if (v instanceof Corona_Chart.Before) {
         return "last day";
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 374, column 18 - line 376, column 27): " + [v.constructor.name]);
     };
-
     return mkPickOp({
       label: "Day Count",
       render: function render(st) {
@@ -22844,7 +18894,6 @@ var PS = {};
         if (v instanceof Corona_Chart.DayNumber) {
           return new Data_Maybe.Just(v.value1);
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22853,30 +18902,24 @@ var PS = {};
       defaultState: Corona_Chart.After.value
     });
   }();
-
   var takePickOp = function () {
     var showCutoff = function showCutoff(v) {
       if (v instanceof Corona_Chart.After) {
         return "first";
       }
-
       ;
-
       if (v instanceof Corona_Chart.Before) {
         return "last";
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 327, column 18 - line 329, column 23): " + [v.constructor.name]);
     };
-
     var parseAmount = function () {
       var $156 = Data_Functor.map(Data_Maybe.functorMaybe)(Data_Int.round);
       return function ($157) {
         return $156(Data_Number.fromString($157));
       };
     }();
-
     return mkPickOp({
       label: "Take Amount",
       render: function render(st) {
@@ -22904,7 +18947,6 @@ var PS = {};
             cutoffType: v.value2
           });
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -22917,9 +18959,7 @@ var PS = {};
             };
           };
         }
-
         ;
-
         if (v instanceof TASetAmount) {
           return function (v2) {
             return {
@@ -22928,7 +18968,6 @@ var PS = {};
             };
           };
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 316, column 15 - line 318, column 42): " + [v.constructor.name]);
       },
@@ -22941,42 +18980,31 @@ var PS = {};
       }
     });
   }();
-
   var condList = [new Corona_Chart.AtLeast(Data_Unit.unit), new Corona_Chart.AtMost(Data_Unit.unit)];
-
   var restrictPickOp = function restrictPickOp(t) {
     var v = inputField(t);
-
     var showCutoff = function showCutoff(v1) {
       if (v1 instanceof Corona_Chart.After) {
         return "after";
       }
-
       ;
-
       if (v1 instanceof Corona_Chart.Before) {
         return "before";
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 277, column 18 - line 279, column 25): " + [v1.constructor.name]);
     };
-
     var showCond = function showCond(v1) {
       if (v1 instanceof Corona_Chart.AtLeast) {
         return "at least";
       }
-
       ;
-
       if (v1 instanceof Corona_Chart.AtMost) {
         return "at most";
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 280, column 16 - line 282, column 29): " + [v1.constructor.name]);
     };
-
     return mkPickOp({
       label: "Restrict",
       render: function render(st) {
@@ -23014,7 +19042,6 @@ var PS = {};
             condition: v1.value3
           });
         }
-
         ;
         return Data_Maybe.Nothing.value;
       },
@@ -23026,25 +19053,20 @@ var PS = {};
               condition: st.condition
             };
           }
-
           ;
-
           if (act instanceof RASetCondType) {
             return {
               condition: Data_Functor.voidRight(Corona_Chart.functorCondition)(Corona_Chart.conditionValue(st.condition))(act.value0),
               cutoffType: st.cutoffType
             };
           }
-
           ;
-
           if (act instanceof RASetLimit) {
             return {
               condition: Data_Functor.voidRight(Corona_Chart.functorCondition)(act.value0)(st.condition),
               cutoffType: st.cutoffType
             };
           }
-
           ;
           throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 254, column 9 - line 259, column 49): " + [act.constructor.name]);
         };
@@ -23058,74 +19080,53 @@ var PS = {};
           if (t instanceof D3_Scatter_Type.SDay) {
             return Type_Equiv.equivFrom(t.value0)(Data_ModifiedJulianDay.fromDate(Data_Date.canonicalDate(Data_Enum.toEnumWithDefaults(Data_Date_Component.boundedEnumYear)(Data_Bounded.bottom(Data_Date_Component.boundedYear))(Data_Bounded.top(Data_Date_Component.boundedYear))(2020))(Data_Date_Component.January.value)(Data_Enum.toEnumWithDefaults(Data_Date_Component.boundedEnumDay)(Data_Bounded.bottom(Data_Date_Component.boundedDay))(Data_Bounded.top(Data_Date_Component.boundedDay))(22))));
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SDays) {
             return Type_Equiv.equivFrom(t.value0)(0);
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SInt) {
             return Type_Equiv.equivFrom(t.value0)(100);
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SNumber) {
             return Type_Equiv.equivFrom(t.value0)(100.0);
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SPercent) {
             return Type_Equiv.equivFrom(t.value0)(0.2);
           }
-
           ;
           throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 263, column 32 - line 272, column 55): " + [t.constructor.name]);
         }())
       }
     });
   };
-
   var pickerMap = function pickerMap(t0) {
     if (t0 instanceof D3_Scatter_Type.SDay) {
       return [Type_DSum.dsum(t0)(restrictPickOp(t0)), Type_DSum.dsum(t0)(takePickOp), Type_DSum.dsum(t0)(lagPickOp), Type_DSum.dsum(D3_Scatter_Type.sDays)(dayNumberPickOp), Type_DSum.dsum(D3_Scatter_Type.sDay)(pointDatePickOp)];
     }
-
     ;
-
     if (t0 instanceof D3_Scatter_Type.SDays) {
       return [Type_DSum.dsum(t0)(restrictPickOp(t0)), Type_DSum.dsum(t0)(takePickOp), Type_DSum.dsum(t0)(lagPickOp), Type_DSum.dsum(D3_Scatter_Type.sDays)(dayNumberPickOp), Type_DSum.dsum(D3_Scatter_Type.sDay)(pointDatePickOp)];
     }
-
     ;
-
     if (t0 instanceof D3_Scatter_Type.SInt) {
       return [Type_DSum.dsum(t0)(deltaPickOp(new D3_Scatter_Type.NInt(t0.value0))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(pgrowthPickOp(new D3_Scatter_Type.NInt(t0.value0))), Type_DSum.dsum(D3_Scatter_Type.sNumber)(windowPickOp(new Corona_Chart.I2N(t0.value0, Type_Equiv.refl))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(pmaxPickOp(new D3_Scatter_Type.NInt(t0.value0))), Type_DSum.dsum(t0)(restrictPickOp(t0)), Type_DSum.dsum(t0)(takePickOp), Type_DSum.dsum(t0)(lagPickOp), Type_DSum.dsum(D3_Scatter_Type.sDays)(dayNumberPickOp), Type_DSum.dsum(D3_Scatter_Type.sNumber)(perCapitaPickOp(new Corona_Chart.I2N(t0.value0, Type_Equiv.refl))), Type_DSum.dsum(D3_Scatter_Type.sDay)(pointDatePickOp)];
     }
-
     ;
-
     if (t0 instanceof D3_Scatter_Type.SNumber) {
       return [Type_DSum.dsum(t0)(deltaPickOp(new D3_Scatter_Type.NNumber(t0.value0))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(pgrowthPickOp(new D3_Scatter_Type.NNumber(t0.value0))), Type_DSum.dsum(D3_Scatter_Type.sNumber)(windowPickOp(new Corona_Chart.N2N(t0.value0, Type_Equiv.refl))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(pmaxPickOp(new D3_Scatter_Type.NNumber(t0.value0))), Type_DSum.dsum(t0)(restrictPickOp(t0)), Type_DSum.dsum(t0)(takePickOp), Type_DSum.dsum(t0)(lagPickOp), Type_DSum.dsum(D3_Scatter_Type.sDays)(dayNumberPickOp), Type_DSum.dsum(D3_Scatter_Type.sNumber)(perCapitaPickOp(new Corona_Chart.N2N(t0.value0, Type_Equiv.refl))), Type_DSum.dsum(D3_Scatter_Type.sDay)(pointDatePickOp)];
     }
-
     ;
-
     if (t0 instanceof D3_Scatter_Type.SPercent) {
       return [Type_DSum.dsum(t0)(deltaPickOp(new D3_Scatter_Type.NPercent(t0.value0))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(pgrowthPickOp(new D3_Scatter_Type.NPercent(t0.value0))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(windowPickOp(new Corona_Chart.P2P(t0.value0, Type_Equiv.refl))), Type_DSum.dsum(D3_Scatter_Type.sPercent)(pmaxPickOp(new D3_Scatter_Type.NPercent(t0.value0))), Type_DSum.dsum(t0)(restrictPickOp(t0)), Type_DSum.dsum(t0)(takePickOp), Type_DSum.dsum(t0)(lagPickOp), Type_DSum.dsum(D3_Scatter_Type.sDays)(dayNumberPickOp), Type_DSum.dsum(D3_Scatter_Type.sPercent)(perCapitaPickOp(new Corona_Chart.P2P(t0.value0, Type_Equiv.refl))), Type_DSum.dsum(D3_Scatter_Type.sDay)(pointDatePickOp)];
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart.UI.Op (line 44, column 16 - line 94, column 8): " + [t0.constructor.name]);
   };
-
   exports["pickerMap"] = pickerMap;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -23133,7 +19134,6 @@ var PS = {};
     return parseInt(input, base);
   };
 })(PS["Data.Int.Parse"] = PS["Data.Int.Parse"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23144,48 +19144,38 @@ var PS = {};
   var Data_Int = $PS["Data.Int"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Global = $PS["Global"];
-
   var toRadix = function toRadix(x) {
     var $1 = x < 2;
-
     if ($1) {
       return 2;
     }
-
     ;
     var $2 = x > 36;
-
     if ($2) {
       return 36;
     }
-
     ;
     return x;
   };
-
   var $$parseInt = function $$parseInt(s) {
     return function (v) {
       var x = $foreign.unsafeParseInt(s, v);
       var $5 = Global["isNaN"](x);
-
       if ($5) {
         return Data_Maybe.Nothing.value;
       }
-
       ;
       return new Data_Maybe.Just(Data_Int.round(x));
     };
   };
-
   exports["toRadix"] = toRadix;
   exports["parseInt"] = $$parseInt;
 })(PS);
-
 (function (exports) {
-  "use strict"; // Alias require to prevent webpack or browserify from actually requiring.
+  "use strict";
 
+  // Alias require to prevent webpack or browserify from actually requiring.
   var req = typeof module === "undefined" ? undefined : module.require;
-
   var util = function () {
     try {
       return req === undefined ? undefined : req("util");
@@ -23193,7 +19183,6 @@ var PS = {};
       return undefined;
     }
   }();
-
   exports._trace = function (x, k) {
     // node only recurses two levels into an object before printing
     // "[object]" for further objects when using console.log()
@@ -23205,11 +19194,9 @@ var PS = {};
     } else {
       console.log(x);
     }
-
     return k({});
   };
 })(PS["Debug"] = PS["Debug"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23217,7 +19204,6 @@ var PS = {};
   $PS["Debug"] = $PS["Debug"] || {};
   var exports = $PS["Debug"];
   var $foreign = $PS["Debug"];
-
   var trace = function trace(dictDebugWarning) {
     return function (a) {
       return function (k) {
@@ -23225,10 +19211,8 @@ var PS = {};
       };
     };
   };
-
   exports["trace"] = trace;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -23236,7 +19220,6 @@ var PS = {};
     return Papa.parse(csv);
   };
 })(PS["Foreign.Papa"] = PS["Foreign.Papa"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23246,7 +19229,6 @@ var PS = {};
   var $foreign = $PS["Foreign.Papa"];
   exports["parseCSV"] = $foreign.parseCSV;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23291,14 +19273,11 @@ var PS = {};
   var popUrl = "https://raw.githubusercontent.com/mstksg/corona-charts/master/public/data/country_pop.csv";
   var deathsUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
   var countryFilters = Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("US", "United States"), new Data_Tuple.Tuple("Korea, South", "South Korea"), new Data_Tuple.Tuple("Taiwan*", "Taiwan"), new Data_Tuple.Tuple("Burma", "Myanmar"), new Data_Tuple.Tuple("Bosnia and Herzegovina", "Bosnia-Herzegovina"), new Data_Tuple.Tuple("Palestinian Territory", "West Bank and Gaza"), new Data_Tuple.Tuple("eSwatini", "Eswatini"), new Data_Tuple.Tuple("Cape Verde", "Cabo Verde"), new Data_Tuple.Tuple("St. Vincent and the Grenadines", "Saint Vincent and the Grenadines"), new Data_Tuple.Tuple("St. Kitts-Nevis", "Saint Kitts and Nevis"), new Data_Tuple.Tuple("Congo", "Congo (Brazzaville)"), new Data_Tuple.Tuple("Congo, Dem. Rep.", "Congo (Kinshasa)")]);
-
   var filterCountry = function filterCountry(c) {
     return Data_Maybe.fromMaybe(c)(Foreign_Object.lookup(c)(countryFilters));
   };
-
   var corePops = Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Holy See", 825), new Data_Tuple.Tuple("Diamond Princess", 3711), new Data_Tuple.Tuple("MS Zaandam", 1829)]);
   var confirmedUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-
   var buildPops = function () {
     var go = function go(xs) {
       return Control_Bind.bind(Data_Maybe.bindMaybe)(Data_Array.index(xs)(2))(function (tp) {
@@ -23311,16 +19290,14 @@ var PS = {};
         });
       });
     };
-
-    var $21 = Foreign_Object.union(corePops);
-    var $22 = Foreign_Object.fromFoldable(Data_Foldable.foldableArray);
-    var $23 = Data_Array.mapMaybe(go);
-    var $24 = Data_Array.drop(5);
-    return function ($25) {
-      return $21($22($23($24($25))));
+    var $22 = Foreign_Object.union(corePops);
+    var $23 = Foreign_Object.fromFoldable(Data_Foldable.foldableArray);
+    var $24 = Data_Array.mapMaybe(go);
+    var $25 = Data_Array.drop(5);
+    return function ($26) {
+      return $22($23($24($25($26))));
     };
   }();
-
   var fetchPops = function fetchPops(url) {
     return Control_Bind.bind(Effect_Aff.bindAff)(Affjax.request({
       method: new Data_Either.Left(Data_HTTP_Method.GET.value),
@@ -23336,19 +19313,15 @@ var PS = {};
         if (result instanceof Data_Either.Left) {
           return new Data_Either.Left(Affjax.printError(result.value0));
         }
-
         ;
-
         if (result instanceof Data_Either.Right) {
           return Data_Either.Right.create(buildPops(Foreign_Papa.parseCSV(result.value0.body).data));
         }
-
         ;
-        throw new Error("Failed pattern match at Corona.Data.JHU (line 146, column 11 - line 148, column 72): " + [result.constructor.name]);
+        throw new Error("Failed pattern match at Corona.Data.JHU (line 145, column 11 - line 147, column 72): " + [result.constructor.name]);
       }());
     });
   };
-
   var buildData = function buildData(xs) {
     var go = function go(val) {
       return Control_Bind.bind(Data_Maybe.bindMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(filterCountry)(Data_Array.index(val)(1)))(function (country) {
@@ -23357,7 +19330,6 @@ var PS = {};
         });
       });
     };
-
     var process = function process(ht) {
       return Control_Monad_Maybe_Trans.runMaybeT(Control_Bind.bind(Control_Monad_Maybe_Trans.bindMaybeT(Effect.monadEffect))(Data_Maybe.maybe(Control_Plus.empty(Control_Monad_Maybe_Trans.plusMaybeT(Effect.monadEffect)))(Control_Applicative.pure(Control_Monad_Maybe_Trans.applicativeMaybeT(Effect.monadEffect)))(Data_Array.index(ht.head)(4)))(function (d0) {
         return Control_Bind.bind(Control_Monad_Maybe_Trans.bindMaybeT(Effect.monadEffect))(Control_Monad_Maybe_Trans.MaybeT(Data_Functor.map(Effect.functorEffect)(Data_ModifiedJulianDay.fromJSDate)(Data_JSDate.parse(d0))))(function (start) {
@@ -23370,23 +19342,17 @@ var PS = {};
         });
       }));
     };
-
     var v = Data_Array.uncons(xs);
-
     if (v instanceof Data_Maybe.Nothing) {
       return Control_Applicative.pure(Effect.applicativeEffect)(Data_Maybe.Nothing.value);
     }
-
     ;
-
     if (v instanceof Data_Maybe.Just) {
       return process(v.value0);
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Data.JHU (line 88, column 16 - line 90, column 38): " + [v.constructor.name]);
+    throw new Error("Failed pattern match at Corona.Data.JHU (line 87, column 16 - line 89, column 38): " + [v.constructor.name]);
   };
-
   var fetchData = function fetchData(url) {
     return Control_Bind.bind(Effect_Aff.bindAff)(Affjax.request({
       method: new Data_Either.Left(Data_HTTP_Method.GET.value),
@@ -23401,38 +19367,29 @@ var PS = {};
       if (result instanceof Data_Either.Left) {
         return Control_Applicative.pure(Effect_Aff.applicativeAff)(new Data_Either.Left(Affjax.printError(result.value0)));
       }
-
       ;
-
       if (result instanceof Data_Either.Right) {
         return Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(function __do() {
           var dat = buildData(Foreign_Papa.parseCSV(result.value0.body).data)();
-
           if (dat instanceof Data_Maybe.Nothing) {
             return new Data_Either.Left("data not accumulated");
           }
-
           ;
-
           if (dat instanceof Data_Maybe.Just) {
             return new Data_Either.Right(dat.value0);
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Data.JHU (line 135, column 15 - line 137, column 30): " + [dat.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Data.JHU (line 134, column 15 - line 136, column 30): " + [dat.constructor.name]);
         });
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Data.JHU (line 131, column 5 - line 137, column 30): " + [result.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Data.JHU (line 130, column 5 - line 136, column 30): " + [result.constructor.name]);
     });
   };
-
   var fetchCoronaData = function () {
     var noEmpty = function noEmpty(o) {
       return !Data_Array["null"](o.active);
     };
-
     return Control_Monad_Except_Trans.runExceptT(Control_Bind.bind(Control_Monad_Except_Trans.bindExceptT(Effect_Aff.monadAff))(Control_Monad_Except_Trans.ExceptT(fetchData(confirmedUrl)))(function (confirmed) {
       return Control_Bind.bind(Control_Monad_Except_Trans.bindExceptT(Effect_Aff.monadAff))(Control_Monad_Except_Trans.ExceptT(fetchData(deathsUrl)))(function (deaths) {
         return Control_Bind.bind(Control_Monad_Except_Trans.bindExceptT(Effect_Aff.monadAff))(Control_Monad_Except_Trans.ExceptT(fetchData(recoveredUrl)))(function (recovered) {
@@ -23442,42 +19399,32 @@ var PS = {};
                 return function (c) {
                   var r = function () {
                     var v = Foreign_Object.lookup(k)(recovered.counts);
-
                     if (v instanceof Data_Maybe.Nothing) {
                       return Debug.trace()("bad r: " + k)(function (v1) {
                         return [];
                       });
                     }
-
                     ;
-
                     if (v instanceof Data_Maybe.Just) {
                       return v.value0;
                     }
-
                     ;
                     throw new Error("Failed pattern match at Corona.Data.JHU (line 65, column 19 - line 67, column 33): " + [v.constructor.name]);
                   }();
-
                   var d = function () {
                     var v = Foreign_Object.lookup(k)(deaths.counts);
-
                     if (v instanceof Data_Maybe.Nothing) {
                       return Debug.trace()("bad d: " + k)(function (v1) {
                         return [];
                       });
                     }
-
                     ;
-
                     if (v instanceof Data_Maybe.Just) {
                       return v.value0;
                     }
-
                     ;
                     throw new Error("Failed pattern match at Corona.Data.JHU (line 62, column 19 - line 64, column 33): " + [v.constructor.name]);
                   }();
-
                   return {
                     confirmed: c,
                     deaths: d,
@@ -23490,54 +19437,50 @@ var PS = {};
                 start: confirmed.start,
                 dat: Corona_Data_Type.combineDat(pops)(newCounts)
               };
-              return Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Effect_Aff.monadAff))(res);
+              return Debug.trace()(res)(function (v) {
+                return Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Effect_Aff.monadAff))(res);
+              });
             });
           });
         });
       });
     }));
   }();
-
   exports["fetchCoronaData"] = fetchCoronaData;
 })(PS);
-
 (function (exports) {
-  "use strict"; // type CoronaData =
+  "use strict";
+
+  // type CoronaData =
   //     { start  :: Day
   //     , counts :: O.Object (Counts (Array Int))
   //     }
+
   // type Counts a =
   //     { confirmed :: a
   //     , deaths    :: a
   //     , recovered :: a
   //     }
-
   var zeroPad = function zeroPad(xs, n) {
     return n > xs.length ? Array(n - xs.length).fill(0).concat(xs) : xs;
   };
-
   exports.buildCorona = function (rows) {
     var start;
     var counts = {};
-
     var _iterator6 = _createForOfIteratorHelper(rows),
-        _step6;
-
+      _step6;
     try {
       for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
         var r = _step6.value;
         var _state2 = r[1];
         var cases = parseInt(r[3]);
         var deaths = parseInt(r[4]);
-
         if (!start) {
           var datesegs = r[0].split('-');
           start = new Date(datesegs[0], parseInt(datesegs[1]) - 1, datesegs[2]);
         }
-
         if (counts[_state2]) {
           counts[_state2].confirmed.push(cases);
-
           counts[_state2].deaths.push(deaths);
         } else {
           counts[_state2] = {
@@ -23551,25 +19494,20 @@ var PS = {};
     } finally {
       _iterator6.f();
     }
-
     var maxcount = 0;
-
     for (var state in counts) {
       maxcount = Math.max(maxcount, counts[state].confirmed.length);
     }
-
     for (var _state in counts) {
       counts[_state].confirmed = zeroPad(counts[_state].confirmed, maxcount);
       counts[_state].deaths = zeroPad(counts[_state].deaths, maxcount);
     }
-
     return {
       start: start,
       counts: counts
     };
   };
 })(PS["Corona.Data.NYT"] = PS["Corona.Data.NYT"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23607,7 +19545,6 @@ var PS = {};
   var popUrl = "https://raw.githubusercontent.com/mstksg/corona-charts/master/public/data/us_pop.csv";
   var dataUrl = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv";
   var corePops = Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([new Data_Tuple.Tuple("Virgin Islands", 104437), new Data_Tuple.Tuple("Guam", 168661), new Data_Tuple.Tuple("Northern Mariana Islands", 168661)]);
-
   var buildPops = function () {
     var go = function go(xs) {
       return Control_Bind.bind(Data_Maybe.bindMaybe)(Data_Array.index(xs)(0))(function (level) {
@@ -23620,7 +19557,6 @@ var PS = {};
         });
       });
     };
-
     var $2 = Foreign_Object.union(corePops);
     var $3 = Foreign_Object.fromFoldable(Data_Foldable.foldableArray);
     var $4 = Data_Array.mapMaybe(go);
@@ -23629,7 +19565,6 @@ var PS = {};
       return $2($3($4($5($6))));
     };
   }();
-
   var fetchCoronaData = Control_Monad_Except_Trans.runExceptT(Control_Bind.bind(Control_Monad_Except_Trans.bindExceptT(Effect_Aff.monadAff))(Control_Monad_Except_Trans.ExceptT(Data_Functor.map(Effect_Aff.functorAff)(Data_Bifunctor.lmap(Data_Either.bifunctorEither)(Affjax.printError))(Affjax.request({
     method: new Data_Either.Left(Data_HTTP_Method.GET.value),
     url: dataUrl,
@@ -23672,7 +19607,6 @@ var PS = {};
   }));
   exports["fetchCoronaData"] = fetchCoronaData;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23684,50 +19618,52 @@ var PS = {};
   var Data_Eq = $PS["Data.Eq"];
   var Data_Ord = $PS["Data.Ord"];
   var Data_Ordering = $PS["Data.Ordering"];
-
   var WorldData = function () {
     function WorldData() {}
-
     ;
     WorldData.value = new WorldData();
     return WorldData;
   }();
-
   var USData = function () {
     function USData() {}
-
     ;
     USData.value = new USData();
     return USData;
   }();
-
+  var SouthAmerica = function () {
+    function SouthAmerica() {}
+    ;
+    SouthAmerica.value = new SouthAmerica();
+    return SouthAmerica;
+  }();
   var fetchDataset = function fetchDataset(v) {
     if (v instanceof WorldData) {
       return Corona_Data_JHU.fetchCoronaData;
     }
-
     ;
-
     if (v instanceof USData) {
       return Corona_Data_NYT.fetchCoronaData;
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Data (line 42, column 16 - line 44, column 37): " + [v.constructor.name]);
+    if (v instanceof SouthAmerica) {
+      return Corona_Data_JHU.fetchCoronaData;
+    }
+    ;
+    throw new Error("Failed pattern match at Corona.Data (line 42, column 16 - line 45, column 40): " + [v.constructor.name]);
   };
-
   var eqDataset = new Data_Eq.Eq(function (x) {
     return function (y) {
       if (x instanceof WorldData && y instanceof WorldData) {
         return true;
       }
-
       ;
-
       if (x instanceof USData && y instanceof USData) {
         return true;
       }
-
+      ;
+      if (x instanceof SouthAmerica && y instanceof SouthAmerica) {
+        return true;
+      }
       ;
       return false;
     };
@@ -23739,51 +19675,54 @@ var PS = {};
       if (x instanceof WorldData && y instanceof WorldData) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof WorldData) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof WorldData) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof USData && y instanceof USData) {
         return Data_Ordering.EQ.value;
       }
-
+      ;
+      if (x instanceof USData) {
+        return Data_Ordering.LT.value;
+      }
+      ;
+      if (y instanceof USData) {
+        return Data_Ordering.GT.value;
+      }
+      ;
+      if (x instanceof SouthAmerica && y instanceof SouthAmerica) {
+        return Data_Ordering.EQ.value;
+      }
       ;
       throw new Error("Failed pattern match at Corona.Data (line 39, column 1 - line 39, column 42): " + [x.constructor.name, y.constructor.name]);
     };
   });
   exports["WorldData"] = WorldData;
   exports["USData"] = USData;
+  exports["SouthAmerica"] = SouthAmerica;
   exports["fetchDataset"] = fetchDataset;
   exports["eqDataset"] = eqDataset;
   exports["ordDataset"] = ordDataset;
 })(PS);
-
 (function (exports) {
   "use strict";
-  /* global Symbol */
 
+  /* global Symbol */
   var hasArrayFrom = typeof Array.from === "function";
   var hasStringIterator = typeof Symbol !== "undefined" && Symbol != null && typeof Symbol.iterator !== "undefined" && typeof String.prototype[Symbol.iterator] === "function";
   var hasFromCodePoint = typeof String.prototype.fromCodePoint === "function";
   var hasCodePointAt = typeof String.prototype.codePointAt === "function";
-
   exports._unsafeCodePointAt0 = function (fallback) {
     return hasCodePointAt ? function (str) {
       return str.codePointAt(0);
     } : fallback;
   };
-
   exports._fromCodePointArray = function (singleton) {
     return hasFromCodePoint ? function (cps) {
       // Function.prototype.apply will fail for very large second parameters,
@@ -23791,38 +19730,31 @@ var PS = {};
       if (cps.length < 10e3) {
         return String.fromCodePoint.apply(String, cps);
       }
-
       return cps.map(singleton).join("");
     } : function (cps) {
       return cps.map(singleton).join("");
     };
   };
-
   exports._singleton = function (fallback) {
     return hasFromCodePoint ? String.fromCodePoint : fallback;
   };
-
   exports._take = function (fallback) {
     return function (n) {
       if (hasStringIterator) {
         return function (str) {
           var accum = "";
           var iter = str[Symbol.iterator]();
-
           for (var i = 0; i < n; ++i) {
             var o = iter.next();
             if (o.done) return accum;
             accum += o.value;
           }
-
           return accum;
         };
       }
-
       return fallback(n);
     };
   };
-
   exports._toCodePointArray = function (fallback) {
     return function (unsafeCodePointAt0) {
       if (hasArrayFrom) {
@@ -23830,19 +19762,16 @@ var PS = {};
           return Array.from(str, unsafeCodePointAt0);
         };
       }
-
       return fallback;
     };
   };
 })(PS["Data.String.CodePoints"] = PS["Data.String.CodePoints"] || {});
-
 (function (exports) {
   "use strict";
 
   exports.singleton = function (c) {
     return c;
   };
-
   exports._charAt = function (just) {
     return function (nothing) {
       return function (i) {
@@ -23852,18 +19781,15 @@ var PS = {};
       };
     };
   };
-
   exports.length = function (s) {
     return s.length;
   };
-
   exports.drop = function (n) {
     return function (s) {
       return s.substring(n);
     };
   };
 })(PS["Data.String.CodeUnits"] = PS["Data.String.CodeUnits"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23878,7 +19804,6 @@ var PS = {};
   exports["length"] = $foreign.length;
   exports["drop"] = $foreign.drop;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -23889,7 +19814,6 @@ var PS = {};
     };
   };
 })(PS["Data.String.Unsafe"] = PS["Data.String.Unsafe"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23899,7 +19823,6 @@ var PS = {};
   var $foreign = $PS["Data.String.Unsafe"];
   exports["charAt"] = $foreign.charAt;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -23917,157 +19840,124 @@ var PS = {};
   var Data_String_Unsafe = $PS["Data.String.Unsafe"];
   var Data_Tuple = $PS["Data.Tuple"];
   var Data_Unfoldable = $PS["Data.Unfoldable"];
-
   var CodePoint = function CodePoint(x) {
     return x;
   };
-
   var unsurrogate = function unsurrogate(lead) {
     return function (trail) {
       return (((lead - 55296 | 0) * 1024 | 0) + (trail - 56320 | 0) | 0) + 65536 | 0;
     };
   };
-
   var isTrail = function isTrail(cu) {
     return 56320 <= cu && cu <= 57343;
   };
-
   var isLead = function isLead(cu) {
     return 55296 <= cu && cu <= 56319;
   };
-
   var uncons = function uncons(s) {
     var v = Data_String_CodeUnits.length(s);
-
     if (v === 0) {
       return Data_Maybe.Nothing.value;
     }
-
     ;
-
     if (v === 1) {
       return new Data_Maybe.Just({
         head: Data_Enum.fromEnum(Data_Enum.boundedEnumChar)(Data_String_Unsafe.charAt(0)(s)),
         tail: ""
       });
     }
-
     ;
     var cu1 = Data_Enum.fromEnum(Data_Enum.boundedEnumChar)(Data_String_Unsafe.charAt(1)(s));
     var cu0 = Data_Enum.fromEnum(Data_Enum.boundedEnumChar)(Data_String_Unsafe.charAt(0)(s));
     var $21 = isLead(cu0) && isTrail(cu1);
-
     if ($21) {
       return new Data_Maybe.Just({
         head: unsurrogate(cu0)(cu1),
         tail: Data_String_CodeUnits.drop(2)(s)
       });
     }
-
     ;
     return new Data_Maybe.Just({
       head: cu0,
       tail: Data_String_CodeUnits.drop(1)(s)
     });
   };
-
   var unconsButWithTuple = function unconsButWithTuple(s) {
     return Data_Functor.map(Data_Maybe.functorMaybe)(function (v) {
       return new Data_Tuple.Tuple(v.head, v.tail);
     })(uncons(s));
   };
-
   var toCodePointArrayFallback = function toCodePointArrayFallback(s) {
     return Data_Unfoldable.unfoldr(Data_Unfoldable.unfoldableArray)(unconsButWithTuple)(s);
   };
-
   var unsafeCodePointAt0Fallback = function unsafeCodePointAt0Fallback(s) {
     var cu0 = Data_Enum.fromEnum(Data_Enum.boundedEnumChar)(Data_String_Unsafe.charAt(0)(s));
     var $25 = isLead(cu0) && Data_String_CodeUnits.length(s) > 1;
-
     if ($25) {
       var cu1 = Data_Enum.fromEnum(Data_Enum.boundedEnumChar)(Data_String_Unsafe.charAt(1)(s));
       var $26 = isTrail(cu1);
-
       if ($26) {
         return unsurrogate(cu0)(cu1);
       }
-
       ;
       return cu0;
     }
-
     ;
     return cu0;
   };
-
   var unsafeCodePointAt0 = $foreign["_unsafeCodePointAt0"](unsafeCodePointAt0Fallback);
   var toCodePointArray = $foreign["_toCodePointArray"](toCodePointArrayFallback)(unsafeCodePointAt0);
-
   var length = function length($52) {
     return Data_Array.length(toCodePointArray($52));
   };
-
   var fromCharCode = function () {
     var $53 = Data_Enum.toEnumWithDefaults(Data_Enum.boundedEnumChar)(Data_Bounded.bottom(Data_Bounded.boundedChar))(Data_Bounded.top(Data_Bounded.boundedChar));
     return function ($54) {
       return Data_String_CodeUnits.singleton($53($54));
     };
   }();
-
   var singletonFallback = function singletonFallback(v) {
     if (v <= 65535) {
       return fromCharCode(v);
     }
-
     ;
     var lead = Data_EuclideanRing.div(Data_EuclideanRing.euclideanRingInt)(v - 65536 | 0)(1024) + 55296 | 0;
     var trail = Data_EuclideanRing.mod(Data_EuclideanRing.euclideanRingInt)(v - 65536 | 0)(1024) + 56320 | 0;
     return fromCharCode(lead) + fromCharCode(trail);
   };
-
   var fromCodePointArray = $foreign["_fromCodePointArray"](singletonFallback);
   var singleton = $foreign["_singleton"](singletonFallback);
-
   var takeFallback = function takeFallback(n) {
     return function (v) {
       if (n < 1) {
         return "";
       }
-
       ;
       var v1 = uncons(v);
-
       if (v1 instanceof Data_Maybe.Just) {
         return singleton(v1.value0.head) + takeFallback(n - 1 | 0)(v1.value0.tail);
       }
-
       ;
       return v;
     };
   };
-
   var take = $foreign["_take"](takeFallback);
-
   var drop = function drop(n) {
     return function (s) {
       return Data_String_CodeUnits.drop(Data_String_CodeUnits.length(take(n)(s)))(s);
     };
   };
-
   var codePointFromChar = function () {
     var $55 = Data_Enum.fromEnum(Data_Enum.boundedEnumChar);
     return function ($56) {
       return CodePoint($55($56));
     };
   }();
-
   exports["codePointFromChar"] = codePointFromChar;
   exports["fromCodePointArray"] = fromCodePointArray;
   exports["length"] = length;
   exports["drop"] = drop;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -24087,29 +19977,22 @@ var PS = {};
   var Data_Either = $PS["Data.Either"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Show = $PS["Data.Show"];
-
   var ParseError = function () {
     function ParseError(value0) {
       this.value0 = value0;
     }
-
     ;
-
     ParseError.create = function (value0) {
       return new ParseError(value0);
     };
-
     return ParseError;
   }();
-
   var Parser = function Parser(x) {
     return x;
   };
-
   var unParser = function unParser(v) {
     return v;
   };
-
   var $$try = function $$try(v) {
     return function (v1) {
       return Data_Bifunctor.lmap(Data_Either.bifunctorEither)(function (v2) {
@@ -24120,11 +20003,9 @@ var PS = {};
       })(v(v1));
     };
   };
-
   var showParseError = new Data_Show.Show(function (v) {
     return v.value0;
   });
-
   var runParser = function runParser(v) {
     return function (s) {
       return Data_Bifunctor.bimap(Data_Either.bifunctorEither)(function (v1) {
@@ -24137,7 +20018,6 @@ var PS = {};
       }));
     };
   };
-
   var functorParser = new Data_Functor.Functor(function (f) {
     return function (v) {
       var $80 = Data_Functor.map(Data_Either.functorEither)(function (v1) {
@@ -24151,7 +20031,6 @@ var PS = {};
       };
     };
   });
-
   var fail = function fail(msg) {
     return function (v) {
       return new Data_Either.Left({
@@ -24160,7 +20039,6 @@ var PS = {};
       });
     };
   };
-
   var applyParser = new Control_Apply.Apply(function () {
     return functorParser;
   }, function (v) {
@@ -24214,20 +20092,16 @@ var PS = {};
             str: v.suffix
           });
         }
-
         ;
-
         if (v.result instanceof Control_Monad_Rec_Class.Done) {
           return new Control_Monad_Rec_Class.Done({
             result: v.result.value0,
             suffix: v.suffix
           });
         }
-
         ;
         throw new Error("Failed pattern match at Text.Parsing.StringParser (line 88, column 7 - line 88, column 70): " + [v.constructor.name]);
       };
-
       return function (str) {
         return Control_Monad_Rec_Class.tailRecM(Control_Monad_Rec_Class.monadRecEither)(function (st) {
           return Data_Functor.map(Data_Either.functorEither)(split)(unParser(f(st.state))(st.str));
@@ -24244,24 +20118,19 @@ var PS = {};
     return function (v1) {
       return function (s) {
         var v2 = v(s);
-
         if (v2 instanceof Data_Either.Left) {
           if (s.pos === v2.value0.pos) {
             return v1(s);
           }
-
           ;
-
           if (Data_Boolean.otherwise) {
             return new Data_Either.Left({
               error: v2.value0.error,
               pos: v2.value0.pos
             });
           }
-
           ;
         }
-
         ;
         return v2;
       };
@@ -24289,7 +20158,6 @@ var PS = {};
   exports["bindParser"] = bindParser;
   exports["monadRecParser"] = monadRecParser;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -24303,36 +20171,29 @@ var PS = {};
   var Data_List = $PS["Data.List"];
   var Data_NonEmpty = $PS["Data.NonEmpty"];
   var Text_Parsing_StringParser = $PS["Text.Parsing.StringParser"];
-
   var withError = function withError(p) {
     return function (msg) {
       return Control_Alt.alt(Text_Parsing_StringParser.altParser)(p)(Text_Parsing_StringParser.fail(msg));
     };
   };
-
   var option = function option(a) {
     return function (p) {
       return Control_Alt.alt(Text_Parsing_StringParser.altParser)(p)(Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(a));
     };
   };
-
   var many = Data_List.manyRec(Text_Parsing_StringParser.monadRecParser)(Text_Parsing_StringParser.alternativeParser);
-
   var cons$prime = function cons$prime(h) {
     return function (t) {
       return new Data_NonEmpty.NonEmpty(h, t);
     };
   };
-
   var many1 = function many1(p) {
     return Control_Apply.apply(Text_Parsing_StringParser.applyParser)(Data_Functor.map(Text_Parsing_StringParser.functorParser)(cons$prime)(p))(many(p));
   };
-
   exports["many1"] = many1;
   exports["withError"] = withError;
   exports["option"] = option;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -24347,10 +20208,8 @@ var PS = {};
   var Data_String_CodeUnits = $PS["Data.String.CodeUnits"];
   var Text_Parsing_StringParser = $PS["Text.Parsing.StringParser"];
   var Text_Parsing_StringParser_Combinators = $PS["Text.Parsing.StringParser.Combinators"];
-
   var anyChar = function anyChar(v) {
     var v1 = Data_String_CodeUnits.charAt(v.pos)(v.str);
-
     if (v1 instanceof Data_Maybe.Just) {
       return new Data_Either.Right({
         result: v1.value0,
@@ -24360,55 +20219,43 @@ var PS = {};
         }
       });
     }
-
     ;
-
     if (v1 instanceof Data_Maybe.Nothing) {
       return new Data_Either.Left({
         pos: v.pos,
         error: new Text_Parsing_StringParser.ParseError("Unexpected EOF")
       });
     }
-
     ;
     throw new Error("Failed pattern match at Text.Parsing.StringParser.CodeUnits (line 51, column 3 - line 53, column 64): " + [v1.constructor.name]);
   };
-
   var anyDigit = Text_Parsing_StringParser["try"](Control_Bind.bind(Text_Parsing_StringParser.bindParser)(anyChar)(function (c) {
     var $31 = c >= "0" && c <= "9";
-
     if ($31) {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(c);
     }
-
     ;
     return Text_Parsing_StringParser.fail("Character " + (Data_Show.show(Data_Show.showChar)(c) + " is not a digit"));
   }));
-
   var satisfy = function satisfy(f) {
     return Text_Parsing_StringParser["try"](Control_Bind.bind(Text_Parsing_StringParser.bindParser)(anyChar)(function (c) {
       var $33 = f(c);
-
       if ($33) {
         return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(c);
       }
-
       ;
       return Text_Parsing_StringParser.fail("Character " + (Data_Show.show(Data_Show.showChar)(c) + " did not satisfy predicate"));
     }));
   };
-
   var $$char = function $$char(c) {
     return Text_Parsing_StringParser_Combinators.withError(satisfy(function (v) {
       return v === c;
     }))("Could not match character " + Data_Show.show(Data_Show.showChar)(c));
   };
-
   exports["anyChar"] = anyChar;
   exports["anyDigit"] = anyDigit;
   exports["char"] = $$char;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -24443,33 +20290,26 @@ var PS = {};
   var Type_DSum = $PS["Type.DSum"];
   var Type_Equiv = $PS["Type.Equiv"];
   var Type_GCompare = $PS["Type.GCompare"];
-
   var Marshal1 = function Marshal1(parse1, serialize1) {
     this.parse1 = parse1;
     this.serialize1 = serialize1;
   };
-
   var Marshal = function Marshal(parse, serialize) {
     this.parse = parse;
     this.serialize = serialize;
   };
-
   var serialize1 = function serialize1(dict) {
     return dict.serialize1;
   };
-
   var serialize = function serialize(dict) {
     return dict.serialize;
   };
-
   var parse1 = function parse1(dict) {
     return dict.parse1;
   };
-
   var parse = function parse(dict) {
     return dict.parse;
   };
-
   var marStr = new Marshal(Text_Parsing_StringParser.Parser(function (ps) {
     return new Data_Either.Right({
       result: Data_String_CodePoints.drop(ps.pos)(ps.str),
@@ -24483,53 +20323,49 @@ var PS = {};
     if (c === "w") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Corona_Data.WorldData.value);
     }
-
     ;
-
     if (c === "u") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Corona_Data.USData.value);
     }
-
+    ;
+    if (c === "x") {
+      return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Corona_Data.SouthAmerica.value);
+    }
     ;
     return Text_Parsing_StringParser.fail("invalid dataset: " + Data_Show.show(Data_Show.showChar)(c));
   }), function (v) {
     if (v instanceof Corona_Data.WorldData) {
       return "w";
     }
-
     ;
-
     if (v instanceof Corona_Data.USData) {
       return "u";
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Marshal (line 116, column 17 - line 118, column 30): " + [v.constructor.name]);
+    if (v instanceof Corona_Data.SouthAmerica) {
+      return "x";
+    }
+    ;
+    throw new Error("Failed pattern match at Corona.Marshal (line 116, column 17 - line 119, column 36): " + [v.constructor.name]);
   });
   var marCutoffType = new Marshal(Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Text_Parsing_StringParser_CodeUnits.anyChar)(function (c) {
     if (c === "a") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Corona_Chart.After.value);
     }
-
     ;
-
     if (c === "b") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Corona_Chart.Before.value);
     }
-
     ;
     return Text_Parsing_StringParser.fail("invalid cutoff type: " + Data_Show.show(Data_Show.showChar)(c));
   }), function (v) {
     if (v instanceof Corona_Chart.After) {
       return "a";
     }
-
     ;
-
     if (v instanceof Corona_Chart.Before) {
       return "b";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Marshal (line 105, column 17 - line 107, column 20): " + [v.constructor.name]);
   });
@@ -24537,30 +20373,23 @@ var PS = {};
     if (c === "t") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(true);
     }
-
     ;
-
     if (c === "f") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(false);
     }
-
     ;
     return Text_Parsing_StringParser.fail("invalid boolean type: " + Data_Show.show(Data_Show.showChar)(c));
   }), function (b) {
     if (b) {
       return "t";
     }
-
     ;
-
     if (Data_Boolean.otherwise) {
       return "f";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Marshal (line 53, column 1 - line 62, column 59): " + [b.constructor.name]);
   });
-
   var marScale = function marScale(dictSTypeable) {
     return new Marshal(function () {
       var t = D3_Scatter_Type.sType(dictSTypeable);
@@ -24569,64 +20398,46 @@ var PS = {};
           if (t instanceof D3_Scatter_Type.SDay) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new D3_Scatter_Type["Date"](t.value0));
           }
-
           ;
           return Text_Parsing_StringParser.fail("invalid type for date scale: " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
         }
-
         ;
-
         if (c === "i") {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marBool))(function (b) {
             var v = D3_Scatter_Type.toNType(t);
-
             if (v instanceof Data_Either.Left && v.value0 instanceof Data_Either.Left) {
               return Text_Parsing_StringParser.fail("cannot use SDay for linear scale");
             }
-
             ;
-
             if (v instanceof Data_Either.Left && v.value0 instanceof Data_Either.Right) {
               return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new D3_Scatter_Type.Linear(new Data_Either.Left(v.value0.value0), b));
             }
-
             ;
-
             if (v instanceof Data_Either.Right) {
               return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new D3_Scatter_Type.Linear(new Data_Either.Right(v.value0), b));
             }
-
             ;
-            throw new Error("Failed pattern match at Corona.Marshal (line 317, column 13 - line 320, column 59): " + [v.constructor.name]);
+            throw new Error("Failed pattern match at Corona.Marshal (line 319, column 13 - line 322, column 59): " + [v.constructor.name]);
           });
         }
-
         ;
-
         if (c === "o") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new D3_Scatter_Type.Log(v.value0));
           }
-
           ;
           return Text_Parsing_StringParser.fail("invalid type for log scale: " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
         }
-
         ;
-
         if (c === "s") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new D3_Scatter_Type.SymLog(v.value0));
           }
-
           ;
           return Text_Parsing_StringParser.fail("invalid type for symlog scale: " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
         }
-
         ;
         return Text_Parsing_StringParser.fail("invalid scale: " + Data_Show.show(Data_Show.showChar)(c));
       });
@@ -24634,92 +20445,66 @@ var PS = {};
       if (v instanceof D3_Scatter_Type["Date"]) {
         return "d";
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.Linear) {
         return "i" + serialize(marBool)(v.value1);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.Log) {
         return "o";
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.SymLog) {
         return "s";
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Marshal (line 304, column 17 - line 308, column 22): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Marshal (line 306, column 17 - line 310, column 22): " + [v.constructor.name]);
     });
   };
-
   var mar1Base = new Marshal1(Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Text_Parsing_StringParser_CodeUnits.anyChar)(function (c) {
     if (c === "t") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sDay)(new Corona_Chart.Time(Type_Equiv.refl)));
     }
-
     ;
-
     if (c === "c") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sInt)(new Corona_Chart.Confirmed(Type_Equiv.refl)));
     }
-
     ;
-
     if (c === "d") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sInt)(new Corona_Chart.Deaths(Type_Equiv.refl)));
     }
-
     ;
-
     if (c === "r") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sInt)(new Corona_Chart.Recovered(Type_Equiv.refl)));
     }
-
     ;
-
     if (c === "a") {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sInt)(new Corona_Chart.Active(Type_Equiv.refl)));
     }
-
     ;
     return Text_Parsing_StringParser.fail("invalid base projection: " + Data_Show.show(Data_Show.showChar)(c));
   }), function (v) {
     if (v instanceof Corona_Chart.Time) {
       return "t";
     }
-
     ;
-
     if (v instanceof Corona_Chart.Confirmed) {
       return "c";
     }
-
     ;
-
     if (v instanceof Corona_Chart.Deaths) {
       return "d";
     }
-
     ;
-
     if (v instanceof Corona_Chart.Recovered) {
       return "r";
     }
-
     ;
-
     if (v instanceof Corona_Chart.Active) {
       return "a";
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Marshal (line 144, column 18 - line 149, column 25): " + [v.constructor.name]);
+    throw new Error("Failed pattern match at Corona.Marshal (line 146, column 18 - line 151, column 25): " + [v.constructor.name]);
   });
   var digits = Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Data_Functor.map(Text_Parsing_StringParser.functorParser)(function () {
     var $177 = Data_Functor.map(Data_Functor.functorArray)(Data_String_CodePoints.codePointFromChar);
@@ -24729,17 +20514,13 @@ var PS = {};
     };
   }())(Text_Parsing_StringParser_Combinators.many1(Text_Parsing_StringParser_CodeUnits.anyDigit)))(function (ds) {
     var v = Data_Int_Parse["parseInt"](ds)(Data_Int_Parse.toRadix(10));
-
     if (v instanceof Data_Maybe.Nothing) {
       return Text_Parsing_StringParser.fail("Bad digits: " + ds);
     }
-
     ;
-
     if (v instanceof Data_Maybe.Just) {
       return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(v.value0);
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Marshal (line 78, column 5 - line 80, column 24): " + [v.constructor.name]);
   });
@@ -24774,40 +20555,29 @@ var PS = {};
   })(parse(marNumber)), function (v) {
     return serialize(marNumber)(v * 100.0);
   });
-
   var sTypeParse = function sTypeParse(v) {
     if (v instanceof D3_Scatter_Type.SDay) {
       return Type_Equiv.equivFromF(v.value0)(parse(marDay));
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SDays) {
       return Type_Equiv.equivFromF(v.value0)(parse(marDays));
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SInt) {
       return Type_Equiv.equivFromF(v.value0)(parse(marInt));
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SNumber) {
       return Type_Equiv.equivFromF(v.value0)(parse(marNumber));
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SPercent) {
       return Type_Equiv.equivFromF(v.value0)(parse(marPercent));
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Marshal (line 136, column 14 - line 141, column 37): " + [v.constructor.name]);
+    throw new Error("Failed pattern match at Corona.Marshal (line 138, column 14 - line 143, column 37): " + [v.constructor.name]);
   };
-
   var sTypeSerialize = function sTypeSerialize(v) {
     if (v instanceof D3_Scatter_Type.SDay) {
       var $184 = serialize(marDay);
@@ -24816,9 +20586,7 @@ var PS = {};
         return $184($185($186));
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SDays) {
       var $187 = serialize(marDays);
       var $188 = Type_Equiv.equivTo(v.value0);
@@ -24826,9 +20594,7 @@ var PS = {};
         return $187($188($189));
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SInt) {
       var $190 = serialize(marInt);
       var $191 = Type_Equiv.equivTo(v.value0);
@@ -24836,9 +20602,7 @@ var PS = {};
         return $190($191($192));
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SNumber) {
       var $193 = serialize(marNumber);
       var $194 = Type_Equiv.equivTo(v.value0);
@@ -24846,9 +20610,7 @@ var PS = {};
         return $193($194($195));
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SPercent) {
       var $196 = serialize(marPercent);
       var $197 = Type_Equiv.equivTo(v.value0);
@@ -24856,24 +20618,19 @@ var PS = {};
         return $196($197($198));
       };
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Marshal (line 128, column 18 - line 133, column 42): " + [v.constructor.name]);
+    throw new Error("Failed pattern match at Corona.Marshal (line 130, column 18 - line 135, column 42): " + [v.constructor.name]);
   };
-
   var marCond = function marCond(dictSTypeable) {
     return new Marshal(Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Text_Parsing_StringParser_CodeUnits.anyChar)(function (c) {
       return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(sTypeParse(D3_Scatter_Type.sType(dictSTypeable)))(function (x) {
         if (c === "l") {
           return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new Corona_Chart.AtLeast(x));
         }
-
         ;
-
         if (c === "m") {
           return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(new Corona_Chart.AtMost(x));
         }
-
         ;
         return Text_Parsing_StringParser.fail("invalid condition: " + Data_Show.show(Data_Show.showChar)(c));
       });
@@ -24881,63 +20638,46 @@ var PS = {};
       if (v instanceof Corona_Chart.AtLeast) {
         return "l" + sTypeSerialize(D3_Scatter_Type.sType(dictSTypeable))(v.value0);
       }
-
       ;
-
       if (v instanceof Corona_Chart.AtMost) {
         return "m" + sTypeSerialize(D3_Scatter_Type.sType(dictSTypeable))(v.value0);
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Marshal (line 179, column 17 - line 181, column 49): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Marshal (line 181, column 17 - line 183, column 49): " + [v.constructor.name]);
     });
   };
-
   var mar1Op = function mar1Op(dictSTypeable) {
     return new Marshal1(function () {
       var t = D3_Scatter_Type.sType(dictSTypeable);
       return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Text_Parsing_StringParser_CodeUnits.anyChar)(function (c) {
         if (c === "c") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(t)(new Corona_Chart.Delta(v.value0, Type_Equiv.refl)));
           }
-
           ;
-
           if (v instanceof Data_Either.Left) {
             return Text_Parsing_StringParser.fail("delta does not support " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Marshal (line 205, column 18 - line 207, column 70): " + [v.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Marshal (line 207, column 18 - line 209, column 70): " + [v.constructor.name]);
         }
-
         ;
-
         if (c === "g") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sPercent)(new Corona_Chart.PGrowth(v.value0, Type_Equiv.refl)));
           }
-
           ;
-
           if (v instanceof Data_Either.Left) {
             return Text_Parsing_StringParser.fail("pgrowth does not support " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Marshal (line 208, column 18 - line 210, column 72): " + [v.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Marshal (line 210, column 18 - line 212, column 72): " + [v.constructor.name]);
         }
-
         ;
-
         if (c === "w") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Data_Exists.runExists(function (tf) {
               return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marInt))(function (n) {
@@ -24945,38 +20685,27 @@ var PS = {};
               });
             })(Corona_Chart.toFractional(v.value0));
           }
-
           ;
-
           if (v instanceof Data_Either.Left) {
             return Text_Parsing_StringParser.fail("window does not support " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Marshal (line 211, column 18 - line 216, column 71): " + [v.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Marshal (line 213, column 18 - line 218, column 71): " + [v.constructor.name]);
         }
-
         ;
-
         if (c === "m") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sPercent)(new Corona_Chart.PMax(v.value0, Type_Equiv.refl)));
           }
-
           ;
-
           if (v instanceof Data_Either.Left) {
             return Text_Parsing_StringParser.fail("pmax does not support " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Marshal (line 217, column 18 - line 219, column 69): " + [v.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Marshal (line 219, column 18 - line 221, column 69): " + [v.constructor.name]);
         }
-
         ;
-
         if (c === "r") {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marCutoffType))(function (ct) {
             return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marCond(dictSTypeable)))(function (cond) {
@@ -24984,9 +20713,7 @@ var PS = {};
             });
           });
         }
-
         ;
-
         if (c === "t") {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marInt))(function (n) {
             return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marCutoffType))(function (ct) {
@@ -24994,50 +20721,37 @@ var PS = {};
             });
           });
         }
-
         ;
-
         if (c === "l") {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marInt))(function (n) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(t)(new Corona_Chart.Lag(Type_Equiv.refl, n)));
           });
         }
-
         ;
-
         if (c === "n") {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse(marCutoffType))(function (ct) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sDays)(new Corona_Chart.DayNumber(Type_Equiv.refl, ct)));
           });
         }
-
         ;
-
         if (c === "p") {
           var v = D3_Scatter_Type.toNType(t);
-
           if (v instanceof Data_Either.Right) {
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Data_Exists.runExists(function (tf) {
               return Type_DSum.dsum(D3_Scatter_Type.fromNType(Corona_Chart.toFractionalOut(tf)))(new Corona_Chart.PerCapita(tf));
             })(Corona_Chart.toFractional(v.value0)));
           }
-
           ;
-
           if (v instanceof Data_Either.Left) {
             return Text_Parsing_StringParser.fail("percapita does not support " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t));
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Marshal (line 234, column 18 - line 238, column 74): " + [v.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Marshal (line 236, column 18 - line 240, column 74): " + [v.constructor.name]);
         }
-
         ;
-
         if (c === "d") {
           return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(D3_Scatter_Type.sDay)(new Corona_Chart.PointDate(Type_Equiv.refl)));
         }
-
         ;
         return Text_Parsing_StringParser.fail("invalid operation: " + Data_Show.show(Data_Show.showChar)(c));
       });
@@ -25045,66 +20759,46 @@ var PS = {};
       if (v instanceof Corona_Chart.Delta) {
         return "c";
       }
-
       ;
-
       if (v instanceof Corona_Chart.PGrowth) {
         return "g";
       }
-
       ;
-
       if (v instanceof Corona_Chart.Window) {
         return "w" + serialize(marInt)(v.value1);
       }
-
       ;
-
       if (v instanceof Corona_Chart.PMax) {
         return "m";
       }
-
       ;
-
       if (v instanceof Corona_Chart.Restrict) {
         return "r" + (serialize(marCutoffType)(v.value2) + serialize(marCond(dictSTypeable))(v.value3));
       }
-
       ;
-
       if (v instanceof Corona_Chart.Take) {
         return "t" + (serialize(marInt)(v.value1) + serialize(marCutoffType)(v.value2));
       }
-
       ;
-
       if (v instanceof Corona_Chart.Lag) {
         return "l" + serialize(marInt)(v.value1);
       }
-
       ;
-
       if (v instanceof Corona_Chart.DayNumber) {
         return "n" + serialize(marCutoffType)(v.value1);
       }
-
       ;
-
       if (v instanceof Corona_Chart.PerCapita) {
         return "p";
       }
-
       ;
-
       if (v instanceof Corona_Chart.PointDate) {
         return "d";
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Marshal (line 191, column 18 - line 201, column 26): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Marshal (line 193, column 18 - line 203, column 26): " + [v.constructor.name]);
     });
   };
-
   var mar1ChainOp = function mar1ChainOp(dictSTypeable) {
     return new Marshal1(function () {
       var t = D3_Scatter_Type.sType(dictSTypeable);
@@ -25112,9 +20806,7 @@ var PS = {};
         if (c === "n") {
           return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)(Type_DSum.dsum(t)(Type_Chain.nil));
         }
-
         ;
-
         if (c === "c") {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse1(mar1Op(dictSTypeable)))(function (dx) {
             return Type_DSum.withDSum(dx)(function (tIn) {
@@ -25123,33 +20815,24 @@ var PS = {};
                   if (tIn instanceof D3_Scatter_Type.SDay) {
                     return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stDay)));
                   }
-
                   ;
-
                   if (tIn instanceof D3_Scatter_Type.SDays) {
                     return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stDays)));
                   }
-
                   ;
-
                   if (tIn instanceof D3_Scatter_Type.SInt) {
                     return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stInt)));
                   }
-
                   ;
-
                   if (tIn instanceof D3_Scatter_Type.SNumber) {
                     return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stNumber)));
                   }
-
                   ;
-
                   if (tIn instanceof D3_Scatter_Type.SPercent) {
                     return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stPercent)));
                   }
-
                   ;
-                  throw new Error("Failed pattern match at Corona.Marshal (line 264, column 21 - line 269, column 54): " + [tIn.constructor.name]);
+                  throw new Error("Failed pattern match at Corona.Marshal (line 266, column 21 - line 271, column 54): " + [tIn.constructor.name]);
                 }())(function (dxs) {
                   return Type_DSum.withDSum(dxs)(function (tOut) {
                     return function (xs) {
@@ -25161,7 +20844,6 @@ var PS = {};
             });
           });
         }
-
         ;
         return Text_Parsing_StringParser.fail("invalid chain: " + Data_Show.show(Data_Show.showChar)(c));
       });
@@ -25169,9 +20851,7 @@ var PS = {};
       if (v instanceof Type_Chain.Nil) {
         return "n";
       }
-
       ;
-
       if (v instanceof Type_Chain.Cons) {
         return Type_Ap.withAp(v.value0)(function (x) {
           return function (xs) {
@@ -25180,43 +20860,32 @@ var PS = {};
               if (tNext instanceof D3_Scatter_Type.SDay) {
                 return serialize1(mar1ChainOp(D3_Scatter_Type.stDay))(Type_Equiv.equivToF2(tNext.value0)(xs));
               }
-
               ;
-
               if (tNext instanceof D3_Scatter_Type.SDays) {
                 return serialize1(mar1ChainOp(D3_Scatter_Type.stDays))(Type_Equiv.equivToF2(tNext.value0)(xs));
               }
-
               ;
-
               if (tNext instanceof D3_Scatter_Type.SInt) {
                 return serialize1(mar1ChainOp(D3_Scatter_Type.stInt))(Type_Equiv.equivToF2(tNext.value0)(xs));
               }
-
               ;
-
               if (tNext instanceof D3_Scatter_Type.SNumber) {
                 return serialize1(mar1ChainOp(D3_Scatter_Type.stNumber))(Type_Equiv.equivToF2(tNext.value0)(xs));
               }
-
               ;
-
               if (tNext instanceof D3_Scatter_Type.SPercent) {
                 return serialize1(mar1ChainOp(D3_Scatter_Type.stPercent))(Type_Equiv.equivToF2(tNext.value0)(xs));
               }
-
               ;
-              throw new Error("Failed pattern match at Corona.Marshal (line 250, column 36 - line 255, column 56): " + [tNext.constructor.name]);
+              throw new Error("Failed pattern match at Corona.Marshal (line 252, column 36 - line 257, column 56): " + [tNext.constructor.name]);
             }());
           };
         });
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Marshal (line 246, column 18 - line 256, column 8): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Marshal (line 248, column 18 - line 258, column 8): " + [v.constructor.name]);
     });
   };
-
   var mar1Projection = new Marshal1(Control_Bind.bind(Text_Parsing_StringParser.bindParser)(parse1(mar1Base))(function (db) {
     return Type_DSum.withDSum(db)(function (tIn) {
       return function (b) {
@@ -25224,33 +20893,24 @@ var PS = {};
           if (tIn instanceof D3_Scatter_Type.SDay) {
             return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stDay)));
           }
-
           ;
-
           if (tIn instanceof D3_Scatter_Type.SDays) {
             return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stDays)));
           }
-
           ;
-
           if (tIn instanceof D3_Scatter_Type.SInt) {
             return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stInt)));
           }
-
           ;
-
           if (tIn instanceof D3_Scatter_Type.SNumber) {
             return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stNumber)));
           }
-
           ;
-
           if (tIn instanceof D3_Scatter_Type.SPercent) {
             return Data_Functor.map(Text_Parsing_StringParser.functorParser)(Type_Equiv.equivFromFF(tIn.value0))(parse1(mar1ChainOp(D3_Scatter_Type.stPercent)));
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Marshal (line 292, column 17 - line 297, column 49): " + [tIn.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Marshal (line 294, column 17 - line 299, column 49): " + [tIn.constructor.name]);
         }())(function (dops) {
           return Type_DSum.withDSum(dops)(function (tOut) {
             return function (ops) {
@@ -25267,37 +20927,27 @@ var PS = {};
     return Corona_Chart.withProjection(p)(function (bo) {
       return serialize1(mar1Base)(bo.base) + function () {
         var v = Corona_Chart.baseType(bo.base);
-
         if (v instanceof D3_Scatter_Type.SDay) {
           return serialize1(mar1ChainOp(D3_Scatter_Type.stDay))(Type_Equiv.equivToF2(v.value0)(bo.operations));
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.SDays) {
           return serialize1(mar1ChainOp(D3_Scatter_Type.stDays))(Type_Equiv.equivToF2(v.value0)(bo.operations));
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.SInt) {
           return serialize1(mar1ChainOp(D3_Scatter_Type.stInt))(Type_Equiv.equivToF2(v.value0)(bo.operations));
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.SNumber) {
           return serialize1(mar1ChainOp(D3_Scatter_Type.stNumber))(Type_Equiv.equivToF2(v.value0)(bo.operations));
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.SPercent) {
           return serialize1(mar1ChainOp(D3_Scatter_Type.stPercent))(Type_Equiv.equivToF2(v.value0)(bo.operations));
         }
-
         ;
-        throw new Error("Failed pattern match at Corona.Marshal (line 282, column 9 - line 287, column 63): " + [v.constructor.name]);
+        throw new Error("Failed pattern match at Corona.Marshal (line 284, column 9 - line 289, column 63): " + [v.constructor.name]);
       }();
     });
   });
@@ -25312,7 +20962,6 @@ var PS = {};
   exports["mar1Projection"] = mar1Projection;
   exports["marScale"] = marScale;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -25322,14 +20971,12 @@ var PS = {};
       return {};
     };
   };
-
   exports.warn = function (s) {
     return function () {
       console.warn(s);
       return {};
     };
   };
-
   exports.error = function (s) {
     return function () {
       console.error(s);
@@ -25337,7 +20984,6 @@ var PS = {};
     };
   };
 })(PS["Effect.Console"] = PS["Effect.Console"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -25349,7 +20995,6 @@ var PS = {};
   exports["warn"] = $foreign.warn;
   exports["error"] = $foreign.error;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -25358,33 +21003,28 @@ var PS = {};
   var exports = $PS["Effect.Class.Console"];
   var Effect_Class = $PS["Effect.Class"];
   var Effect_Console = $PS["Effect.Console"];
-
   var warn = function warn(dictMonadEffect) {
     var $19 = Effect_Class.liftEffect(dictMonadEffect);
     return function ($20) {
       return $19(Effect_Console.warn($20));
     };
   };
-
   var log = function log(dictMonadEffect) {
     var $30 = Effect_Class.liftEffect(dictMonadEffect);
     return function ($31) {
       return $30(Effect_Console.log($31));
     };
   };
-
   var error = function error(dictMonadEffect) {
     var $40 = Effect_Class.liftEffect(dictMonadEffect);
     return function ($41) {
       return $40(Effect_Console.error($41));
     };
   };
-
   exports["log"] = log;
   exports["warn"] = warn;
   exports["error"] = error;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -25393,7 +21033,6 @@ var PS = {};
   var exports = $PS["Halogen.HTML"];
   var Halogen_Component = $PS["Halogen.Component"];
   var Halogen_HTML_Core = $PS["Halogen.HTML.Core"];
-
   var slot = function slot(dictCons) {
     return function (dictIsSymbol) {
       return function (dictOrd) {
@@ -25411,16 +21050,13 @@ var PS = {};
       };
     };
   };
-
   exports["slot"] = slot;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.undefined = undefined;
 })(PS["Undefined"] = PS["Undefined"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -25430,7 +21066,6 @@ var PS = {};
   var $foreign = $PS["Undefined"];
   exports["undefined"] = $foreign["undefined"];
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -25438,7 +21073,6 @@ var PS = {};
     return e.buttons;
   };
 })(PS["Web.UIEvent.MouseEvent"] = PS["Web.UIEvent.MouseEvent"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -25448,7 +21082,6 @@ var PS = {};
   var $foreign = $PS["Web.UIEvent.MouseEvent"];
   exports["buttons"] = $foreign.buttons;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -25499,179 +21132,133 @@ var PS = {};
   var Type_GCompare = $PS["Type.GCompare"];
   var Undefined = $PS["Undefined"];
   var Web_UIEvent_MouseEvent = $PS["Web.UIEvent.MouseEvent"];
-
   var WQGet = function () {
     function WQGet(value0) {
       this.value0 = value0;
     }
-
     ;
-
     WQGet.create = function (value0) {
       return new WQGet(value0);
     };
-
     return WQGet;
   }();
-
   var WQPut = function () {
     function WQPut(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     WQPut.create = function (value0) {
       return function (value1) {
         return new WQPut(value0, value1);
       };
     };
-
     return WQPut;
   }();
-
   var SubQueryState = function () {
     function SubQueryState(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SubQueryState.create = function (value0) {
       return new SubQueryState(value0);
     };
-
     return SubQueryState;
   }();
-
   var QGet = function () {
     function QGet(value0) {
       this.value0 = value0;
     }
-
     ;
-
     QGet.create = function (value0) {
       return new QGet(value0);
     };
-
     return QGet;
   }();
-
   var QPut = function () {
     function QPut(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     QPut.create = function (value0) {
       return function (value1) {
         return new QPut(value0, value1);
       };
     };
-
     return QPut;
   }();
-
   var PQState = function () {
     function PQState(value0) {
       this.value0 = value0;
     }
-
     ;
-
     PQState.create = function (value0) {
       return new PQState(value0);
     };
-
     return PQState;
   }();
-
   var P2 = function () {
     function P2() {}
-
     ;
     P2.value = new P2();
     return P2;
   }();
-
   var ChainUpdate = function () {
     function ChainUpdate() {}
-
     ;
     ChainUpdate.value = new ChainUpdate();
     return ChainUpdate;
   }();
-
   var PickerUpdate = function () {
     function PickerUpdate(value0) {
       this.value0 = value0;
     }
-
     ;
-
     PickerUpdate.create = function (value0) {
       return new PickerUpdate(value0);
     };
-
     return PickerUpdate;
   }();
-
   var PickerRemove = function () {
     function PickerRemove(value0) {
       this.value0 = value0;
     }
-
     ;
-
     PickerRemove.create = function (value0) {
       return new PickerRemove(value0);
     };
-
     return PickerRemove;
   }();
-
   var PickerAdd = function () {
     function PickerAdd(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     PickerAdd.create = function (value0) {
       return function (value1) {
         return new PickerAdd(value0, value1);
       };
     };
-
     return PickerAdd;
   }();
-
   var unwrapQuery = function unwrapQuery(dictDecide) {
     return function (tA) {
       return function (v) {
         if (v instanceof WQGet) {
           return new QGet(v.value0(tA));
         }
-
         ;
-
         if (v instanceof WQPut) {
           return Type_DSum.withDSum2(v.value0)(function (tA$prime) {
             return function (tB) {
               return function (chain) {
                 var v1 = Type_Equiv.decide(dictDecide)(tA)(tA$prime);
-
                 if (v1 instanceof Data_Maybe.Just) {
                   return new QPut(Type_DSum.dsum(tB)(Type_Equiv.equivFromF2(v1.value0)(chain)), v.value1(Data_Maybe.Nothing.value));
                 }
-
                 ;
-
                 if (v1 instanceof Data_Maybe.Nothing) {
                   return new QGet(function (v2) {
                     return function (v3) {
@@ -25679,20 +21266,17 @@ var PS = {};
                     };
                   });
                 }
-
                 ;
                 throw new Error("Failed pattern match at Halogen.ChainPicker (line 238, column 7 - line 240, column 61): " + [v1.constructor.name]);
               };
             };
           });
         }
-
         ;
         throw new Error("Failed pattern match at Halogen.ChainPicker (line 235, column 18 - line 241, column 6): " + [v.constructor.name]);
       };
     };
   };
-
   var sq2pq = function sq2pq(tIn) {
     return function (tOut) {
       return function (v) {
@@ -25702,7 +21286,6 @@ var PS = {};
       };
     };
   };
-
   var handleAction = function handleAction(dictDecide) {
     return function (dictGShow) {
       return function (dictMonadEffect) {
@@ -25712,9 +21295,7 @@ var PS = {};
               if (act instanceof PickerUpdate) {
                 return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
               }
-
               ;
-
               if (act instanceof PickerRemove) {
                 return Data_Exists.runExists(function (tOutNew) {
                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (st) {
@@ -25725,25 +21306,19 @@ var PS = {};
                             if (ys instanceof Type_Chain.Nil) {
                               return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))(Effect_Exception["throw"]("error: removed link at ix " + (Data_Show.show(Data_Show.showInt)(act.value0.chainIx) + " but there's nothing here?")));
                             }
-
                             ;
-
                             if (ys instanceof Type_Chain.Cons) {
                               return Type_Ap.withAp(ys.value0)(function (v) {
                                 return function (zs) {
                                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(function () {
                                     var v1 = Type_Equiv.decide(dictDecide)(tOutNew)(v.tagIn);
-
                                     if (v1 instanceof Data_Maybe.Nothing) {
                                       return Effect_Class_Console.warn(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("warning: removed link claims input " + (Type_GCompare.gshow(dictGShow)(tOutNew) + (" at " + (Data_Show.show(Data_Show.showInt)(act.value0.chainIx) + (" but the chain shows " + Type_GCompare.gshow(dictGShow)(v.tagIn))))));
                                     }
-
                                     ;
-
                                     if (v1 instanceof Data_Maybe.Just) {
                                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
                                     }
-
                                     ;
                                     throw new Error("Failed pattern match at Halogen.ChainPicker (line 336, column 17 - line 341, column 38): " + [v1.constructor.name]);
                                   }())(function () {
@@ -25754,7 +21329,6 @@ var PS = {};
                                 };
                               });
                             }
-
                             ;
                             throw new Error("Failed pattern match at Halogen.ChainPicker (line 331, column 13 - line 343, column 16): " + [ys.constructor.name]);
                           };
@@ -25764,9 +21338,7 @@ var PS = {};
                   });
                 })(Data_Newtype.unwrap(Type_GCompare.ntWrEx)(act.value0.tagIn));
               }
-
               ;
-
               if (act instanceof PickerAdd) {
                 return Data_Exists.runExists(function (tOutOld) {
                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v) {
@@ -25774,28 +21346,21 @@ var PS = {};
                       return function (chain) {
                         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(function () {
                           var v1 = Type_Equiv.decide(dictDecide)(tOutOld)(tOut);
-
                           if (v1 instanceof Data_Maybe.Nothing) {
                             return Effect_Class_Console.warn(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("warning: added link claims input " + (Type_GCompare.gshow(dictGShow)(tOutOld) + (" but the chain shows " + Type_GCompare.gshow(dictGShow)(tOut))));
                           }
-
                           ;
-
                           if (v1 instanceof Data_Maybe.Just) {
                             return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
                           }
-
                           ;
                           throw new Error("Failed pattern match at Halogen.ChainPicker (line 350, column 11 - line 354, column 33): " + [v1.constructor.name]);
                         }())(function () {
                           var v1 = Data_Array.index(pMap(tOut))(act.value1);
-
                           if (v1 instanceof Data_Maybe.Nothing) {
                             return Effect_Class_Console.error(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("error: invalid added index: " + (Data_Show.show(Data_Show.showInt)(act.value1) + (", but with " + (Type_GCompare.gshow(dictGShow)(tOut) + (", only " + (Data_Show.show(Data_Show.showInt)(Data_Array.length(pMap(tOut))) + " options"))))));
                           }
-
                           ;
-
                           if (v1 instanceof Data_Maybe.Just) {
                             return Type_DSum.withDSum(v1.value0)(function (newOut) {
                               return function (link) {
@@ -25811,7 +21376,6 @@ var PS = {};
                               };
                             });
                           }
-
                           ;
                           throw new Error("Failed pattern match at Halogen.ChainPicker (line 355, column 11 - line 367, column 14): " + [v1.constructor.name]);
                         });
@@ -25820,7 +21384,6 @@ var PS = {};
                   });
                 })(act.value0);
               }
-
               ;
               throw new Error("Failed pattern match at Halogen.ChainPicker (line 325, column 5 - line 369, column 17): " + [act.constructor.name]);
             }())(function () {
@@ -25831,9 +21394,7 @@ var PS = {};
       };
     };
   };
-
   var _pickerLink = Data_Symbol.SProxy.value;
-
   var assembleChain = function assembleChain(dictGOrd) {
     return function (dictGShow) {
       return function (dictMonadEffect) {
@@ -25860,33 +21421,25 @@ var PS = {};
                     return function (x) {
                       var outValue = Control_Bind.bind(Data_Either.bindEither)(function () {
                         var v1 = Type_Equiv.decide(dictGOrd.GEq0().Decide0())(tX)(v.tagIn);
-
                         if (v1 instanceof Data_Maybe.Nothing) {
                           return Data_Either.Left.create("subquery mismatch: expected " + (Type_GCompare.gshow(dictGShow)(v.tagIn) + (" input but it was actually " + (Type_GCompare.gshow(dictGShow)(tX) + (" at ix " + Data_Show.show(Data_Show.showInt)(i))))));
                         }
-
                         ;
-
                         if (v1 instanceof Data_Maybe.Just) {
                           return Control_Applicative.pure(Data_Either.applicativeEither)(v1.value0);
                         }
-
                         ;
                         throw new Error("Failed pattern match at Halogen.ChainPicker (line 411, column 25 - line 415, column 39): " + [v1.constructor.name]);
                       }())(function (r1) {
                         return Control_Bind.bind(Data_Either.bindEither)(function () {
                           var v1 = Type_Equiv.decide(dictGOrd.GEq0().Decide0())(tY)(v.tagOut);
-
                           if (v1 instanceof Data_Maybe.Nothing) {
                             return Data_Either.Left.create("subquery mismatch: expected " + (Type_GCompare.gshow(dictGShow)(v.tagOut) + (" output but it was actually " + (Type_GCompare.gshow(dictGShow)(tY) + (" at ix " + Data_Show.show(Data_Show.showInt)(i))))));
                           }
-
                           ;
-
                           if (v1 instanceof Data_Maybe.Just) {
                             return Control_Applicative.pure(Data_Either.applicativeEither)(v1.value0);
                           }
-
                           ;
                           throw new Error("Failed pattern match at Halogen.ChainPicker (line 416, column 25 - line 420, column 39): " + [v1.constructor.name]);
                         }())(function (r2) {
@@ -25900,26 +21453,20 @@ var PS = {};
                   if (res instanceof Data_Maybe.Nothing) {
                     return Effect_Class.liftEffect(Control_Monad_State_Trans.monadEffectState(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect)))(Effect_Exception["throw"]("picker for " + (Type_GCompare.gshow(dictGShow)(v.tagIn) + (" at ix " + (Data_Show.show(Data_Show.showInt)(i) + " not responding.")))));
                   }
-
                   ;
-
                   if (res instanceof Data_Maybe.Just && res.value0 instanceof Data_Either.Left) {
                     return Effect_Class.liftEffect(Control_Monad_State_Trans.monadEffectState(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect)))(Effect_Exception["throw"]("picker for " + (Type_GCompare.gshow(dictGShow)(v.tagIn) + (" at ix " + (Data_Show.show(Data_Show.showInt)(i) + (" returned error: " + res.value0.value0))))));
                   }
-
                   ;
-
                   if (res instanceof Data_Maybe.Just && res.value0 instanceof Data_Either.Right) {
                     return Control_Applicative.pure(Control_Monad_State_Trans.applicativeStateT(Halogen_Query_HalogenM.monadHalogenM))(res.value0.value0);
                   }
-
                   ;
                   throw new Error("Failed pattern match at Halogen.ChainPicker (line 424, column 7 - line 429, column 33): " + [res.constructor.name]);
                 });
               });
             });
           };
-
           var $147 = Data_Function.flip(Control_Monad_State_Trans.evalStateT(Halogen_Query_HalogenM.functorHalogenM))(0);
           var $148 = Type_Chain.hoistChainA(Control_Monad_State_Trans.applicativeStateT(Halogen_Query_HalogenM.monadHalogenM))(go);
           return function ($149) {
@@ -25929,7 +21476,6 @@ var PS = {};
       };
     };
   };
-
   var render = function render(dictGOrd) {
     return function (pMap) {
       return function (st) {
@@ -25941,13 +21487,10 @@ var PS = {};
               }))(function () {
                 return Control_Bind.discard(Control_Bind.discardUnit)(Control_Monad_RWS_Trans.bindRWST(Data_Identity.bindIdentity)(Data_Monoid.monoidArray))(Control_Monad_Writer_Class.tell(Control_Monad_RWS_Trans.monadTellRWST(Data_Identity.monadIdentity)(Data_Monoid.monoidArray))(Data_Array.singleton(function () {
                   var v1 = Data_Array.index(pMap(v.tagIn))(v.option);
-
                   if (v1 instanceof Data_Maybe.Nothing) {
                     return Halogen_HTML_Elements.li([Halogen_Util.classProp("chain-error")])([Halogen_HTML_Core.text("chain picker error: index out of bounds")]);
                   }
-
                   ;
-
                   if (v1 instanceof Data_Maybe.Just) {
                     return Type_DSum.withDSum(v1.value0)(function (tOut) {
                       return function (v2) {
@@ -25957,21 +21500,16 @@ var PS = {};
                           optionIx: v.option
                         };
                         var v3 = Type_Equiv.decide(dictGOrd.GEq0().Decide0())(v.tagOut)(tOut);
-
                         if (v3 instanceof Data_Maybe.Nothing) {
                           return Debug.trace()("chainpicker undefined")(Data_Function["const"](Undefined["undefined"]));
                         }
-
                         ;
-
                         if (v3 instanceof Data_Maybe.Just) {
                           return Halogen_HTML_Elements.li([Halogen_Util.classProp("picker-slot")])([Halogen_HTML_Elements.div([Halogen_Util.classProp("picker-slot-title")])([Halogen_HTML_Elements.span([Halogen_Util.classProp("picker-slot-name")])([Halogen_HTML_Core.text(v2.label)]), Halogen_HTML_Elements.a([Halogen_Util.classProp("picker-slot-delete"), Halogen_HTML_Events.onClick(function (e) {
                             var $120 = Web_UIEvent_MouseEvent.buttons(e) === 0;
-
                             if ($120) {
                               return new Data_Maybe.Just(new PickerRemove(pIx));
                             }
-
                             ;
                             return Data_Maybe.Nothing.value;
                           }), Halogen_HTML_Properties.title("Remove")])([Halogen_HTML_Core.text("x")])]), Halogen_HTML_Elements.div([Halogen_Util.classProp("picker-slot-opts")])([Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
@@ -25984,13 +21522,11 @@ var PS = {};
                             return "chainIx";
                           }))(Data_Ord.ordInt)))(_pickerLink)(pIx)(Halogen_Util.hoistQuery(sq2pq(v.tagIn)(tOut))(v2.component))(Data_Functor.map(Data_Maybe.functorMaybe)(Type_Equiv.equivToF(v3.value0))(v.value))(Data_Function["const"](new Data_Maybe.Just(new PickerUpdate(pIx))))])]);
                         }
-
                         ;
                         throw new Error("Failed pattern match at Halogen.ChainPicker (line 283, column 19 - line 303, column 23): " + [v3.constructor.name]);
                       };
                     });
                   }
-
                   ;
                   throw new Error("Failed pattern match at Halogen.ChainPicker (line 277, column 34 - line 304, column 14): " + [v1.constructor.name]);
                 }())))(function () {
@@ -25999,32 +21535,25 @@ var PS = {};
               });
             });
           };
-
           return Type_DSum.withDSum(st.chain)(function (v) {
             return function (chain) {
               return Data_Tuple.snd(Control_Monad_RWS.evalRWS(Type_Chain.hoistChainA(Control_Monad_RWS_Trans.applicativeRWST(Data_Identity.monadIdentity)(Data_Monoid.monoidArray))(go)(chain))(Data_Unit.unit)(0));
             };
           });
         }();
-
         var mkPendingSlot = function mkPendingSlot(tOut) {
           var options = pMap(tOut);
-
           var commitPicker = function commitPicker(i) {
             if (i < Data_Array.length(options)) {
               return new Data_Maybe.Just(new PickerAdd(Data_Exists.mkExists(tOut), i));
             }
-
             ;
-
             if (Data_Boolean.otherwise) {
               return Data_Maybe.Nothing.value;
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.ChainPicker (line 315, column 9 - line 317, column 45): " + [i.constructor.name]);
           };
-
           return Halogen_HTML_Elements.div([Halogen_Util.classProp("pending-picker")])([Halogen_HTML_Elements.select([Halogen_HTML_Events.onSelectedIndexChange(function ($150) {
             return commitPicker(function (v) {
               return v - 1 | 0;
@@ -26039,7 +21568,6 @@ var PS = {};
             };
           })))]);
         };
-
         return Halogen_HTML_Elements.div_([Halogen_HTML_Elements.ul([Halogen_Util.classProp("op-list")])(Data_Array.snoc(slotList)(Type_DSum.withDSum(st.chain)(function (tOut) {
           return function (v) {
             return mkPendingSlot(tOut);
@@ -26048,7 +21576,6 @@ var PS = {};
       };
     };
   };
-
   var writeChain = function writeChain(dictGShow) {
     return function (dictGOrd) {
       return function (dictMonadEffect) {
@@ -26072,13 +21599,10 @@ var PS = {};
                     if (picked instanceof Data_Maybe.Nothing) {
                       return Effect_Class.liftEffect(Control_Monad_State_Trans.monadEffectState(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect)))(Effect_Exception["throw"]("writeChain: no handler found for link of type " + (Type_GCompare.gshow(dictGShow)(v.tagIn) + (" -> " + Type_GCompare.gshow(dictGShow)(v.tagOut)))));
                     }
-
                     ;
-
                     if (picked instanceof Data_Maybe.Just) {
                       return Control_Applicative.pure(Control_Monad_State_Trans.applicativeStateT(Halogen_Query_HalogenM.monadHalogenM))(picked.value0);
                     }
-
                     ;
                     throw new Error("Failed pattern match at Halogen.ChainPicker (line 454, column 18 - line 458, column 29): " + [picked.constructor.name]);
                   }())(function (optIx) {
@@ -26099,50 +21623,38 @@ var PS = {};
                         return function (l0) {
                           var inValue = Control_Bind.bind(Data_Either.bindEither)(function () {
                             var v1 = Type_Equiv.decide(dictGOrd.GEq0().Decide0())(tX)(v.tagIn);
-
                             if (v1 instanceof Data_Maybe.Nothing) {
                               return Data_Either.Left.create("subquery mismatch: expected " + (Type_GCompare.gshow(dictGShow)(v.tagIn) + (" input but it was actually " + (Type_GCompare.gshow(dictGShow)(tX) + (" at ix " + Data_Show.show(Data_Show.showInt)(i))))));
                             }
-
                             ;
-
                             if (v1 instanceof Data_Maybe.Just) {
                               return Control_Applicative.pure(Data_Either.applicativeEither)(v1.value0);
                             }
-
                             ;
                             throw new Error("Failed pattern match at Halogen.ChainPicker (line 466, column 25 - line 470, column 39): " + [v1.constructor.name]);
                           }())(function (r1) {
                             return Control_Bind.bind(Data_Either.bindEither)(function () {
                               var v1 = Type_Equiv.decide(dictGOrd.GEq0().Decide0())(tY)(v.tagOut);
-
                               if (v1 instanceof Data_Maybe.Nothing) {
                                 return Data_Either.Left.create("subquery mismatch: expected " + (Type_GCompare.gshow(dictGShow)(v.tagOut) + (" output but it was actually " + (Type_GCompare.gshow(dictGShow)(tY) + (" at ix " + Data_Show.show(Data_Show.showInt)(i))))));
                               }
-
                               ;
-
                               if (v1 instanceof Data_Maybe.Just) {
                                 return Control_Applicative.pure(Data_Either.applicativeEither)(v1.value0);
                               }
-
                               ;
                               throw new Error("Failed pattern match at Halogen.ChainPicker (line 471, column 25 - line 475, column 39): " + [v1.constructor.name]);
                             }())(function (r2) {
                               return Control_Applicative.pure(Data_Either.applicativeEither)(Type_Equiv.equivFromF2(r1)(Type_Equiv.equivFromF(r2)(v.link)));
                             });
                           });
-
                           if (inValue instanceof Data_Either.Left) {
                             return new Data_Tuple.Tuple(new Data_Maybe.Just(inValue.value0), l0);
                           }
-
                           ;
-
                           if (inValue instanceof Data_Either.Right) {
                             return new Data_Tuple.Tuple(Data_Maybe.Nothing.value, inValue.value0);
                           }
-
                           ;
                           throw new Error("Failed pattern match at Halogen.ChainPicker (line 477, column 18 - line 479, column 48): " + [inValue.constructor.name]);
                         };
@@ -26152,19 +21664,14 @@ var PS = {};
                         if (res instanceof Data_Maybe.Nothing) {
                           return Control_Applicative.pure(Control_Monad_State_Trans.applicativeStateT(Halogen_Query_HalogenM.monadHalogenM))(Data_Unit.unit);
                         }
-
                         ;
-
                         if (res instanceof Data_Maybe.Just && res.value0 instanceof Data_Maybe.Nothing) {
                           return Control_Applicative.pure(Control_Monad_State_Trans.applicativeStateT(Halogen_Query_HalogenM.monadHalogenM))(Data_Unit.unit);
                         }
-
                         ;
-
                         if (res instanceof Data_Maybe.Just && res.value0 instanceof Data_Maybe.Just) {
                           return Effect_Class.liftEffect(Control_Monad_State_Trans.monadEffectState(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect)))(Effect_Exception["throw"]("writeChain: error when writing link: " + res.value0.value0));
                         }
-
                         ;
                         throw new Error("Failed pattern match at Halogen.ChainPicker (line 482, column 9 - line 491, column 57): " + [res.constructor.name]);
                       }())(function () {
@@ -26180,7 +21687,6 @@ var PS = {};
                 });
               });
             };
-
             var $151 = Data_Function.flip(Control_Monad_State_Trans.evalStateT(Halogen_Query_HalogenM.functorHalogenM))(0);
             var $152 = Type_Chain.hoistChainA(Control_Monad_State_Trans.applicativeStateT(Halogen_Query_HalogenM.monadHalogenM))(go);
             return function ($153) {
@@ -26191,7 +21697,6 @@ var PS = {};
       };
     };
   };
-
   var handleQuery = function handleQuery(dictGOrd) {
     return function (dictGShow) {
       return function (dictMonadEffect) {
@@ -26212,9 +21717,7 @@ var PS = {};
                   });
                 });
               }
-
               ;
-
               if (v instanceof QPut) {
                 return Type_DSum.withDSum(v.value0)(function (newTOut) {
                   return function (newChain) {
@@ -26228,7 +21731,6 @@ var PS = {};
                   };
                 });
               }
-
               ;
               throw new Error("Failed pattern match at Halogen.ChainPicker (line 377, column 20 - line 392, column 6): " + [v.constructor.name]);
             };
@@ -26237,7 +21739,6 @@ var PS = {};
       };
     };
   };
-
   var component = function component(dictGOrd) {
     return function (dictGShow) {
       return function (dictGShow2) {
@@ -26265,7 +21766,6 @@ var PS = {};
       };
     };
   };
-
   var wrappedComponent = function wrappedComponent(dictGOrd) {
     return function (dictGShow) {
       return function (dictMonadEffect) {
@@ -26279,12 +21779,10 @@ var PS = {};
       };
     };
   };
-
   exports["WQGet"] = WQGet;
   exports["WQPut"] = WQPut;
   exports["wrappedComponent"] = wrappedComponent;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -26330,158 +21828,117 @@ var PS = {};
   var Type_DSum = $PS["Type.DSum"];
   var Type_Equiv = $PS["Type.Equiv"];
   var Type_GCompare = $PS["Type.GCompare"];
-
   var Update = function () {
     function Update(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Update.create = function (value0) {
       return new Update(value0);
     };
-
     return Update;
   }();
-
   var QueryAsk = function () {
     function QueryAsk(value0) {
       this.value0 = value0;
     }
-
     ;
-
     QueryAsk.create = function (value0) {
       return new QueryAsk(value0);
     };
-
     return QueryAsk;
   }();
-
   var QueryPut = function () {
     function QueryPut(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     QueryPut.create = function (value0) {
       return function (value1) {
         return new QueryPut(value0, value1);
       };
     };
-
     return QueryPut;
   }();
-
   var NSTLinear = function () {
     function NSTLinear() {}
-
     ;
     NSTLinear.value = new NSTLinear();
     return NSTLinear;
   }();
-
   var NSTLog = function () {
     function NSTLog() {}
-
     ;
     NSTLog.value = new NSTLog();
     return NSTLog;
   }();
-
   var NSTSymLog = function () {
     function NSTSymLog() {}
-
     ;
     NSTSymLog.value = new NSTSymLog();
     return NSTSymLog;
   }();
-
   var SetBase = function () {
     function SetBase(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SetBase.create = function (value0) {
       return new SetBase(value0);
     };
-
     return SetBase;
   }();
-
   var SetOps = function () {
     function SetOps() {}
-
     ;
     SetOps.value = new SetOps();
     return SetOps;
   }();
-
   var SetNumScaleType = function () {
     function SetNumScaleType(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SetNumScaleType.create = function (value0) {
       return new SetNumScaleType(value0);
     };
-
     return SetNumScaleType;
   }();
-
   var SetNumScaleZero = function () {
     function SetNumScaleZero(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SetNumScaleZero.create = function (value0) {
       return new SetNumScaleZero(value0);
     };
-
     return SetNumScaleZero;
   }();
-
   var SetDaysZero = function () {
     function SetDaysZero(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SetDaysZero.create = function (value0) {
       return new SetDaysZero(value0);
     };
-
     return SetDaysZero;
   }();
-
   var updateProjection = function updateProjection(dproj) {
     return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
       var $51 = {};
-
       for (var $52 in v) {
         if ({}.hasOwnProperty.call(v, $52)) {
           $51[$52] = v[$52];
         }
-
         ;
       }
-
       ;
       $51.projection = dproj;
       return $51;
     });
   };
-
   var scaleToNST = function scaleToNST(v) {
     if (v instanceof D3_Scatter_Type["Date"]) {
       return {
@@ -26489,38 +21946,30 @@ var PS = {};
         linearZero: Data_Maybe.Nothing.value
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.Linear) {
       return {
         numScaleType: new Data_Maybe.Just(NSTLinear.value),
         linearZero: new Data_Maybe.Just(v.value1)
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.Log) {
       return {
         numScaleType: new Data_Maybe.Just(NSTLog.value),
         linearZero: Data_Maybe.Nothing.value
       };
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.SymLog) {
       return {
         numScaleType: new Data_Maybe.Just(NSTSymLog.value),
         linearZero: Data_Maybe.Nothing.value
       };
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 85, column 14 - line 89, column 72): " + [v.constructor.name]);
   };
-
   var outSerialize = function outSerialize(p) {
     return Type_DSum.withDSum(p)(function (t) {
       return function (v) {
@@ -26528,38 +21977,28 @@ var PS = {};
           if (t instanceof D3_Scatter_Type.SDay) {
             return Corona_Marshal.serialize(Corona_Marshal.marScale(D3_Scatter_Type.stDay))(Type_Equiv.equivToF(t.value0)(v.value1));
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SDays) {
             return Corona_Marshal.serialize(Corona_Marshal.marScale(D3_Scatter_Type.stDays))(Type_Equiv.equivToF(t.value0)(v.value1));
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SInt) {
             return Corona_Marshal.serialize(Corona_Marshal.marScale(D3_Scatter_Type.stInt))(Type_Equiv.equivToF(t.value0)(v.value1));
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SNumber) {
             return Corona_Marshal.serialize(Corona_Marshal.marScale(D3_Scatter_Type.stNumber))(Type_Equiv.equivToF(t.value0)(v.value1));
           }
-
           ;
-
           if (t instanceof D3_Scatter_Type.SPercent) {
             return Corona_Marshal.serialize(Corona_Marshal.marScale(D3_Scatter_Type.stPercent))(Type_Equiv.equivToF(t.value0)(v.value1));
           }
-
           ;
           throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 354, column 9 - line 359, column 58): " + [t.constructor.name]);
         }();
       };
     });
   };
-
   var outParser = Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse1(Corona_Marshal.mar1Projection))(function (proj) {
     return Type_DSum.withDSum(proj)(function (t) {
       return function (pr) {
@@ -26568,45 +22007,35 @@ var PS = {};
             return Type_DSum.dsum(t)(new Data_Tuple.Tuple(pr, Type_Equiv.equivFromF(t.value0)(sc)));
           });
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SDays) {
           return Data_Functor.mapFlipped(Text_Parsing_StringParser.functorParser)(Corona_Marshal.parse(Corona_Marshal.marScale(D3_Scatter_Type.stDays)))(function (sc) {
             return Type_DSum.dsum(t)(new Data_Tuple.Tuple(pr, Type_Equiv.equivFromF(t.value0)(sc)));
           });
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SInt) {
           return Data_Functor.mapFlipped(Text_Parsing_StringParser.functorParser)(Corona_Marshal.parse(Corona_Marshal.marScale(D3_Scatter_Type.stInt)))(function (sc) {
             return Type_DSum.dsum(t)(new Data_Tuple.Tuple(pr, Type_Equiv.equivFromF(t.value0)(sc)));
           });
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SNumber) {
           return Data_Functor.mapFlipped(Text_Parsing_StringParser.functorParser)(Corona_Marshal.parse(Corona_Marshal.marScale(D3_Scatter_Type.stNumber)))(function (sc) {
             return Type_DSum.dsum(t)(new Data_Tuple.Tuple(pr, Type_Equiv.equivFromF(t.value0)(sc)));
           });
         }
-
         ;
-
         if (t instanceof D3_Scatter_Type.SPercent) {
           return Data_Functor.mapFlipped(Text_Parsing_StringParser.functorParser)(Corona_Marshal.parse(Corona_Marshal.marScale(D3_Scatter_Type.stPercent)))(function (sc) {
             return Type_DSum.dsum(t)(new Data_Tuple.Tuple(pr, Type_Equiv.equivFromF(t.value0)(sc)));
           });
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 343, column 5 - line 348, column 88): " + [t.constructor.name]);
       };
     });
   });
-
   var outLabel = function outLabel(p) {
     return Type_DSum.withDSum(p)(function (v) {
       return function (v1) {
@@ -26614,10 +22043,8 @@ var PS = {};
       };
     });
   };
-
   var nstToScale = function nstToScale(st) {
     var v = D3_Scatter_Type.toNType(st);
-
     if (v instanceof Data_Either.Left && v.value0 instanceof Data_Either.Left) {
       return function (v1) {
         return function (v2) {
@@ -26627,9 +22054,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof Data_Either.Left && v.value0 instanceof Data_Either.Right) {
       return function (v1) {
         return function (v2) {
@@ -26637,9 +22062,7 @@ var PS = {};
         };
       };
     }
-
     ;
-
     if (v instanceof Data_Either.Right) {
       return function (v1) {
         if (v1 instanceof NSTLinear) {
@@ -26649,9 +22072,7 @@ var PS = {};
             };
           };
         }
-
         ;
-
         if (v1 instanceof NSTLog) {
           return function (v2) {
             return function (v3) {
@@ -26659,9 +22080,7 @@ var PS = {};
             };
           };
         }
-
         ;
-
         if (v1 instanceof NSTSymLog) {
           return function (v2) {
             return function (v3) {
@@ -26669,72 +22088,54 @@ var PS = {};
             };
           };
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 76, column 23 - line 79, column 40): " + [v1.constructor.name]);
       };
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 73, column 17 - line 79, column 40): " + [v.constructor.name]);
   };
-
   var nstLabel = function nstLabel(v) {
     if (v instanceof NSTLinear) {
       return "Linear";
     }
-
     ;
-
     if (v instanceof NSTLog) {
       return "Logarithmic";
     }
-
     ;
-
     if (v instanceof NSTSymLog) {
       return "Symmetric Log";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 60, column 12 - line 63, column 33): " + [v.constructor.name]);
   };
-
   var helptipLink = function helptipLink(id) {
     return Halogen_HTML_Elements.a([Halogen_HTML_Properties.href("#" + id), Halogen_Util.classProp("helptip-link noselect")])([Halogen_HTML_Core.text("?")]);
   };
-
   var eqNST = new Data_Eq.Eq(function (x) {
     return function (y) {
       if (x instanceof NSTLinear && y instanceof NSTLinear) {
         return true;
       }
-
       ;
-
       if (x instanceof NSTLog && y instanceof NSTLog) {
         return true;
       }
-
       ;
-
       if (x instanceof NSTSymLog && y instanceof NSTSymLog) {
         return true;
       }
-
       ;
       return false;
     };
   });
-
   var decorateOpChain = function decorateOpChain(tagIn) {
     return function (v) {
       if (v instanceof Type_Chain.Nil) {
         return new Type_Chain.Nil(v.value0);
       }
-
       ;
-
       if (v instanceof Type_Chain.Cons) {
         return Type_Ap.withAp(v.value0)(function (link) {
           return function (xs) {
@@ -26747,18 +22148,15 @@ var PS = {};
           };
         });
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 331, column 25 - line 337, column 6): " + [v.constructor.name]);
     };
   };
-
   var chainPicker = function chainPicker(dictMonadEffect) {
     return function (t0) {
       return Halogen_ChainPicker.wrappedComponent(D3_Scatter_Type.gordSType)(D3_Scatter_Type.gshowSType)(dictMonadEffect)(Corona_Chart.gshow2Operation)(t0)(Corona_Chart_UI_Op.pickerMap);
     };
   };
-
   var assembleScale = function assembleScale(st) {
     return Type_DSum.withDSum(st.projection)(function (t) {
       return function (proj) {
@@ -26766,33 +22164,26 @@ var PS = {};
       };
     });
   };
-
   var allNST = [NSTLinear.value, NSTLog.value, NSTSymLog.value];
   var _opselect = Data_Symbol.SProxy.value;
-
   var handleAction = function handleAction(dictMonadEffect) {
     return function (act) {
       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(function () {
         if (act instanceof SetBase) {
           return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
             var $95 = {};
-
             for (var $96 in st) {
               if ({}.hasOwnProperty.call(st, $96)) {
                 $95[$96] = st[$96];
               }
-
               ;
             }
-
             ;
             $95.projection = Data_Exists.runExists(Data_Function.flip(Corona_Chart.setBase)(st.projection))(act.value0);
             return $95;
           });
         }
-
         ;
-
         if (act instanceof SetOps) {
           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
             return v.projection;
@@ -26811,17 +22202,13 @@ var PS = {};
                     return function (tB) {
                       return function (chain) {
                         var v = Type_Equiv.decide(D3_Scatter_Type.decideSType)(tA)(tIn);
-
                         if (v instanceof Data_Maybe.Nothing) {
                           return new Data_Either.Left(Data_Exists.mkExists(tA));
                         }
-
                         ;
-
                         if (v instanceof Data_Maybe.Just) {
                           return new Data_Either.Right(Type_DSum.dsum(tB)(Type_Equiv.equivToF2(v.value0)(chain)));
                         }
-
                         ;
                         throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 240, column 17 - line 242, column 62): " + [v.constructor.name]);
                       };
@@ -26830,15 +22217,11 @@ var PS = {};
                     if (qres instanceof Data_Maybe.Nothing) {
                       return Effect_Class_Console.log(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("no response from component");
                     }
-
                     ;
-
                     if (qres instanceof Data_Maybe.Just && qres.value0 instanceof Data_Either.Left) {
                       return Effect_Class_Console.log(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("type mismatch: " + Data_Exists.runExists(Data_Show.show(D3_Scatter_Type.showSType))(qres.value0.value0));
                     }
-
                     ;
-
                     if (qres instanceof Data_Maybe.Just && qres.value0 instanceof Data_Either.Right) {
                       return Type_DSum.withDSum(qres.value0.value0)(function (tNewOut) {
                         return function (chain) {
@@ -26849,7 +22232,6 @@ var PS = {};
                         };
                       });
                     }
-
                     ;
                     throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 244, column 13 - line 251, column 16): " + [qres.constructor.name]);
                   });
@@ -26858,67 +22240,51 @@ var PS = {};
             });
           });
         }
-
         ;
-
         if (act instanceof SetNumScaleType) {
           return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
             var $106 = {};
-
             for (var $107 in v) {
               if ({}.hasOwnProperty.call(v, $107)) {
                 $106[$107] = v[$107];
               }
-
               ;
             }
-
             ;
             $106.numScaleType = act.value0;
             return $106;
           });
         }
-
         ;
-
         if (act instanceof SetNumScaleZero) {
           return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
             var $110 = {};
-
             for (var $111 in v) {
               if ({}.hasOwnProperty.call(v, $111)) {
                 $110[$111] = v[$111];
               }
-
               ;
             }
-
             ;
             $110.numScaleZero = act.value0;
             return $110;
           });
         }
-
         ;
-
         if (act instanceof SetDaysZero) {
           return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
             var $114 = {};
-
             for (var $115 in v) {
               if ({}.hasOwnProperty.call(v, $115)) {
                 $114[$115] = v[$115];
               }
-
               ;
             }
-
             ;
             $114.daysZero = act.value0;
             return $114;
           });
         }
-
         ;
         throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 230, column 5 - line 259, column 39): " + [act.constructor.name]);
       }())(function () {
@@ -26928,7 +22294,6 @@ var PS = {};
       });
     };
   };
-
   var handleQuery = function handleQuery(dictMonadEffect) {
     return function (v) {
       if (v instanceof QueryAsk) {
@@ -26936,51 +22301,39 @@ var PS = {};
           return Data_Maybe.Just.create(v.value0($157));
         })(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(assembleScale));
       }
-
       ;
-
       if (v instanceof QueryPut) {
         return Type_DSum.withDSum(v.value0)(function (tOut) {
           return function (v1) {
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st0) {
               var sout = scaleToNST(v1.value1);
               var v2 = D3_Scatter_Type.toNType(tOut);
-
               if (v2 instanceof Data_Either.Left) {
                 var $122 = {};
-
                 for (var $123 in st0) {
                   if ({}.hasOwnProperty.call(st0, $123)) {
                     $122[$123] = st0[$123];
                   }
-
                   ;
                 }
-
                 ;
                 $122.daysZero = Data_Maybe.fromMaybe(st0.daysZero)(sout.linearZero);
                 return $122;
               }
-
               ;
-
               if (v2 instanceof Data_Either.Right) {
                 var $126 = {};
-
                 for (var $127 in st0) {
                   if ({}.hasOwnProperty.call(st0, $127)) {
                     $126[$127] = st0[$127];
                   }
-
                   ;
                 }
-
                 ;
                 $126.numScaleType = Data_Maybe.fromMaybe(st0.numScaleType)(sout.numScaleType);
                 $126.numScaleZero = Data_Maybe.fromMaybe(st0.numScaleZero)(sout.linearZero);
                 return $126;
               }
-
               ;
               throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 282, column 13 - line 289, column 18): " + [v2.constructor.name]);
             }))(function () {
@@ -26998,21 +22351,16 @@ var PS = {};
                     if (res instanceof Data_Maybe.Nothing) {
                       return Effect_Class_Console.warn(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("no response from ChainPicker");
                     }
-
                     ;
-
                     if (res instanceof Data_Maybe.Just && res.value0 instanceof Data_Maybe.Just) {
                       return Data_Exists.runExists(function (t$prime) {
                         return Effect_Class_Console.log(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))("chainpicker of is the wrong input type (" + (Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(t$prime) + (") according to its index " + Type_GCompare.gshow(D3_Scatter_Type.gshowSType)(tBase))));
                       })(res.value0.value0);
                     }
-
                     ;
-
                     if (res instanceof Data_Maybe.Just && res.value0 instanceof Data_Maybe.Nothing) {
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
                     }
-
                     ;
                     throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 298, column 9 - line 303, column 36): " + [res.constructor.name]);
                   });
@@ -27026,12 +22374,10 @@ var PS = {};
           };
         });
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 277, column 15 - line 307, column 6): " + [v.constructor.name]);
     };
   };
-
   var render = function render(dictMonadEffect) {
     return function (label) {
       return function (aState) {
@@ -27040,7 +22386,6 @@ var PS = {};
             if (isNum) {
               return aState.numScaleZero;
             }
-
             ;
             return aState.daysZero;
           }()), Halogen_HTML_Events.onChecked(function () {
@@ -27049,14 +22394,12 @@ var PS = {};
                 return Data_Maybe.Just.create(SetNumScaleZero.create($158));
               };
             }
-
             ;
             return function ($159) {
               return Data_Maybe.Just.create(SetDaysZero.create($159));
             };
           }())]), Halogen_HTML_Elements.div([Halogen_Util.classProp("state")])([Halogen_HTML_Elements.label_([Halogen_HTML_Core.text("Zero Axis")])])]);
         };
-
         return Halogen_HTML_Elements.div([Halogen_Util.classProp("axis-options dialog")])([Halogen_HTML_Elements.h3_([Halogen_HTML_Core.text(D3_Scatter_Type.axisLabel(label))]), Halogen_HTML_Elements.div([Halogen_Util.classProp("base-projection")])([Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Base Projection")]), helptipLink("base-tip"), Halogen_HTML_Elements.select([Halogen_HTML_Events.onSelectedIndexChange(function () {
           var $160 = Data_Functor.map(Data_Maybe.functorMaybe)(SetBase.create);
           return function ($161) {
@@ -27091,19 +22434,14 @@ var PS = {};
         })]), Halogen_HTML_Elements.div([Halogen_Util.classProp("axis-scale")])(Type_DSum.withDSum(aState.projection)(function (t) {
           return function (v) {
             var v1 = D3_Scatter_Type.toNType(t);
-
             if (v1 instanceof Data_Either.Left && v1.value0 instanceof Data_Either.Left) {
               return [];
             }
-
             ;
-
             if (v1 instanceof Data_Either.Left && v1.value0 instanceof Data_Either.Right) {
               return [Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Scale")]), linearZeroCheck(false)];
             }
-
             ;
-
             if (v1 instanceof Data_Either.Right) {
               return Data_Foldable.fold(Data_Foldable.foldableArray)(Data_Monoid.monoidArray)([[Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Scale")]), helptipLink("scale-tip"), Halogen_HTML_Elements.select([Halogen_HTML_Events.onSelectedIndexChange(function () {
                 var $162 = Data_Functor.map(Data_Maybe.functorMaybe)(SetNumScaleType.create);
@@ -27118,24 +22456,18 @@ var PS = {};
                 if (aState.numScaleType instanceof NSTLinear) {
                   return [linearZeroCheck(true)];
                 }
-
                 ;
-
                 if (aState.numScaleType instanceof NSTLog) {
                   return [];
                 }
-
                 ;
-
                 if (aState.numScaleType instanceof NSTSymLog) {
                   return [];
                 }
-
                 ;
                 throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 197, column 15 - line 200, column 32): " + [aState.numScaleType.constructor.name]);
               }()]);
             }
-
             ;
             throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 184, column 11 - line 201, column 14): " + [v1.constructor.name]);
           };
@@ -27143,7 +22475,6 @@ var PS = {};
       };
     };
   };
-
   var component = function component(dictMonadEffect) {
     return function (label) {
       return Halogen_Component.mkComponent({
@@ -27156,33 +22487,25 @@ var PS = {};
                 numScaleType: Data_Maybe.fromMaybe(NSTLog.value)(stout.numScaleType),
                 numScaleZero: function () {
                   var v1 = D3_Scatter_Type.toNType(tOut);
-
                   if (v1 instanceof Data_Either.Left) {
                     return false;
                   }
-
                   ;
-
                   if (v1 instanceof Data_Either.Right) {
                     return Data_Maybe.fromMaybe(false)(stout.linearZero);
                   }
-
                   ;
                   throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 135, column 31 - line 137, column 64): " + [v1.constructor.name]);
                 }(),
                 daysZero: function () {
                   var v1 = D3_Scatter_Type.toNType(tOut);
-
                   if (v1 instanceof Data_Either.Left) {
                     return Data_Maybe.fromMaybe(false)(stout.linearZero);
                   }
-
                   ;
-
                   if (v1 instanceof Data_Either.Right) {
                     return false;
                   }
-
                   ;
                   throw new Error("Failed pattern match at Corona.Chart.UI.Projection (line 138, column 27 - line 140, column 37): " + [v1.constructor.name]);
                 }()
@@ -27201,14 +22524,12 @@ var PS = {};
       });
     };
   };
-
   exports["QueryPut"] = QueryPut;
   exports["component"] = component;
   exports["outParser"] = outParser;
   exports["outSerialize"] = outSerialize;
   exports["outLabel"] = outLabel;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27218,13 +22539,11 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Profunctor = $PS["Data.Profunctor"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var Strong = function Strong(Profunctor0, first, second) {
     this.Profunctor0 = Profunctor0;
     this.first = first;
     this.second = second;
   };
-
   var strongFn = new Strong(function () {
     return Data_Profunctor.profunctorFn;
   }, function (a2b) {
@@ -27232,16 +22551,13 @@ var PS = {};
       return new Data_Tuple.Tuple(a2b(v.value0), v.value1);
     };
   }, Data_Functor.map(Data_Tuple.functorTuple));
-
   var first = function first(dict) {
     return dict.first;
   };
-
   exports["first"] = first;
   exports["Strong"] = Strong;
   exports["strongFn"] = strongFn;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27252,11 +22568,9 @@ var PS = {};
   var Data_Profunctor = $PS["Data.Profunctor"];
   var Data_Profunctor_Strong = $PS["Data.Profunctor.Strong"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var Forget = function Forget(x) {
     return x;
   };
-
   var profunctorForget = new Data_Profunctor.Profunctor(function (f) {
     return function (v) {
       return function (v1) {
@@ -27283,7 +22597,6 @@ var PS = {};
   exports["newtypeForget"] = newtypeForget;
   exports["strongForget"] = strongForget;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27293,20 +22606,16 @@ var PS = {};
   var Control_Category = $PS["Control.Category"];
   var Data_Lens_Internal_Forget = $PS["Data.Lens.Internal.Forget"];
   var Data_Newtype = $PS["Data.Newtype"];
-
   var view = function view(l) {
     return Data_Newtype.unwrap(Data_Lens_Internal_Forget.newtypeForget)(l(Control_Category.identity(Control_Category.categoryFn)));
   };
-
   var viewOn = function viewOn(s) {
     return function (l) {
       return view(l)(s);
     };
   };
-
   exports["viewOn"] = viewOn;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27316,7 +22625,6 @@ var PS = {};
   var Data_Profunctor = $PS["Data.Profunctor"];
   var Data_Profunctor_Strong = $PS["Data.Profunctor.Strong"];
   var Data_Tuple = $PS["Data.Tuple"];
-
   var lens$prime = function lens$prime(to) {
     return function (dictStrong) {
       return function (pab) {
@@ -27326,7 +22634,6 @@ var PS = {};
       };
     };
   };
-
   var lens = function lens(get) {
     return function (set) {
       return function (dictStrong) {
@@ -27338,10 +22645,8 @@ var PS = {};
       };
     };
   };
-
   exports["lens"] = lens;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27350,7 +22655,6 @@ var PS = {};
   var exports = $PS["Record"];
   var Data_Symbol = $PS["Data.Symbol"];
   var Record_Unsafe = $PS["Record.Unsafe"];
-
   var set = function set(dictIsSymbol) {
     return function (dictCons) {
       return function (dictCons1) {
@@ -27364,7 +22668,6 @@ var PS = {};
       };
     };
   };
-
   var get = function get(dictIsSymbol) {
     return function (dictCons) {
       return function (l) {
@@ -27374,11 +22677,9 @@ var PS = {};
       };
     };
   };
-
   exports["get"] = get;
   exports["set"] = set;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27388,7 +22689,6 @@ var PS = {};
   var Data_Function = $PS["Data.Function"];
   var Data_Lens_Lens = $PS["Data.Lens.Lens"];
   var Record = $PS["Record"];
-
   var prop = function prop(dictIsSymbol) {
     return function (dictCons) {
       return function (dictCons1) {
@@ -27400,10 +22700,8 @@ var PS = {};
       };
     };
   };
-
   exports["prop"] = prop;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27411,52 +22709,40 @@ var PS = {};
   $PS["Data.Lens.Setter"] = $PS["Data.Lens.Setter"] || {};
   var exports = $PS["Data.Lens.Setter"];
   var Data_Function = $PS["Data.Function"];
-
   var over = function over(l) {
     return l;
   };
-
   var set = function set(l) {
     return function (b) {
       return over(l)(Data_Function["const"](b));
     };
   };
-
   exports["set"] = set;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
 
   $PS["Data.Void"] = $PS["Data.Void"] || {};
   var exports = $PS["Data.Void"];
-
   var absurd = function absurd(a) {
     var spin = function spin($copy_v) {
       var $tco_result;
-
       function $tco_loop(v) {
         $copy_v = v;
         return;
       }
-
       ;
-
       while (!false) {
         $tco_result = $tco_loop($copy_v);
       }
-
       ;
       return $tco_result;
     };
-
     return spin(a);
   };
-
   exports["absurd"] = absurd;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -27468,7 +22754,6 @@ var PS = {};
     };
   };
 })(PS["Web.DOM.ParentNode"] = PS["Web.DOM.ParentNode"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27479,7 +22764,6 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Nullable = $PS["Data.Nullable"];
   var Effect = $PS["Effect"];
-
   var querySelector = function querySelector(qs) {
     var $3 = Data_Functor.map(Effect.functorEffect)(Data_Nullable.toMaybe);
     var $4 = $foreign["_querySelector"](qs);
@@ -27487,10 +22771,8 @@ var PS = {};
       return $3($4($5));
     };
   };
-
   exports["querySelector"] = querySelector;
 })(PS);
-
 (function (exports) {
   /* global window */
   "use strict";
@@ -27499,7 +22781,6 @@ var PS = {};
     return window;
   };
 })(PS["Web.HTML"] = PS["Web.HTML"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27509,7 +22790,6 @@ var PS = {};
   var $foreign = $PS["Web.HTML"];
   exports["window"] = $foreign.window;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -27519,7 +22799,6 @@ var PS = {};
     };
   };
 })(PS["Web.HTML.HTMLDocument"] = PS["Web.HTML.HTMLDocument"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27527,56 +22806,42 @@ var PS = {};
   $PS["Web.HTML.HTMLDocument.ReadyState"] = $PS["Web.HTML.HTMLDocument.ReadyState"] || {};
   var exports = $PS["Web.HTML.HTMLDocument.ReadyState"];
   var Data_Maybe = $PS["Data.Maybe"];
-
   var Loading = function () {
     function Loading() {}
-
     ;
     Loading.value = new Loading();
     return Loading;
   }();
-
   var Interactive = function () {
     function Interactive() {}
-
     ;
     Interactive.value = new Interactive();
     return Interactive;
   }();
-
   var Complete = function () {
     function Complete() {}
-
     ;
     Complete.value = new Complete();
     return Complete;
   }();
-
   var parse = function parse(v) {
     if (v === "loading") {
       return new Data_Maybe.Just(Loading.value);
     }
-
     ;
-
     if (v === "interactive") {
       return new Data_Maybe.Just(Interactive.value);
     }
-
     ;
-
     if (v === "complete") {
       return new Data_Maybe.Just(Complete.value);
     }
-
     ;
     return Data_Maybe.Nothing.value;
   };
-
   exports["Loading"] = Loading;
   exports["parse"] = parse;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27591,7 +22856,6 @@ var PS = {};
   var Web_HTML_HTMLDocument_ReadyState = $PS["Web.HTML.HTMLDocument.ReadyState"];
   var toParentNode = Unsafe_Coerce.unsafeCoerce;
   var toDocument = Unsafe_Coerce.unsafeCoerce;
-
   var readyState = function () {
     var $0 = Data_Functor.map(Effect.functorEffect)(function () {
       var $2 = Data_Maybe.fromMaybe(Web_HTML_HTMLDocument_ReadyState.Loading.value);
@@ -27603,25 +22867,21 @@ var PS = {};
       return $0($foreign["_readyState"]($1));
     };
   }();
-
   exports["toDocument"] = toDocument;
   exports["toParentNode"] = toParentNode;
   exports["readyState"] = readyState;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports._read = function (nothing, just, value) {
     var tag = Object.prototype.toString.call(value);
-
     if (tag.indexOf("[object HTML") === 0 && tag.indexOf("Element]") === tag.length - 8) {
       return just(value);
     } else {
       return nothing;
     }
   };
-
   exports.setClassName = function (className) {
     return function (elt) {
       return function () {
@@ -27630,7 +22890,6 @@ var PS = {};
       };
     };
   };
-
   exports.setHidden = function (hidden) {
     return function (elt) {
       return function () {
@@ -27640,7 +22899,6 @@ var PS = {};
     };
   };
 })(PS["Web.HTML.HTMLElement"] = PS["Web.HTML.HTMLElement"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27651,17 +22909,14 @@ var PS = {};
   var Data_Maybe = $PS["Data.Maybe"];
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
   var toNode = Unsafe_Coerce.unsafeCoerce;
-
   var fromElement = function fromElement(x) {
     return $foreign["_read"](Data_Maybe.Nothing.value, Data_Maybe.Just.create, x);
   };
-
   exports["fromElement"] = fromElement;
   exports["toNode"] = toNode;
   exports["setClassName"] = $foreign.setClassName;
   exports["setHidden"] = $foreign.setHidden;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -27670,20 +22925,17 @@ var PS = {};
       return window.document;
     };
   };
-
   exports.location = function (window) {
     return function () {
       return window.location;
     };
   };
-
   exports.history = function (window) {
     return function () {
       return window.history;
     };
   };
 })(PS["Web.HTML.Window"] = PS["Web.HTML.Window"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27698,7 +22950,6 @@ var PS = {};
   exports["location"] = $foreign.location;
   exports["history"] = $foreign.history;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27725,7 +22976,6 @@ var PS = {};
   var Web_HTML_HTMLDocument_ReadyState = $PS["Web.HTML.HTMLDocument.ReadyState"];
   var Web_HTML_HTMLElement = $PS["Web.HTML.HTMLElement"];
   var Web_HTML_Window = $PS["Web.HTML.Window"];
-
   var selectElement = function selectElement(query) {
     return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Control_Bind.bindFlipped(Effect.bindEffect)(Control_Bind.composeKleisliFlipped(Effect.bindEffect)(function () {
       var $2 = Web_DOM_ParentNode.querySelector(query);
@@ -27736,12 +22986,10 @@ var PS = {};
       return Control_Applicative.pure(Effect_Aff.applicativeAff)(Control_Bind.bindFlipped(Data_Maybe.bindMaybe)(Web_HTML_HTMLElement.fromElement)(mel));
     });
   };
-
   var runHalogenAff = Effect_Aff.runAff_(Data_Either.either(Effect_Exception.throwException)(Data_Function["const"](Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit))));
   var awaitLoad = Effect_Aff.makeAff(function (callback) {
     return function __do() {
       var rs = Control_Bind.bindFlipped(Effect.bindEffect)(Web_HTML_HTMLDocument.readyState)(Control_Bind.bindFlipped(Effect.bindEffect)(Web_HTML_Window.document)(Web_HTML.window))();
-
       if (rs instanceof Web_HTML_HTMLDocument_ReadyState.Loading) {
         var et = Data_Functor.map(Effect.functorEffect)(Web_HTML_Window.toEventTarget)(Web_HTML.window)();
         var listener = Web_Event_EventTarget.eventListener(function (v) {
@@ -27750,7 +22998,6 @@ var PS = {};
         Web_Event_EventTarget.addEventListener(Web_HTML_Event_EventTypes.domcontentloaded)(listener)(false)(et)();
         return Effect_Aff.effectCanceler(Web_Event_EventTarget.removeEventListener(Web_HTML_Event_EventTypes.domcontentloaded)(listener)(false)(et));
       }
-
       ;
       callback(new Data_Either.Right(Data_Unit.unit))();
       return Effect_Aff.nonCanceler;
@@ -27765,14 +23012,15 @@ var PS = {};
   exports["selectElement"] = selectElement;
   exports["runHalogenAff"] = runHalogenAff;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports._initAutocomplete = function (opts, sel, place, callback) {
     return function () {
       var options = opts.slice(0);
-      var selector = "#" + sel; // console.log(options,sel, place);
+      var selector = "#" + sel;
+
+      // console.log(options,sel, place);
 
       var ac = new autoComplete({
         data: {
@@ -27804,26 +23052,25 @@ var PS = {};
           // console.log(feedback);
           callback(feedback.selection.value)();
         }
-      }); // console.log(ac);
+      });
+
+      // console.log(ac);
 
       var setOpts = function setOpts(newOpts) {
         options.splice(0, options.length);
         options.push.apply(options, newOpts);
       };
-
       return {
         setter: setOpts
       };
     };
   };
-
   exports._setOpts = function (ac, xs) {
     return function () {
       ac.setter(xs);
     };
   };
 })(PS["Halogen.Autocomplete"] = PS["Halogen.Autocomplete"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -27837,15 +23084,12 @@ var PS = {};
   var Data_Unit = $PS["Data.Unit"];
   var Halogen_Query_HalogenM = $PS["Halogen.Query.HalogenM"];
   var Web_HTML_HTMLElement = $PS["Web.HTML.HTMLElement"];
-
   var tell = function tell(act) {
     return act(Data_Unit.unit);
   };
-
   var request = function request(req) {
     return req(Control_Category.identity(Control_Category.categoryFn));
   };
-
   var getHTMLElementRef = function () {
     var $1 = Data_Functor.map(Halogen_Query_HalogenM.functorHalogenM)(function (v) {
       return Control_Bind.bindFlipped(Data_Maybe.bindMaybe)(Web_HTML_HTMLElement.fromElement)(v);
@@ -27854,12 +23098,10 @@ var PS = {};
       return $1(Halogen_Query_HalogenM.getRef($2));
     };
   }();
-
   exports["tell"] = tell;
   exports["request"] = request;
   exports["getHTMLElementRef"] = getHTMLElementRef;
 })(PS);
-
 (function (exports) {
   /* globals exports, setTimeout */
   "use strict";
@@ -27870,14 +23112,12 @@ var PS = {};
       this.last = null;
       this.size = 0;
     }
-
     function MutableCell(queue, value) {
       this.queue = queue;
       this.value = value;
       this.next = null;
       this.prev = null;
     }
-
     function AVar(value) {
       this.draining = false;
       this.error = null;
@@ -27886,9 +23126,7 @@ var PS = {};
       this.reads = new MutableQueue();
       this.puts = new MutableQueue();
     }
-
     var EMPTY = {};
-
     function runEff(eff) {
       try {
         eff();
@@ -27898,133 +23136,107 @@ var PS = {};
         }, 0);
       }
     }
-
     function putLast(queue, value) {
       var cell = new MutableCell(queue, value);
-
       switch (queue.size) {
         case 0:
           queue.head = cell;
           break;
-
         case 1:
           cell.prev = queue.head;
           queue.head.next = cell;
           queue.last = cell;
           break;
-
         default:
           cell.prev = queue.last;
           queue.last.next = cell;
           queue.last = cell;
       }
-
       queue.size++;
       return cell;
     }
-
     function takeLast(queue) {
       var cell;
-
       switch (queue.size) {
         case 0:
           return null;
-
         case 1:
           cell = queue.head;
           queue.head = null;
           break;
-
         case 2:
           cell = queue.last;
           queue.head.next = null;
           queue.last = null;
           break;
-
         default:
           cell = queue.last;
           queue.last = cell.prev;
           queue.last.next = null;
       }
-
       cell.prev = null;
       cell.queue = null;
       queue.size--;
       return cell.value;
     }
-
     function takeHead(queue) {
       var cell;
-
       switch (queue.size) {
         case 0:
           return null;
-
         case 1:
           cell = queue.head;
           queue.head = null;
           break;
-
         case 2:
           cell = queue.head;
           queue.last.prev = null;
           queue.head = queue.last;
           queue.last = null;
           break;
-
         default:
           cell = queue.head;
           queue.head = cell.next;
           queue.head.prev = null;
       }
-
       cell.next = null;
       cell.queue = null;
       queue.size--;
       return cell.value;
     }
-
     function deleteCell(cell) {
       if (cell.queue === null) {
         return;
       }
-
       if (cell.queue.last === cell) {
         takeLast(cell.queue);
         return;
       }
-
       if (cell.queue.head === cell) {
         takeHead(cell.queue);
         return;
       }
-
       if (cell.prev) {
         cell.prev.next = cell.next;
       }
-
       if (cell.next) {
         cell.next.prev = cell.prev;
       }
-
       cell.queue.size--;
       cell.queue = null;
       cell.value = null;
       cell.next = null;
       cell.prev = null;
     }
-
     function drainVar(util, avar) {
       if (avar.draining) {
         return;
       }
-
       var ps = avar.puts;
       var ts = avar.takes;
       var rs = avar.reads;
       var p, r, t, value, rsize;
       avar.draining = true;
-
       while (1) {
         // eslint-disable-line no-constant-condition
         p = null;
@@ -28032,65 +23244,55 @@ var PS = {};
         t = null;
         value = avar.value;
         rsize = rs.size;
-
         if (avar.error !== null) {
           value = util.left(avar.error);
-
           while (p = takeHead(ps)) {
             // eslint-disable-line no-cond-assign
             runEff(p.cb(value));
           }
-
           while (r = takeHead(rs)) {
             // eslint-disable-line no-cond-assign
             runEff(r(value));
           }
-
           while (t = takeHead(ts)) {
             // eslint-disable-line no-cond-assign
             runEff(t(value));
           }
-
           break;
-        } // Process the next put. We do not immediately invoke the callback
+        }
+
+        // Process the next put. We do not immediately invoke the callback
         // because we want to preserve ordering. If there are takes/reads
         // we want to run those first.
-
-
         if (value === EMPTY && (p = takeHead(ps))) {
           avar.value = value = p.value;
         }
-
         if (value !== EMPTY) {
           // We go ahead and queue up the next take for the same reasons as
           // above. Invoking the read callbacks can affect the mutable queue.
-          t = takeHead(ts); // We only want to process the reads queued up before running these
+          t = takeHead(ts);
+          // We only want to process the reads queued up before running these
           // callbacks so we guard on rsize.
-
           while (rsize-- && (r = takeHead(rs))) {
             runEff(r(util.right(value)));
           }
-
           if (t !== null) {
             avar.value = EMPTY;
             runEff(t(util.right(value)));
           }
         }
-
         if (p !== null) {
           runEff(p.cb(util.right(void 0)));
-        } // Callbacks could have queued up more items so we need to guard on the
+        }
+
+        // Callbacks could have queued up more items so we need to guard on the
         // actual mutable properties.
-
-
         if (avar.value === EMPTY && ps.size === 0 || avar.value !== EMPTY && ts.size === 0) {
           break;
         }
       }
-
       avar.draining = false;
     }
-
     AVar.EMPTY = EMPTY;
     AVar.putLast = putLast;
     AVar.takeLast = takeLast;
@@ -28099,11 +23301,9 @@ var PS = {};
     AVar.drainVar = drainVar;
     return AVar;
   }();
-
   exports.empty = function () {
     return new AVar(AVar.EMPTY);
   };
-
   exports._killVar = function (util, error, avar) {
     return function () {
       if (avar.error === null) {
@@ -28113,7 +23313,6 @@ var PS = {};
       }
     };
   };
-
   exports._putVar = function (util, value, avar, cb) {
     return function () {
       var cell = AVar.putLast(avar.puts, {
@@ -28126,7 +23325,6 @@ var PS = {};
       };
     };
   };
-
   exports._takeVar = function (util, avar, cb) {
     return function () {
       var cell = AVar.putLast(avar.takes, cb);
@@ -28137,7 +23335,6 @@ var PS = {};
     };
   };
 })(PS["Effect.AVar"] = PS["Effect.AVar"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28147,43 +23344,32 @@ var PS = {};
   var $foreign = $PS["Effect.AVar"];
   var Data_Either = $PS["Data.Either"];
   var Data_Maybe = $PS["Data.Maybe"];
-
   var Killed = function () {
     function Killed(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Killed.create = function (value0) {
       return new Killed(value0);
     };
-
     return Killed;
   }();
-
   var Filled = function () {
     function Filled(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Filled.create = function (value0) {
       return new Filled(value0);
     };
-
     return Filled;
   }();
-
   var Empty = function () {
     function Empty() {}
-
     ;
     Empty.value = new Empty();
     return Empty;
   }();
-
   var ffiUtil = {
     left: Data_Either.Left.create,
     right: Data_Either.Right.create,
@@ -28193,13 +23379,11 @@ var PS = {};
     filled: Filled.create,
     empty: Empty.value
   };
-
   var kill = function kill(err) {
     return function (avar) {
       return $foreign["_killVar"](ffiUtil, err, avar);
     };
   };
-
   var put = function put(value) {
     return function (avar) {
       return function (cb) {
@@ -28207,19 +23391,16 @@ var PS = {};
       };
     };
   };
-
   var take = function take(avar) {
     return function (cb) {
       return $foreign["_takeVar"](ffiUtil, avar, cb);
     };
   };
-
   exports["take"] = take;
   exports["put"] = put;
   exports["kill"] = kill;
   exports["empty"] = $foreign.empty;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28229,7 +23410,6 @@ var PS = {};
   var Effect_AVar = $PS["Effect.AVar"];
   var Effect_Aff = $PS["Effect.Aff"];
   var Effect_Class = $PS["Effect.Class"];
-
   var take = function take(avar) {
     return Effect_Aff.makeAff(function (k) {
       return function __do() {
@@ -28238,7 +23418,6 @@ var PS = {};
       };
     });
   };
-
   var put = function put(value) {
     return function (avar) {
       return Effect_Aff.makeAff(function (k) {
@@ -28249,7 +23428,6 @@ var PS = {};
       });
     };
   };
-
   var kill = function kill(error) {
     var $11 = Effect_Class.liftEffect(Effect_Aff.monadEffectAff);
     var $12 = Effect_AVar.kill(error);
@@ -28257,14 +23435,12 @@ var PS = {};
       return $11($12($13));
     };
   };
-
   var empty = Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_AVar.empty);
   exports["empty"] = empty;
   exports["take"] = take;
   exports["put"] = put;
   exports["kill"] = kill;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28290,11 +23466,9 @@ var PS = {};
   var Effect_Aff_Class = $PS["Effect.Aff.Class"];
   var Effect_Class = $PS["Effect.Class"];
   var Effect_Exception = $PS["Effect.Exception"];
-
   var EventSource = function EventSource(x) {
     return x;
   };
-
   var semigroupFinalizer = function semigroupFinalizer(dictApply) {
     return new Data_Semigroup.Semigroup(function (v) {
       return function (v1) {
@@ -28302,19 +23476,16 @@ var PS = {};
       };
     });
   };
-
   var monoidFinalizer = function monoidFinalizer(dictApplicative) {
     return new Data_Monoid.Monoid(function () {
       return semigroupFinalizer(dictApplicative.Apply0());
     }, Control_Applicative.pure(dictApplicative)(Data_Unit.unit));
   };
-
   var hoistFinalizer = function hoistFinalizer(nat) {
     return function (v) {
       return nat(v);
     };
   };
-
   var hoistEmitter = function hoistEmitter(nat) {
     return function (v) {
       return function ($37) {
@@ -28322,17 +23493,14 @@ var PS = {};
       };
     };
   };
-
   var finalize = function finalize(v) {
     return v;
   };
-
   var emit = function emit(v) {
     return function (a) {
       return v(new Data_Either.Left(a));
     };
   };
-
   var affEventSource = function affEventSource(dictMonadAff) {
     return function (recv) {
       return EventSource(Effect_Aff_Class.liftAff(dictMonadAff)(Control_Bind.bind(Effect_Aff.bindAff)(Effect_Aff_AVar.empty)(function (inputVar) {
@@ -28344,15 +23512,12 @@ var PS = {};
             if (v instanceof Data_Either.Left) {
               return Control_Applicative.pure(dictMonadAff.MonadEffect0().Monad0().Applicative0())(Data_Unit.unit);
             }
-
             ;
-
             if (v instanceof Data_Either.Right) {
               return Effect_Aff_Class.liftAff(dictMonadAff)(Control_Bind.discard(Control_Bind.discardUnit)(Effect_Aff.bindAff)(Effect_Aff_AVar.kill(Effect_Exception.error("finalized"))(finalizeVar))(function () {
                 return finalize(v.value0);
               }));
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.Query.EventSource (line 71, column 51 - line 75, column 21): " + [v.constructor.name]);
           });
@@ -28364,7 +23529,6 @@ var PS = {};
       })));
     };
   };
-
   var effectEventSource = function effectEventSource(dictMonadAff) {
     var $38 = affEventSource(dictMonadAff);
     var $39 = Data_Profunctor.dimap(Data_Profunctor.profunctorFn)(hoistEmitter(Effect_Aff.launchAff_))(function () {
@@ -28378,13 +23542,11 @@ var PS = {};
       return $38($39($40));
     };
   };
-
   exports["effectEventSource"] = effectEventSource;
   exports["emit"] = emit;
   exports["finalize"] = finalize;
   exports["monoidFinalizer"] = monoidFinalizer;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -28394,15 +23556,17 @@ var PS = {};
         input.value = value;
       };
     };
-  }; // ----------------------------------------------------------------------------
+  };
 
+  // ----------------------------------------------------------------------------
 
   exports.select = function (input) {
     return function () {
       input.select();
     };
-  }; // ----------------------------------------------------------------------------
+  };
 
+  // ----------------------------------------------------------------------------
 
   exports.setSelectionRange = function (start) {
     return function (end) {
@@ -28416,40 +23580,31 @@ var PS = {};
     };
   };
 })(PS["Web.HTML.HTMLInputElement"] = PS["Web.HTML.HTMLInputElement"] || {});
-
 (function (exports) {
   "use strict";
 
   exports._unsafeReadProtoTagged = function (nothing, just, name, value) {
     if (typeof window !== "undefined") {
       var ty = window[name];
-
       if (ty != null && value instanceof ty) {
         return just(value);
       }
-
       return nothing;
     }
-
     var obj = value;
-
     while (obj != null) {
       var proto = Object.getPrototypeOf(obj);
       var constructorName = proto.constructor.name;
-
       if (constructorName === name) {
         return just(value);
       } else if (constructorName === "Object") {
         return nothing;
       }
-
       obj = proto;
     }
-
     return nothing;
   };
 })(PS["Web.Internal.FFI"] = PS["Web.Internal.FFI"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28458,16 +23613,13 @@ var PS = {};
   var exports = $PS["Web.Internal.FFI"];
   var $foreign = $PS["Web.Internal.FFI"];
   var Data_Maybe = $PS["Data.Maybe"];
-
   var unsafeReadProtoTagged = function unsafeReadProtoTagged(name) {
     return function (value) {
       return $foreign["_unsafeReadProtoTagged"](Data_Maybe.Nothing.value, Data_Maybe.Just.create, name, value);
     };
   };
-
   exports["unsafeReadProtoTagged"] = unsafeReadProtoTagged;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28482,7 +23634,6 @@ var PS = {};
   exports["select"] = $foreign.select;
   exports["setSelectionRange"] = $foreign.setSelectionRange;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28512,88 +23663,66 @@ var PS = {};
   var Halogen_Query_HalogenM = $PS["Halogen.Query.HalogenM"];
   var Halogen_Util = $PS["Halogen.Util"];
   var Web_HTML_HTMLInputElement = $PS["Web.HTML.HTMLInputElement"];
-
   var SetOptions = function () {
     function SetOptions(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     SetOptions.create = function (value0) {
       return function (value1) {
         return new SetOptions(value0, value1);
       };
     };
-
     return SetOptions;
   }();
-
   var Selected = function () {
     function Selected(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Selected.create = function (value0) {
       return new Selected(value0);
     };
-
     return Selected;
   }();
-
   var Initialize = function () {
     function Initialize() {}
-
     ;
     Initialize.value = new Initialize();
     return Initialize;
   }();
-
   var Register = function () {
     function Register(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Register.create = function (value0) {
       return new Register(value0);
     };
-
     return Register;
   }();
-
   var Feedback = function () {
     function Feedback(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Feedback.create = function (value0) {
       return new Feedback(value0);
     };
-
     return Feedback;
   }();
-
   var handleQuery = function handleQuery(dictMonadEffect) {
     return function (v) {
       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.state(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
         return new Data_Tuple.Tuple(st.autocomplete, function () {
           var $10 = {};
-
           for (var $11 in st) {
             if ({}.hasOwnProperty.call(st, $11)) {
               $10[$11] = st[$11];
             }
-
             ;
           }
-
           ;
           $10.options = v.value0;
           return $10;
@@ -28605,9 +23734,7 @@ var PS = {};
       });
     };
   };
-
   var acRef = "ac-ref";
-
   var handleAction = function handleAction(dictMonadAff) {
     return function (ident) {
       return function (placeholder) {
@@ -28630,29 +23757,22 @@ var PS = {};
               })));
             });
           }
-
           ;
-
           if (v instanceof Register) {
             return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
               var $16 = {};
-
               for (var $17 in v1) {
                 if ({}.hasOwnProperty.call(v1, $17)) {
                   $16[$17] = v1[$17];
                 }
-
                 ;
               }
-
               ;
               $16.autocomplete = new Data_Maybe.Just(v.value0);
               return $16;
             });
           }
-
           ;
-
           if (v instanceof Feedback) {
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Control_Monad_Maybe_Trans.runMaybeT(Control_Bind.bind(Control_Monad_Maybe_Trans.bindMaybeT(Halogen_Query_HalogenM.monadHalogenM))(Control_Monad_Maybe_Trans.MaybeT(Halogen_Query.getHTMLElementRef(acRef)))(function (e) {
               return Control_Bind.bind(Control_Monad_Maybe_Trans.bindMaybeT(Halogen_Query_HalogenM.monadHalogenM))(Data_Maybe.maybe(Control_Plus.empty(Control_Monad_Maybe_Trans.plusMaybeT(Halogen_Query_HalogenM.monadHalogenM)))(Control_Applicative.pure(Control_Monad_Maybe_Trans.applicativeMaybeT(Halogen_Query_HalogenM.monadHalogenM)))(Web_HTML_HTMLInputElement.fromHTMLElement(e)))(function (ie) {
@@ -28662,14 +23782,12 @@ var PS = {};
               return Halogen_Query_HalogenM.raise(new Selected(v.value0));
             });
           }
-
           ;
           throw new Error("Failed pattern match at Halogen.Autocomplete (line 86, column 34 - line 103, column 30): " + [v.constructor.name]);
         };
       };
     };
   };
-
   var render = function render(ident) {
     return function (place) {
       return function (st) {
@@ -28677,7 +23795,6 @@ var PS = {};
       };
     };
   };
-
   var component = function component(dictMonadAff) {
     return function (ident) {
       return function (place) {
@@ -28700,13 +23817,12 @@ var PS = {};
       };
     };
   };
-
   exports["SetOptions"] = SetOptions;
   exports["component"] = component;
 })(PS);
-
 (function (exports) {
   // module Halogen.Component.RawHTML
+
   exports.setHTML = function (el) {
     return function (html) {
       return function () {
@@ -28715,7 +23831,6 @@ var PS = {};
     };
   };
 })(PS["Halogen.Component.RawHTML"] = PS["Halogen.Component.RawHTML"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -28734,40 +23849,32 @@ var PS = {};
   var Halogen_HTML_Properties = $PS["Halogen.HTML.Properties"];
   var Halogen_Query = $PS["Halogen.Query"];
   var Halogen_Query_HalogenM = $PS["Halogen.Query.HalogenM"];
-
   var Initialize = function () {
     function Initialize() {}
-
     ;
     Initialize.value = new Initialize();
     return Initialize;
   }();
-
   var component = function component(dictMonadEffect) {
     var render = function render(state) {
       return Halogen_HTML_Elements.div([Halogen_HTML_Properties.ref(state.elRef)])([]);
     };
-
     var initialState = function initialState(v) {
       return {
         html: v.html,
         elRef: v.elRef
       };
     };
-
     var handleAction = function handleAction(v) {
       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (state) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.getHTMLElementRef(state.elRef))(function (v1) {
           if (v1 instanceof Data_Maybe.Nothing) {
             return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
           }
-
           ;
-
           if (v1 instanceof Data_Maybe.Just) {
             return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))($foreign.setHTML(v1.value0)(state.html));
           }
-
           ;
           throw new Error("Failed pattern match at Halogen.Component.RawHTML (line 52, column 56 - line 55, column 45): " + [v1.constructor.name]);
         }))(function () {
@@ -28775,7 +23882,6 @@ var PS = {};
         });
       });
     };
-
     return Halogen_Component.mkComponent({
       initialState: initialState,
       render: render,
@@ -28788,29 +23894,24 @@ var PS = {};
       })
     });
   };
-
   exports["component"] = component;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   var msPerDay = 24 * 60 * 60 * 1000;
   var mjdShift = 40586;
-
   var fromMJD = function fromMJD(mjd) {
     return new Date((mjd - mjdShift) * msPerDay);
   };
-
   var fitcolors = ["#428bca", "#5cb85c", "#5bc0de", "#f0ad4e", "#d9534f"];
-
   var last = function last(xs) {
     return xs[xs.length - 1];
   };
-
   exports._mkSvg = function (elem, dim) {
     return function () {
-      var svg = d3.select(elem).append("svg") // .classed("svg-content-responsive",true)
+      var svg = d3.select(elem).append("svg")
+      // .classed("svg-content-responsive",true)
       // .attr("viewBox", [0,0,1000, 600])
       .attr("viewBox", [0, 0, dim.width, dim.height]).style("overflow", "visible");
       return {
@@ -28819,13 +23920,11 @@ var PS = {};
       };
     };
   };
-
   exports.clearSvg = function (svg) {
     return function () {
       svg.selectAll("*").remove();
     };
   };
-
   var timedSeries = function timedSeries(series) {
     return function (t, keeplast) {
       return series.map(function (s) {
@@ -28841,8 +23940,8 @@ var PS = {};
       });
     };
   };
-
-  var r2format = d3.format(".3f"); // { axis: {x,y,z,t : { scale : Scale, label : String} }
+  var r2format = d3.format(".3f");
+  // { axis: {x,y,z,t : { scale : Scale, label : String} }
   // , series : [{ name : String, values: [SeriesData]}]
   // }
   // type SeriesData a b c d =
@@ -28864,11 +23963,11 @@ var PS = {};
   //     , info :: O.Object ModelRes
   //     , values :: Array (Point2D a b)
   //     }
-
   exports._drawData = function (handleType, handleScale, handleModelFit, typeX, typeY, typeZ, typeT, svgdat, scatter) {
     var svg = svgdat.svg;
     var width = svgdat.dimensions.width;
-    var height = svgdat.dimensions.height; // const width = 1000;
+    var height = svgdat.dimensions.height;
+    // const width = 1000;
     // const height = 600;
 
     var scaleFunc = function scaleFunc(scale) {
@@ -28889,9 +23988,9 @@ var PS = {};
         }
       });
     };
-
     var fmt = function fmt(tp) {
-      return handleType(tp)( // { day:     (() => val => val.toLocaleDateString(undefined, {month:"numeric",day:"numeric"}))
+      return handleType(tp)(
+      // { day:     (() => val => val.toLocaleDateString(undefined, {month:"numeric",day:"numeric"}))
       {
         day: function day() {
           return d3.timeFormat("%b %d");
@@ -28912,12 +24011,10 @@ var PS = {};
         }
       });
     };
-
     var fmtX = fmt(typeX);
     var fmtY = fmt(typeY);
     var fmtZ = fmt(typeZ);
     var fmtT = fmt(typeT);
-
     var axisTicker = function axisTicker(tp) {
       return handleType(tp)({
         day: function day() {
@@ -28947,21 +24044,20 @@ var PS = {};
         }
       });
     };
-
     var axisTickerX = axisTicker(typeX);
     var axisTickerY = axisTicker(typeY);
     var axisTickerZ = axisTicker(typeZ);
-    var axisTickerT = axisTicker(typeT); // const fmtSomeVal = sv => sv(tp => x => fmt(tp)(x));
-
+    var axisTickerT = axisTicker(typeT);
+    // const fmtSomeVal = sv => sv(tp => x => fmt(tp)(x));
     var fmtSomeVal = function fmtSomeVal(sv) {
       return sv(function (tp) {
         return function (x) {
           return fmt(tp)(convert(tp)(x));
         };
       });
-    }; // newtype DSum tag f = DSum
+    };
+    // newtype DSum tag f = DSum
     //   (forall r. (forall a. tag a -> f a -> r) -> r)
-
 
     var validVal = function validVal(scale) {
       return function (val) {
@@ -28983,12 +24079,10 @@ var PS = {};
         });
       };
     };
-
     var validX = validVal(scatter.axis.x.scale);
     var validY = validVal(scatter.axis.y.scale);
     var validZ = validVal(scatter.axis.z.scale);
     var validT = validVal(scatter.axis.t.scale);
-
     var zeroScale = function zeroScale(scale) {
       return handleScale(scale)({
         date: function date() {
@@ -29007,15 +24101,12 @@ var PS = {};
         }
       });
     };
-
     var validPair = function validPair(p) {
       return validX(p.x) && validY(p.y) && validZ(p.z) && validT(p.t);
     };
-
     var validPair2 = function validPair2(p) {
       return validX(p.x) && validY(p.y);
     };
-
     var convert = function convert(tp) {
       return function (val) {
         return handleType(tp)({
@@ -29037,7 +24128,6 @@ var PS = {};
         });
       };
     };
-
     var convertX = convert(typeX);
     var convertY = convert(typeY);
     var convertZ = convert(typeZ);
@@ -29059,7 +24149,6 @@ var PS = {};
         return false;
       }
     });
-
     var modelFitColor = function modelFitColor(fit) {
       return handleModelFit(fit)({
         linFit: function linFit() {
@@ -29079,7 +24168,6 @@ var PS = {};
         }
       });
     };
-
     var modelFitLabel = function modelFitLabel(fit) {
       return handleModelFit(fit)({
         linFit: function linFit() {
@@ -29099,7 +24187,6 @@ var PS = {};
         }
       });
     };
-
     var decorateSeries = function decorateSeries(ss) {
       return ss.map(function (s) {
         var vals = s.values.map(function (p) {
@@ -29114,14 +24201,11 @@ var PS = {};
         var segments = d3.pairs(vals);
         var missingDots = [];
         var validSegments = [];
-
         var _iterator7 = _createForOfIteratorHelper(segments),
-            _step7;
-
+          _step7;
         try {
           for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
             var seg = _step7.value;
-
             // console.log(seg);
             if (seg[0].valid) {
               if (seg[1].valid) {
@@ -29140,7 +24224,6 @@ var PS = {};
         } finally {
           _iterator7.f();
         }
-
         return {
           name: s.name,
           values: vals.filter(function (d) {
@@ -29151,7 +24234,6 @@ var PS = {};
         };
       });
     };
-
     return function () {
       exports.clearSvg(svg)();
       console.log(scatter);
@@ -29179,9 +24261,10 @@ var PS = {};
             })
           };
         });
-      }); // console.log(fits);
-
-      var sliceSeries = timedSeries(series); // console.log(series);
+      });
+      // console.log(fits);
+      var sliceSeries = timedSeries(series);
+      // console.log(series);
 
       var allx = series.flatMap(function (s) {
         return s.values.map(function (p) {
@@ -29194,7 +24277,6 @@ var PS = {};
           return p.x;
         });
       })); // include model fits
-
       var ally = series.flatMap(function (s) {
         return s.values.map(function (p) {
           return p.y;
@@ -29206,7 +24288,6 @@ var PS = {};
           return p.y;
         });
       })); // include model fits
-
       var allz = series.flatMap(function (s) {
         return s.values.map(function (p) {
           return p.z;
@@ -29221,7 +24302,6 @@ var PS = {};
       var extenty = d3.extent(ally.concat(zeroScale(scatter.axis.y.scale)));
       var extentz = d3.extent(allz.concat(zeroScale(scatter.axis.z.scale)));
       var extentt = d3.extent(allt.concat(zeroScale(scatter.axis.t.scale)));
-
       if (allx.length == 0) {
         svg.append("text").attr("text-anchor", "middle").attr("x", width / 2).attr("y", height / 2).attr("fill", "#666").attr("font-size", 32).text("No data available to plot for this set of projections or regions :(");
         return {
@@ -29236,19 +24316,19 @@ var PS = {};
           }
         };
       }
-
       var svgDefs = svg.append('defs');
       var endlabelGradient = svgDefs.append('linearGradient').attr('id', 'endlabelGradient');
       endlabelGradient.append('stop').attr('offset', "0%").attr('style', "stop-color:#fff; stop-opacity: 0.5");
       endlabelGradient.append('stop').attr('offset', "50%").attr('style', "stop-color:#fff; stop-opacity: 0.5");
-      endlabelGradient.append('stop').attr('offset', "100%").attr('style', "stop-color:#fff; stop-opacity: 0.0"); // this converts to and form the different coordinate systems
+      endlabelGradient.append('stop').attr('offset', "100%").attr('style', "stop-color:#fff; stop-opacity: 0.0");
 
+      // this converts to and form the different coordinate systems
       var x = scaleFunc(scatter.axis.x.scale).domain(extentx).nice().range([margin.left, width - margin.right]);
-      var y = scaleFunc(scatter.axis.y.scale).domain(extenty).nice().range([height - margin.bottom, margin.top]); // color
-
+      var y = scaleFunc(scatter.axis.y.scale).domain(extenty).nice().range([height - margin.bottom, margin.top]);
+      // color
       var z = scaleFunc(scatter.axis.z.scale).domain(extentz) // not nice
-      .range([d3.interpolateOranges(0.75), d3.interpolateBlues(0.75)]).interpolate(d3.interpolateCubehelix.gamma(3)); // legend
-
+      .range([d3.interpolateOranges(0.75), d3.interpolateBlues(0.75)]).interpolate(d3.interpolateCubehelix.gamma(3));
+      // legend
       var legdim = {
         left: 12,
         top: 55,
@@ -29256,9 +24336,10 @@ var PS = {};
       };
       var z_ = scaleFunc(scatter.axis.z.scale).domain(extentz).range([0, legdim.width]);
       var t = scaleFunc(scatter.axis.t.scale).domain(extentt) // not nice
-      .range([margin.left, width - margin.right]); // makes axes lines. i think this converts coordinates into svg points
-      // or something???
+      .range([margin.left, width - margin.right]);
 
+      // makes axes lines. i think this converts coordinates into svg points
+      // or something???
       var line = d3.line().x(function (d) {
         return x(d.x);
       }).y(function (d) {
@@ -29268,17 +24349,18 @@ var PS = {};
         return x(d.x);
       }).y(function (d) {
         return y(d.y);
-      }); // makes axes lines
+      });
 
+      // makes axes lines
       var xAxis = function xAxis(g) {
         g.attr("transform", "translate(0,".concat(height - margin.bottom, ")")).call(axisTickerX(d3.axisBottom(x))).call(function (g) {
-          return g.append("text").attr("x", width - margin.right - 4).attr("y", -5).attr("fill", "#666").attr("text-anchor", "end") // .attr("font-weight", "bold")
+          return g.append("text").attr("x", width - margin.right - 4).attr("y", -5).attr("fill", "#666").attr("text-anchor", "end")
+          // .attr("font-weight", "bold")
           .attr("font-size", 20).text(scatter.axis.x.label);
         }).call(function (g) {
           return g.selectAll(".tick line").clone().attr("stroke-opacity", 0.1).attr("y1", -height + margin.top + margin.bottom);
         });
       };
-
       var yAxis = function yAxis(g) {
         g.attr("transform", "translate(".concat(margin.left, ",0)")).call(axisTickerY(d3.axisLeft(y))).call(function (g) {
           return g.selectAll(".tick line").clone().attr("stroke-opacity", 0.1).attr("x2", width - margin.left - margin.right);
@@ -29286,14 +24368,13 @@ var PS = {};
           return g.select(".tick:last-of-type text").clone().attr("x", 8).attr("y", 12).attr("text-anchor", "start").attr("font-size", 20).attr("fill", "#666").text(scatter.axis.y.label);
         });
       };
-
       var zLegend = function zLegend(g) {
         var segs = d3.pairs(d3.range(33).map(function (x) {
           // between 0 and width
           var xx = x / 32 * legdim.width;
           var xm = z_.invert(xx);
-          var xcolor = z(xm); // console.log({ xx: xx, xcolor: xcolor });
-
+          var xcolor = z(xm);
+          // console.log({ xx: xx, xcolor: xcolor });
           return {
             xx: xx,
             xcolor: xcolor
@@ -29311,13 +24392,11 @@ var PS = {};
           return g.append("text").attr("x", 0).attr("y", -12.5).attr("text-anchor", "start").attr("font-weight", "bold").attr("font-size", 12).attr("fill", "currentColor").text(scatter.axis.z.label);
         });
       };
-
       var tAxis = function tAxis(g) {
         var sliderino = d3.sliderBottom(t).tickFormat(fmtT).displayFormat(fmtT);
         g.attr("transform", "translate(0,".concat(height - margin.slider, ")")).call(sliderino).append("text").attr("x", margin.left - 5).attr("y", -10).attr("fill", "currentColor").attr("font-weight", "bold").attr("font-size", 12).text(scatter.axis.t.label);
         return sliderino;
       };
-
       var highlight = function highlight(datalines) {
         return function (name) {
           datalines.selectAll("path").attr("stroke-width", function (d) {
@@ -29328,15 +24407,14 @@ var PS = {};
           });
         };
       };
-
       var unhighlight = function unhighlight(datalines) {
         return function () {
           datalines.selectAll("path").attr("stroke-width", 2);
           datalines.selectAll("circle").attr("r", 2.1);
         };
-      }; // quadtree points for fits
+      };
 
-
+      // quadtree points for fits
       var quadFitsPoints = fits.flatMap(function (s) {
         return s.values.map(function (p) {
           return {
@@ -29347,8 +24425,9 @@ var PS = {};
             info: s.info
           };
         });
-      }); // make quadtree points for non-model points
+      });
 
+      // make quadtree points for non-model points
       var mkQuadPoints = function mkQuadPoints(ss) {
         return ss.flatMap(function (s) {
           return s.values.map(function (p) {
@@ -29362,31 +24441,27 @@ var PS = {};
           });
         });
       };
-
-      var currQuadPoints = mkQuadPoints(series); // quadtree to look up nearest point. note z is not encoded
-
+      var currQuadPoints = mkQuadPoints(series);
+      // quadtree to look up nearest point. note z is not encoded
       var quadtree = d3.quadtree().x(function (d) {
         return d.x;
       }).y(function (d) {
         return d.y;
-      }) // .extent([x(extentx[0]),y(extenty[0])], [x(extentx[1]),y(extenty[1])])
+      })
+      // .extent([x(extentx[0]),y(extenty[0])], [x(extentx[1]),y(extenty[1])])
       .addAll(quadFitsPoints).addAll(currQuadPoints);
-
       var requad = function requad(t_) {
         quadtree.removeAll(currQuadPoints);
         currQuadPoints = mkQuadPoints(sliceSeries(t_, t_ == extentt[1]));
         quadtree.addAll(currQuadPoints);
       };
-
       var hover = function hover(svg, highlight, unhighlight) {
         if ("ontouchstart" in document) svg.style("-webkit-tap-highlight-color", "transparent").on("touchmove", moved).on("touchstart", entered).on("touchend", left);else svg.on("mousemove", moved).on("mouseenter", entered).on("mouseleave", left);
         var crosshair = svg.append("g").attr("display", "none");
         var ch_center = crosshair.append("circle").attr("stroke", "steelblue").attr("stroke-width", 2);
-
         var mkLabel = function mkLabel(g, anchor, fsize, x, y) {
           return g.append("text").attr("font-family", "sans-serif").attr("font-size", fsize).attr("text-anchor", anchor).attr("x", x).attr("y", y);
         };
-
         var syncDots = crosshair.append("g");
         var tooltip = crosshair.append("g").style("opacity", 0.85).attr("display", "none");
         tooltip.append("rect").attr("width", 100).attr("height", 50).attr("x", -110).attr("y", -60).style("fill", "#fff").style("stroke", "#666").style("stroke-width", "1px");
@@ -29400,11 +24475,9 @@ var PS = {};
         var horizline = crosshair.append("line").style("stroke-width", 0.5).style("stroke-dasharray", "4 4").style("stroke", "#777").style("fill", "none");
         var colorline = crosshair.append("line").style("stroke-width", 8).style("stroke", "#fff").style("fill", "none").attr("y1", -5.5).attr("y2", 5.5);
         var colorcenter = crosshair.append("line").style("stroke-width", 2).attr("fill", "none").attr("y1", -7).attr("y2", 7);
-
         function moved() {
           d3.event.preventDefault();
           var mouse0 = d3.mouse(this);
-
           if (mouse0[1] > height - margin.bottom) {
             left();
             return;
@@ -29412,11 +24485,10 @@ var PS = {};
             entered();
             tooltip.attr("display", null);
           }
-
           var mouse = [Math.max(margin.left, Math.min(width - margin.right, mouse0[0])), Math.max(margin.top, Math.min(height - margin.bottom, mouse0[1]))];
           var closest = quadtree.find(mouse[0], mouse[1], 67);
-          var foundPoint = !(closest === undefined); // i wish i had ADTs lol
-
+          var foundPoint = !(closest === undefined);
+          // i wish i had ADTs lol
           var closestType = foundPoint ? closest.fit ? "fit" : "point" : null;
           var xc = foundPoint ? closest.x : mouse[0];
           var yc = foundPoint ? closest.y : mouse[1];
@@ -29429,13 +24501,11 @@ var PS = {};
           var showx = fmtX(xm);
           var showy = fmtY(ym);
           toplabel.text(showx + ", " + showy);
-
           if (foundPoint) {
             highlight(closest.name);
             bottomlabel.text(closest.name);
             toplabel.attr("font-size", 10).attr("y", -28);
             modeltip.attr("display", "none");
-
             if (closestType == "point") {
               ch_center.attr("fill", z(closest.z)).on("click", null).on("click", function () {
                 moveSetSlider(closest.t);
@@ -29455,15 +24525,14 @@ var PS = {};
                 var cutoff = d3.bisector(function (p) {
                   return p.t;
                 }).right(s.values, closest.t);
-                var foundval = s.values[Math.min(cutoff - 1, s.values.length - 1)]; // console.log(foundval.t, closest.t, foundval.t === closest.t);
-
+                var foundval = s.values[Math.min(cutoff - 1, s.values.length - 1)];
+                // console.log(foundval.t, closest.t, foundval.t === closest.t);
                 if (cutoff == 0 || s.name == closest.name || !(fmtT(foundval.t) === fmtT(closest.t))) {
                   return [];
                 } else {
                   return [foundval];
                 }
               });
-
               if (validTimeScale) {
                 syncDots.append("g").selectAll("circle").data(syncDotData).join("circle").attr("r", 3).attr("stroke", function (d) {
                   return z(d.z);
@@ -29479,40 +24548,35 @@ var PS = {};
               colorcenter.attr("display", "none");
               var r2sum = 0;
               var r2count = 0;
-
               for (var infoname in closest.info) {
                 var infor2 = closest.info[infoname].r2;
                 r2sum += infor2 * infor2;
                 r2count += 1;
               }
-
               var r2str = r2format(Math.sqrt(r2sum / r2count));
-              footlabel.text(modelFitLabel(closest.fit) + " (r²=" + r2str + ")"); // generate modeltip
+              footlabel.text(modelFitLabel(closest.fit) + " (r²=" + r2str + ")");
 
+              // generate modeltip
               modeltip.selectAll("text").remove();
               var modellinex = margin.left + 10 + 5;
               var modelliney = margin.top + legdim.top + 35 + 5;
               modeltip.append("text").text(modelFitLabel(closest.fit) + " Fit").attr("font-size", 12).attr("font-weight", "bold").attr("x", modellinex).attr("y", modelliney);
               modeltip.append("text").text(closest.name).attr("font-size", 12).attr("x", modellinex).attr("y", modelliney + 13);
               var curry = modelliney + 30;
-
               for (var _infoname in closest.info) {
                 var info = closest.info[_infoname];
                 modeltip.append("text").text(_infoname).attr("font-size", 10).attr("font-weight", "bold").attr("x", modellinex).attr("y", curry);
                 curry += 12;
                 modeltip.append("text").text("r² = " + r2format(info.r2)).attr("font-size", 10).attr("font-style", "italic").attr("x", modellinex).attr("y", curry);
                 curry += 12;
-
                 for (var paramname in info.params) {
                   var param = info.params[paramname];
                   modeltip.append("text").text(paramname + ": " + fmtSomeVal(param)).attr("font-size", 10).attr("x", modellinex).attr("y", curry);
                   curry += 12;
                 }
-
                 curry += 4;
-              } // console.log(curry);
-
-
+              }
+              // console.log(curry);
               modeltip.selectAll("rect").attr("height", curry + 10 - 4 - modelliney);
             }
           } else {
@@ -29527,18 +24591,15 @@ var PS = {};
             footlabel.text("");
           }
         }
-
         function entered() {
           crosshair.attr("display", null);
         }
-
         function left() {
           unhighlight();
           crosshair.attr("display", "none");
           modeltip.attr("display", "none");
         }
       };
-
       var flatSegments = function flatSegments(ss) {
         return ss.flatMap(function (s) {
           return s.segments.map(function (p) {
@@ -29549,7 +24610,6 @@ var PS = {};
           });
         });
       };
-
       var flatDots = function flatDots(ss) {
         return ss.flatMap(function (s) {
           return s.missingDots.map(function (p) {
@@ -29559,8 +24619,8 @@ var PS = {};
             };
           });
         });
-      }; // const mkTimed = timedSeries(series);
-
+      };
+      // const mkTimed = timedSeries(series);
 
       var mainplot = svg.append("g");
       mainplot.attr("id", "mainplot");
@@ -29568,18 +24628,21 @@ var PS = {};
       mainplot.append("g").call(yAxis);
       mainplot.append("g").call(zLegend);
       var subplot = mainplot.append("g");
-      var endDots = mainplot.append("g"); // model lines
+      var endDots = mainplot.append("g");
 
-      subplot.append("g").selectAll("path").data(fits).join("path").attr("fill", "none").attr("stroke-width", 1.5).attr("stroke-dasharray", [8, 6]) // .attr("stroke","#595")
+      // model lines
+      subplot.append("g").selectAll("path").data(fits).join("path").attr("fill", "none").attr("stroke-width", 1.5).attr("stroke-dasharray", [8, 6])
+      // .attr("stroke","#595")
       .attr("stroke", function (d) {
         return modelFitColor(d.fit);
       }).attr("d", function (d) {
         return line2(d.values);
-      }); // yo this is it
+      });
+
+      // yo this is it
       //
       // i tried using lines here instead of a path but it was slower for
       // some reason, who knew
-
       var datalines = subplot.append("g");
       datalines.selectAll("g").data(flatSegments(series)).join("g").append("path").attr("fill", "none").attr("stroke-width", 2).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").attr("stroke", function (d) {
         return z(d.pair[1].z);
@@ -29596,7 +24659,6 @@ var PS = {};
         return t(d.point.t) * 0.33;
       }).duration(333).attr("opacity", 1);
       svg.call(hover, highlight(datalines), unhighlight(datalines));
-
       var setTime = function setTime(subplot, t_) {
         if (validTimeScale) {
           subplot.selectAll("path").attr("display", function (d) {
@@ -29616,14 +24678,12 @@ var PS = {};
             return d.point.t < t_ ? null : "none";
           });
         }
-
         endDots.selectAll("*").remove();
         var dotData = series.flatMap(function (s) {
           if (validTimeScale) {
             var cutoff = d3.bisector(function (p) {
               return p.t;
             }).right(s.values, t_);
-
             if (cutoff == 0) {
               return [];
             } else if (cutoff >= s.values.length) {
@@ -29638,7 +24698,6 @@ var PS = {};
               }).right(s.missingDots, t_);
               var there = s.values[cutoff];
               var freeze = s.missingDots[lastMissing - 1] && s.missingDots[lastMissing] && fmtT(s.missingDots[lastMissing - 1].t) === fmtT(here.t) && fmtT(s.missingDots[lastMissing].t) === fmtT(there.t);
-
               if (freeze) {
                 return [{
                   name: s.name,
@@ -29683,40 +24742,38 @@ var PS = {};
         }).style('pointer-events', 'none');
         requad(t_);
       };
-
       var subslider = svg.append("g");
-      var sliderino = tAxis(subslider.append("g")) // .on('onchange', v => setTime(subplot,v))
+      var sliderino = tAxis(subslider.append("g"))
+      // .on('onchange', v => setTime(subplot,v))
       .on('onchange', _.throttle(function (v) {
         return setTime(datalines, v);
-      }, 50)); // .on('end',v => requad(v));
+      }, 50));
+      // .on('end',v => requad(v));
 
       var button = svg.append("g").attr("transform", "translate(0,".concat(height - margin.slider - 15, ")")).style("cursor", validTimeScale ? "pointer" : "not-allowed").style('pointer-events', 'all');
-
-      var drawButton = function drawButton(g, isPlaying, callback) {
+      var drawButton = function drawButton(g, isPlaying, callback, velocity) {
         g.selectAll("*").remove();
         g.on("click", null).on("click", callback);
-        g.append("rect").attr("width", 30).attr("height", 30).attr("rx", 3).style("fill", validTimeScale ? d3.schemeDark2[1] : "#999").append("title").text(isPlaying ? "Pause" : "Play");
-
-        if (isPlaying) {
+        g.append("rect").attr("width", 30).attr("height", 30).attr("rx", 3).style("fill", validTimeScale ? d3.schemeDark2[1] : "#999").append("title").text(isPlaying && velocity == 2 ? "Pause" : velocity == 1 ? "Play faster" : "Play");
+        if (isPlaying && velocity == 2) {
           g.append("rect").attr("width", 6).attr("height", 18).attr("x", 6).attr("y", 6).attr("rx", 1).style("fill", "white").append("title").text("Pause");
           g.append("rect").attr("width", 6).attr("height", 18).attr("x", 18).attr("y", 6).attr("rx", 1).style("fill", "white").append("title").text("Pause");
+        } else if (velocity == 1) {
+          g.append("path").attr("d", "M9 6 L9 24 L21 15 Z M15 6 L15 24 L27 15 Z").style("fill", "white").append("title").text("Play faster");
         } else {
           g.append("path").attr("d", "M9 6 L9 24 L21 15 Z").style("fill", "white").append("title").text("Play");
         }
       };
-
       var moveSetSlider = function moveSetSlider(t) {
         sliderino.value(t);
         setTime(datalines, t);
         resting = t == extentt[1];
       };
-
       var timer = null;
       var resting = true;
-
       var playdata = function () {
         var playtime = 15000;
-        var delay = 50;
+        var delay = 200;
         var numSteps = playtime / delay;
         var minT = t(extentt[0]);
         var maxT = t(extentt[1]);
@@ -29729,23 +24786,25 @@ var PS = {};
           stepAmt: stepAmt
         };
       }();
-
       var play_start = function play_start() {
-        button.call(drawButton, true, play_stop);
+        button.call(drawButton, true, play_faster, 1);
         timer = setInterval(play_tick, playdata.delay);
       };
-
+      var play_faster = function play_faster() {
+        button.call(drawButton, true, play_stop, 2);
+        clearInterval(timer);
+        timer = null;
+        timer = setInterval(play_tick, playdata.delay / 2);
+      };
       var play_stop = function play_stop() {
-        button.call(drawButton, false, play_start);
+        button.call(drawButton, false, play_start, 0);
         clearInterval(timer);
         timer = null;
       };
-
       var play_tick = function play_tick() {
         var currval = t(sliderino.value());
         var nextval = currval + playdata.stepAmt;
         var hitTheEnd = nextval > playdata.maxT;
-
         if (hitTheEnd) {
           if (resting) {
             moveSetSlider(extentt[0]);
@@ -29757,23 +24816,21 @@ var PS = {};
         } else {
           moveSetSlider(t.invert(nextval));
         }
-      }; // window.sliderino = sliderino;
+      };
+
+      // window.sliderino = sliderino;
       // window.tt = t;
 
-
-      button.call(drawButton, false, play_start);
+      button.call(drawButton, false, play_start, 0);
       moveSetSlider(extentt[1]);
-
       if (!validTimeScale) {
         subslider.attr("display", "none");
         svg.append("text").attr("fill", "none").attr("x", margin.left - 5).attr("y", height - margin.slider + 5).attr("fill", "currentColor").attr("font-style", "italic").attr("font-size", 14).text("(Time controls disabled for non-time axis)");
       }
-
       var saveFile = function saveFile(fname) {
         saveSvgAsPng(mainplot._groups[0][0], fname);
         return true;
       };
-
       window.subplot = subplot;
       return {
         highlight: highlight(datalines),
@@ -29782,9 +24839,9 @@ var PS = {};
         saveFile: saveFile
       };
     };
-  }; // takes a (maybe string)
+  };
 
-
+  // takes a (maybe string)
   exports._highlight = function (handleMaybe, interactors, name) {
     return function () {
       handleMaybe(name)({
@@ -29796,16 +24853,15 @@ var PS = {};
         }
       });
     };
-  }; // takes a filename
+  };
 
-
+  // takes a filename
   exports._saveFile = function (interactors, fn) {
     return function () {
       return interactors.saveFile(fn);
     };
   };
 })(PS["D3.Scatter"] = PS["D3.Scatter"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -29826,7 +24882,6 @@ var PS = {};
   exports["saveAsPng"] = saveAsPng;
   exports["clearSvg"] = $foreign.clearSvg;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -29847,107 +24902,81 @@ var PS = {};
   var Halogen_HTML_Elements = $PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = $PS["Halogen.HTML.Properties"];
   var Halogen_Query_HalogenM = $PS["Halogen.Query.HalogenM"];
-
   var Update = function () {
     function Update(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Update.create = function (value0) {
       return function (value1) {
         return new Update(value0, value1);
       };
     };
-
     return Update;
   }();
-
   var Highlight = function () {
     function Highlight(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Highlight.create = function (value0) {
       return function (value1) {
         return new Highlight(value0, value1);
       };
     };
-
     return Highlight;
   }();
-
   var Unhighlight = function () {
     function Unhighlight(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Unhighlight.create = function (value0) {
       return new Unhighlight(value0);
     };
-
     return Unhighlight;
   }();
-
   var Export = function () {
     function Export(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     Export.create = function (value0) {
       return function (value1) {
         return new Export(value0, value1);
       };
     };
-
     return Export;
   }();
-
   var Initialize = function () {
     function Initialize(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Initialize.create = function (value0) {
       return new Initialize(value0);
     };
-
     return Initialize;
   }();
-
   var Finalize = function () {
     function Finalize() {}
-
     ;
     Finalize.value = new Finalize();
     return Finalize;
   }();
-
   var scatterRef = "scatter-plot";
-
   var renderH = function renderH(v) {
     return Halogen_HTML_Elements.div([Halogen_HTML_Properties.ref(scatterRef)])([]);
   };
-
   var initialState = function initialState(v) {
     return {
       chart: Data_Maybe.Nothing.value,
       interactor: Data_Maybe.Nothing.value
     };
   };
-
   var handleQuery = function handleQuery(dictMonadEffect) {
     return function (v) {
       if (v instanceof Update) {
@@ -29956,9 +24985,7 @@ var PS = {};
             if (s.chart instanceof Data_Maybe.Nothing) {
               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
             }
-
             ;
-
             if (s.chart instanceof Data_Maybe.Just) {
               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))(v.value0(function (a) {
                 return function (b) {
@@ -29971,22 +24998,18 @@ var PS = {};
               })))(function (ixor) {
                 return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
                   var $12 = {};
-
                   for (var $13 in v1) {
                     if ({}.hasOwnProperty.call(v1, $13)) {
                       $12[$13] = v1[$13];
                     }
-
                     ;
                   }
-
                   ;
                   $12.interactor = new Data_Maybe.Just(ixor);
                   return $12;
                 });
               });
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.Scatter (line 87, column 7 - line 91, column 51): " + [s.chart.constructor.name]);
           }())(function () {
@@ -29994,22 +25017,17 @@ var PS = {};
           });
         });
       }
-
       ;
-
       if (v instanceof Highlight) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (s) {
           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))(function () {
             if (s.interactor instanceof Data_Maybe.Nothing) {
               return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
             }
-
             ;
-
             if (s.interactor instanceof Data_Maybe.Just) {
               return D3_Scatter.highlight(s.interactor.value0)(new Data_Maybe.Just(v.value0));
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.Scatter (line 95, column 18 - line 97, column 42): " + [s.interactor.constructor.name]);
           }()))(function () {
@@ -30017,22 +25035,17 @@ var PS = {};
           });
         });
       }
-
       ;
-
       if (v instanceof Unhighlight) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (s) {
           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))(function () {
             if (s.interactor instanceof Data_Maybe.Nothing) {
               return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
             }
-
             ;
-
             if (s.interactor instanceof Data_Maybe.Just) {
               return D3_Scatter.highlight(s.interactor.value0)(Data_Maybe.Nothing.value);
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.Scatter (line 101, column 18 - line 103, column 39): " + [s.interactor.constructor.name]);
           }()))(function () {
@@ -30040,9 +25053,7 @@ var PS = {};
           });
         });
       }
-
       ;
-
       if (v instanceof Export) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (s) {
           return Data_Functor.map(Halogen_Query_HalogenM.functorHalogenM)(function ($33) {
@@ -30051,24 +25062,19 @@ var PS = {};
             if (s.interactor instanceof Data_Maybe.Nothing) {
               return Control_Applicative.pure(Effect.applicativeEffect)(false);
             }
-
             ;
-
             if (s.interactor instanceof Data_Maybe.Just) {
               return D3_Scatter.saveAsPng(s.interactor.value0)(v.value0);
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.Scatter (line 107, column 40 - line 109, column 34): " + [s.interactor.constructor.name]);
           }()));
         });
       }
-
       ;
       throw new Error("Failed pattern match at Halogen.Scatter (line 84, column 15 - line 109, column 34): " + [v.constructor.name]);
     };
   };
-
   var handleAction = function handleAction(dictMonadEffect) {
     return function (v) {
       if (v instanceof Initialize) {
@@ -30085,31 +25091,24 @@ var PS = {};
           });
         });
       }
-
       ;
-
       if (v instanceof Finalize) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (s) {
           if (s.chart instanceof Data_Maybe.Nothing) {
             return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
           }
-
           ;
-
           if (s.chart instanceof Data_Maybe.Just) {
             return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadEffect))(D3_Scatter.clearSvg(s.chart.value0));
           }
-
           ;
           throw new Error("Failed pattern match at Halogen.Scatter (line 76, column 7 - line 78, column 43): " + [s.chart.constructor.name]);
         });
       }
-
       ;
       throw new Error("Failed pattern match at Halogen.Scatter (line 68, column 16 - line 78, column 43): " + [v.constructor.name]);
     };
   };
-
   var component = function component(dictMonadEffect) {
     return function (dim) {
       return Halogen_Component.mkComponent({
@@ -30125,14 +25124,12 @@ var PS = {};
       });
     };
   };
-
   exports["Update"] = Update;
   exports["Highlight"] = Highlight;
   exports["Unhighlight"] = Unhighlight;
   exports["Export"] = Export;
   exports["component"] = component;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -30148,7 +25145,6 @@ var PS = {};
     };
   };
 })(PS["Web.HTML.History"] = PS["Web.HTML.History"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -30158,17 +25154,16 @@ var PS = {};
   var $foreign = $PS["Web.HTML.History"];
   exports["pushState"] = $foreign.pushState;
 })(PS);
-
 (function (exports) {
-  "use strict"; // ----------------------------------------------------------------------------
+  "use strict";
 
+  // ----------------------------------------------------------------------------
   exports.search = function (location) {
     return function () {
       return location.search;
     };
   };
 })(PS["Web.HTML.Location"] = PS["Web.HTML.Location"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -30178,27 +25173,22 @@ var PS = {};
   var $foreign = $PS["Web.HTML.Location"];
   exports["search"] = $foreign.search;
 })(PS);
-
 (function (exports) {
   "use strict";
 
   exports.newImpl = function newImpl(x) {
     return new URLSearchParams(x);
   };
-
   exports.setImpl = function setImpl(x, k, v) {
     x.set(k, v);
   };
-
   exports.getImpl = function getImpl(x, k) {
     return x.get(k);
   };
-
   exports.toStringImpl = function toStringImpl(x) {
     return x.toString();
   };
 })(PS["Web.URLSearchParams"] = PS["Web.URLSearchParams"] || {});
-
 (function (exports) {
   "use strict";
 
@@ -30209,7 +25199,6 @@ var PS = {};
       };
     };
   };
-
   exports.runEffectFn3 = function runEffectFn3(fn) {
     return function (a) {
       return function (b) {
@@ -30222,7 +25211,6 @@ var PS = {};
     };
   };
 })(PS["Effect.Uncurried"] = PS["Effect.Uncurried"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -30233,7 +25221,6 @@ var PS = {};
   exports["runEffectFn1"] = $foreign.runEffectFn1;
   exports["runEffectFn3"] = $foreign.runEffectFn3;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -30248,7 +25235,6 @@ var PS = {};
   var toString = Effect_Uncurried.runEffectFn1($foreign.toStringImpl);
   var set = Effect_Uncurried.runEffectFn3($foreign.setImpl);
   var $$new = Effect_Uncurried.runEffectFn1($foreign.newImpl);
-
   var get = function get(h) {
     return function (k) {
       return Data_Functor.map(Effect.functorEffect)(Data_Nullable.toMaybe)(function () {
@@ -30256,13 +25242,11 @@ var PS = {};
       });
     };
   };
-
   exports["new"] = $$new;
   exports["set"] = set;
   exports["get"] = get;
   exports["toString"] = toString;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -30350,299 +25334,222 @@ var PS = {};
   var Web_HTML_Window = $PS["Web.HTML.Window"];
   var Web_UIEvent_MouseEvent = $PS["Web.UIEvent.MouseEvent"];
   var Web_URLSearchParams = $PS["Web.URLSearchParams"];
-
   var ADataset = function () {
     function ADataset() {}
-
     ;
     ADataset.value = new ADataset();
     return ADataset;
   }();
-
   var AAxis = function () {
     function AAxis(value0) {
       this.value0 = value0;
     }
-
     ;
-
     AAxis.create = function (value0) {
       return new AAxis(value0);
     };
-
     return AAxis;
   }();
-
   var ARegions = function () {
     function ARegions() {}
-
     ;
     ARegions.value = new ARegions();
     return ARegions;
   }();
-
   var AModels = function () {
     function AModels() {}
-
     ;
     AModels.value = new AModels();
     return AModels;
   }();
-
   var SetRegions = function () {
     function SetRegions(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     SetRegions.create = function (value0) {
       return function (value1) {
         return new SetRegions(value0, value1);
       };
     };
-
     return SetRegions;
   }();
-
   var AddRegion = function () {
     function AddRegion(value0) {
       this.value0 = value0;
     }
-
     ;
-
     AddRegion.create = function (value0) {
       return new AddRegion(value0);
     };
-
     return AddRegion;
   }();
-
   var RemoveRegion = function () {
     function RemoveRegion(value0) {
       this.value0 = value0;
     }
-
     ;
-
     RemoveRegion.create = function (value0) {
       return new RemoveRegion(value0);
     };
-
     return RemoveRegion;
   }();
-
   var ClearRegions = function () {
     function ClearRegions() {}
-
     ;
     ClearRegions.value = new ClearRegions();
     return ClearRegions;
   }();
-
   var DumpRegions = function () {
     function DumpRegions() {}
-
     ;
     DumpRegions.value = new DumpRegions();
     return DumpRegions;
   }();
-
   var ResetRegions = function () {
     function ResetRegions() {}
-
     ;
     ResetRegions.value = new ResetRegions();
     return ResetRegions;
   }();
-
   var SetProjection = function () {
     function SetProjection(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     SetProjection.create = function (value0) {
       return function (value1) {
         return new SetProjection(value0, value1);
       };
     };
-
     return SetProjection;
   }();
-
   var SetModel = function () {
     function SetModel(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     SetModel.create = function (value0) {
       return function (value1) {
         return new SetModel(value0, value1);
       };
     };
-
     return SetModel;
   }();
-
   var SetModelTail = function () {
     function SetModelTail(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SetModelTail.create = function (value0) {
       return new SetModelTail(value0);
     };
-
     return SetModelTail;
   }();
-
   var SetModelForecast = function () {
     function SetModelForecast(value0) {
       this.value0 = value0;
     }
-
     ;
-
     SetModelForecast.create = function (value0) {
       return new SetModelForecast(value0);
     };
-
     return SetModelForecast;
   }();
-
   var LoadDataset = function () {
     function LoadDataset(value0) {
       this.value0 = value0;
     }
-
     ;
-
     LoadDataset.create = function (value0) {
       return new LoadDataset(value0);
     };
-
     return LoadDataset;
   }();
-
   var Highlight = function () {
     function Highlight(value0) {
       this.value0 = value0;
     }
-
     ;
-
     Highlight.create = function (value0) {
       return new Highlight(value0);
     };
-
     return Highlight;
   }();
-
   var Unhighlight = function () {
     function Unhighlight() {}
-
     ;
     Unhighlight.value = new Unhighlight();
     return Unhighlight;
   }();
-
   var LoadHelptip = function () {
     function LoadHelptip(value0, value1) {
       this.value0 = value0;
       this.value1 = value1;
     }
-
     ;
-
     LoadHelptip.create = function (value0) {
       return function (value1) {
         return new LoadHelptip(value0, value1);
       };
     };
-
     return LoadHelptip;
   }();
-
   var UnloadHelptip = function () {
     function UnloadHelptip() {}
-
     ;
     UnloadHelptip.value = new UnloadHelptip();
     return UnloadHelptip;
   }();
-
   var SaveFile = function () {
     function SaveFile() {}
-
     ;
     SaveFile.value = new SaveFile();
     return SaveFile;
   }();
-
   var Redraw = function () {
     function Redraw() {}
-
     ;
     Redraw.value = new Redraw();
     return Redraw;
   }();
-
   var Reset = function () {
     function Reset() {}
-
     ;
     Reset.value = new Reset();
     return Reset;
   }();
-
   var CopyURI = function () {
     function CopyURI() {}
-
     ;
     CopyURI.value = new CopyURI();
     return CopyURI;
   }();
-
   var LoadURIString = function () {
     function LoadURIString(value0) {
       this.value0 = value0;
     }
-
     ;
-
     LoadURIString.create = function (value0) {
       return new LoadURIString(value0);
     };
-
     return LoadURIString;
   }();
-
   var Initialize = function () {
     function Initialize() {}
-
     ;
     Initialize.value = new Initialize();
     return Initialize;
   }();
-
   var Linkify = function () {
     function Linkify() {}
-
     ;
     Linkify.value = new Linkify();
     return Linkify;
   }();
-
   var v4Lens = function v4Lens(v) {
     return function (dictStrong) {
       if (v instanceof D3_Scatter_Type.XAxis) {
@@ -30650,64 +25557,51 @@ var PS = {};
           return "x";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.YAxis) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "y";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.ZAxis) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "z";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.TAxis) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "t";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI (line 134, column 10 - line 138, column 44): " + [v.constructor.name]);
     };
   };
-
   var serializeSet = function () {
-    var $266 = Data_String_Common.joinWith("|");
-    var $267 = Data_Array.fromFoldable(Data_Set.foldableSet);
-    return function ($268) {
-      return $266($267($268));
+    var $268 = Data_String_Common.joinWith("|");
+    var $269 = Data_Array.fromFoldable(Data_Set.foldableSet);
+    return function ($270) {
+      return $268($269($270));
     };
   }();
-
   var serializeRegions = function serializeRegions(ds) {
     return function (reg) {
       return Corona_Marshal.serialize(Corona_Marshal.marDataset)(ds) + serializeSet(reg);
     };
   };
-
   var serializeModels = function serializeModels(v) {
     var enableds = [v.linFit, v.expFit, v.logFit, v.decFit, v.quadFit];
     return Data_Foldable.foldMap(Data_Foldable.foldableArray)(Data_Monoid.monoidString)(Corona_Marshal.serialize(Corona_Marshal.marBool))(enableds) + function () {
-      var $98 = Data_Foldable.or(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)(enableds);
-
-      if ($98) {
+      var $99 = Data_Foldable.or(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)(enableds);
+      if ($99) {
         return Corona_Marshal.serialize(Corona_Marshal.marInt)(v.tail) + ("|" + Corona_Marshal.serialize(Corona_Marshal.marInt)(v.forecast));
       }
-
       ;
       return "";
     }();
   };
-
   var postRender = Halogen_Component.mkComponent({
     initialState: function initialState(v) {
       return Data_Unit.unit;
@@ -30728,10 +25622,10 @@ var PS = {};
     })
   });
   var parseSet = Data_Functor.map(Text_Parsing_StringParser.functorParser)(function () {
-    var $269 = Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString);
-    var $270 = Data_String_Common.split("|");
-    return function ($271) {
-      return $269($270($271));
+    var $271 = Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString);
+    var $272 = Data_String_Common.split("|");
+    return function ($273) {
+      return $271($272($273));
     };
   }())(Corona_Marshal.parse(Corona_Marshal.marStr));
   var parseRegions = Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse(Corona_Marshal.marDataset))(function (datasetSpec) {
@@ -30742,23 +25636,21 @@ var PS = {};
       });
     });
   });
-
   var parseAtKey = function parseAtKey(u) {
     return function (k) {
       return function (p) {
         return Control_Monad_Except_Trans.runExceptT(Control_Bind.bind(Control_Monad_Except_Trans.bindExceptT(Effect.monadEffect))(Control_Bind.bindFlipped(Control_Monad_Except_Trans.bindExceptT(Effect.monadEffect))(Data_Maybe.maybe(Control_Monad_Error_Class.throwError(Control_Monad_Except_Trans.monadThrowExceptT(Effect.monadEffect))("parameter not found: " + k))(Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Effect.monadEffect))))(Control_Monad_Trans_Class.lift(Control_Monad_Except_Trans.monadTransExceptT)(Effect.monadEffect)(Web_URLSearchParams.get(u)(k))))(function (val) {
           return Data_Either.either(function () {
-            var $272 = Control_Monad_Error_Class.throwError(Control_Monad_Except_Trans.monadThrowExceptT(Effect.monadEffect));
-            var $273 = Data_Show.show(Text_Parsing_StringParser.showParseError);
-            return function ($274) {
-              return $272($273($274));
+            var $274 = Control_Monad_Error_Class.throwError(Control_Monad_Except_Trans.monadThrowExceptT(Effect.monadEffect));
+            var $275 = Data_Show.show(Text_Parsing_StringParser.showParseError);
+            return function ($276) {
+              return $274($275($276));
             };
           }())(Control_Applicative.pure(Control_Monad_Except_Trans.applicativeExceptT(Effect.monadEffect)))(Text_Parsing_StringParser.runParser(p)(val));
         }));
       };
     };
   };
-
   var modelFitLens = function modelFitLens(v) {
     return function (dictStrong) {
       if (v instanceof D3_Scatter_Type.LinFit) {
@@ -30766,125 +25658,98 @@ var PS = {};
           return "linFit";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.ExpFit) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "expFit";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.LogFit) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "logFit";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.DecFit) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "decFit";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
-
       if (v instanceof D3_Scatter_Type.QuadFit) {
         return Data_Lens_Record.prop(new Data_Symbol.IsSymbol(function () {
           return "quadFit";
         }))()()(Data_Symbol.SProxy.value)(dictStrong);
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI (line 148, column 16 - line 153, column 52): " + [v.constructor.name]);
     };
   };
-
   var mkScatterModels = function mkScatterModels(md) {
     return Data_Function.flip(Data_Array.mapMaybe)(D3_Scatter_Type.allModelFit)(function (mfit) {
-      var $107 = Data_Lens_Getter.viewOn(md)(modelFitLens(mfit)(Data_Lens_Internal_Forget.strongForget));
-
-      if ($107) {
+      var $108 = Data_Lens_Getter.viewOn(md)(modelFitLens(mfit)(Data_Lens_Internal_Forget.strongForget));
+      if ($108) {
         return new Data_Maybe.Just({
           fit: mfit,
           tail: md.tail,
           forecast: md.forecast
         });
       }
-
       ;
       return Data_Maybe.Nothing.value;
     });
   };
-
   var loaduriRef = "loaduri-input";
-
   var initialRegions = function initialRegions(v) {
     if (v instanceof Corona_Data.WorldData) {
-      return Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString)(["United States", "Egypt", "Italy", "South Korea", "Russia"]);
+      return Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString)(["United States", "Egypt", "Italy", "South Korea", "Russia", "Brazil"]);
     }
-
     ;
-
+    if (v instanceof Corona_Data.SouthAmerica) {
+      return Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString)(["Brazil", "Colombia", "Argentina", "Peru", "Venezuela", "Chile", "Ecuador", "Bolivia", "Paraguay", "Uruguay", "Guyana", "Suriname", "French Guiana", "Falkland Islands (Malvinas)"]);
+    }
+    ;
     if (v instanceof Corona_Data.USData) {
       return Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString)(["California", "New York", "Washington", "North Carolina", "Iowa"]);
     }
-
     ;
-    throw new Error("Failed pattern match at Corona.Chart.UI (line 206, column 18 - line 220, column 8): " + [v.constructor.name]);
+    throw new Error("Failed pattern match at Corona.Chart.UI (line 206, column 18 - line 237, column 8): " + [v.constructor.name]);
   };
-
   var lookupRegions = function lookupRegions(ds) {
     return function (mp) {
       var v = Data_Map_Internal.lookup(Corona_Data.ordDataset)(ds)(mp);
-
       if (v instanceof Data_Maybe.Just) {
         return v.value0;
       }
-
       ;
-
       if (v instanceof Data_Maybe.Nothing) {
         return initialRegions(ds);
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Chart.UI (line 651, column 23 - line 653, column 33): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Chart.UI (line 675, column 23 - line 677, column 33): " + [v.constructor.name]);
     };
   };
-
   var helptipLink = function helptipLink(id) {
     return Halogen_HTML_Elements.a([Halogen_HTML_Properties.href("#" + id), Halogen_Util.classProp("helptip-link noselect")])([Halogen_HTML_Core.text("?")]);
   };
-
   var eqAspect = new Data_Eq.Eq(function (x) {
     return function (y) {
       if (x instanceof ADataset && y instanceof ADataset) {
         return true;
       }
-
       ;
-
       if (x instanceof AAxis && y instanceof AAxis) {
         return Data_Eq.eq(D3_Scatter_Type.eqAxis)(x.value0)(y.value0);
       }
-
       ;
-
       if (x instanceof ARegions && y instanceof ARegions) {
         return true;
       }
-
       ;
-
       if (x instanceof AModels && y instanceof AModels) {
         return true;
       }
-
       ;
       return false;
     };
@@ -30896,61 +25761,42 @@ var PS = {};
       if (x instanceof ADataset && y instanceof ADataset) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof ADataset) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof ADataset) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof AAxis && y instanceof AAxis) {
         return Data_Ord.compare(D3_Scatter_Type.ordAxis)(x.value0)(y.value0);
       }
-
       ;
-
       if (x instanceof AAxis) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof AAxis) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof ARegions && y instanceof ARegions) {
         return Data_Ordering.EQ.value;
       }
-
       ;
-
       if (x instanceof ARegions) {
         return Data_Ordering.LT.value;
       }
-
       ;
-
       if (y instanceof ARegions) {
         return Data_Ordering.GT.value;
       }
-
       ;
-
       if (x instanceof AModels && y instanceof AModels) {
         return Data_Ordering.EQ.value;
       }
-
       ;
       throw new Error("Failed pattern match at Corona.Chart.UI (line 161, column 1 - line 161, column 40): " + [x.constructor.name, y.constructor.name]);
     };
@@ -30987,9 +25833,8 @@ var PS = {};
       return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse(Corona_Marshal.marBool))(function (logFit) {
         return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse(Corona_Marshal.marBool))(function (decFit) {
           return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse(Corona_Marshal.marBool))(function (quadFit) {
-            var $121 = Data_Foldable.or(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)([logFit, expFit, logFit, decFit, quadFit]);
-
-            if ($121) {
+            var $122 = Data_Foldable.or(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)([logFit, expFit, logFit, decFit, quadFit]);
+            if ($122) {
               return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse(Corona_Marshal.marInt))(function (tail) {
                 return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Text_Parsing_StringParser_CodeUnits["char"]("|"))(function () {
                   return Control_Bind.bind(Text_Parsing_StringParser.bindParser)(Corona_Marshal.parse(Corona_Marshal.marInt))(function (forecast) {
@@ -31006,7 +25851,6 @@ var PS = {};
                 });
               });
             }
-
             ;
             return Control_Applicative.pure(Text_Parsing_StringParser.applicativeParser)({
               linFit: linFit,
@@ -31022,38 +25866,28 @@ var PS = {};
       });
     });
   });
-
   var axisParam = function axisParam(v) {
     if (v instanceof D3_Scatter_Type.XAxis) {
       return "x";
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.YAxis) {
       return "y";
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.ZAxis) {
       return "z";
     }
-
     ;
-
     if (v instanceof D3_Scatter_Type.TAxis) {
       return "t";
     }
-
     ;
     throw new Error("Failed pattern match at Corona.Chart.UI (line 141, column 13 - line 145, column 17): " + [v.constructor.name]);
   };
-
   var _welcomeFrame = Data_Symbol.SProxy.value;
   var _scatter = Data_Symbol.SProxy.value;
   var _projection = Data_Symbol.SProxy.value;
-
   var loadProj = function loadProj(dictMonadEffect) {
     return function (a) {
       return function (p) {
@@ -31065,10 +25899,8 @@ var PS = {};
       };
     };
   };
-
   var _postRender = Data_Symbol.SProxy.value;
   var _autocomplete = Data_Symbol.SProxy.value;
-
   var uriSpecs = function uriSpecs(dictMonadAff) {
     var regionSpec = {
       waiter: ARegions.value,
@@ -31089,10 +25921,10 @@ var PS = {};
     var modelSpec = {
       waiter: AModels.value,
       "default": serializeModels(defaultModels),
-      write: function write($278) {
+      write: function write($280) {
         return serializeModels(function (v) {
           return v.modelStates;
-        }($278));
+        }($280));
       },
       param: "m",
       include: true,
@@ -31104,11 +25936,11 @@ var PS = {};
       waiter: ADataset.value,
       "default": Corona_Marshal.serialize(Corona_Marshal.marDataset)(Corona_Data.WorldData.value),
       write: function () {
-        var $279 = Corona_Marshal.serialize(Corona_Marshal.marDataset);
-        return function ($280) {
-          return $279(function (v) {
+        var $281 = Corona_Marshal.serialize(Corona_Marshal.marDataset);
+        return function ($282) {
+          return $281(function (v) {
             return v.datasetSpec;
-          }($280));
+          }($282));
         };
       }(),
       param: "d",
@@ -31134,63 +25966,50 @@ var PS = {};
     });
     return Data_Semigroup.append(Data_Semigroup.semigroupArray)(axisSpec)([modelSpec, datasetSpec, regionSpec]);
   };
-
   var resetRegions = function resetRegions(dictMonadAff) {
     return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-      var $126 = {};
-
-      for (var $127 in st) {
-        if ({}.hasOwnProperty.call(st, $127)) {
-          $126[$127] = st[$127];
+      var $127 = {};
+      for (var $128 in st) {
+        if ({}.hasOwnProperty.call(st, $128)) {
+          $127[$128] = st[$128];
         }
-
         ;
       }
-
       ;
-
-      $126.regionState = function () {
-        var $123 = {};
-
-        for (var $124 in st.regionState) {
-          if ({}.hasOwnProperty.call(st.regionState, $124)) {
-            $123[$124] = st["regionState"][$124];
+      $127.regionState = function () {
+        var $124 = {};
+        for (var $125 in st.regionState) {
+          if ({}.hasOwnProperty.call(st.regionState, $125)) {
+            $124[$125] = st["regionState"][$125];
           }
-
           ;
         }
-
         ;
-        $123.selected = Data_Map_Internal["delete"](Corona_Data.ordDataset)(st.datasetSpec)(st.regionState.selected);
-        $123.unselected = Data_Set.difference(Data_Ord.ordString)(st.regionState.allRegions)(initialRegions(st.datasetSpec));
-        return $123;
+        $124.selected = Data_Map_Internal["delete"](Corona_Data.ordDataset)(st.datasetSpec)(st.regionState.selected);
+        $124.unselected = Data_Set.difference(Data_Ord.ordString)(st.regionState.allRegions)(initialRegions(st.datasetSpec));
+        return $124;
       }();
-
-      return $126;
+      return $127;
     }))(function () {
       return reRender(dictMonadAff)(new Data_Maybe.Just(ARegions.value));
     });
   };
-
   var reRender = function reRender(dictMonadAff) {
     return function (initter) {
       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Data_Traversable["for"](Halogen_Query_HalogenM.applicativeHalogenM)(Data_Traversable.traversableMaybe)(initter)(function (a) {
         return Control_Monad_State_Class.state(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
           var newWaiting = Data_Set["delete"](ordAspect)(a)(st.waiting);
           return new Data_Tuple.Tuple(Data_Foldable["null"](Data_Set.foldableSet)(newWaiting), function () {
-            var $129 = {};
-
-            for (var $130 in st) {
-              if ({}.hasOwnProperty.call(st, $130)) {
-                $129[$130] = st[$130];
+            var $130 = {};
+            for (var $131 in st) {
+              if ({}.hasOwnProperty.call(st, $131)) {
+                $130[$131] = st[$131];
               }
-
               ;
             }
-
             ;
-            $129.waiting = newWaiting;
-            return $129;
+            $130.waiting = newWaiting;
+            return $130;
           }());
         });
       }))(function (waiting) {
@@ -31201,21 +26020,16 @@ var PS = {};
             }))(Data_Ord.ordUnit)(_autocomplete)(Data_Unit.unit)(Halogen_Query.tell(Halogen_Autocomplete.SetOptions.create(Data_Array.fromFoldable(Data_Set.foldableSet)(v.regionState.unselected)))))(function () {
               var selected = function () {
                 var v1 = Data_Map_Internal.lookup(Corona_Data.ordDataset)(v.datasetSpec)(v.regionState.selected);
-
                 if (v1 instanceof Data_Maybe.Nothing) {
                   return initialRegions(v.datasetSpec);
                 }
-
                 ;
-
                 if (v1 instanceof Data_Maybe.Just) {
                   return v1.value0;
                 }
-
                 ;
-                throw new Error("Failed pattern match at Corona.Chart.UI (line 819, column 24 - line 821, column 27): " + [v1.constructor.name]);
+                throw new Error("Failed pattern match at Corona.Chart.UI (line 843, column 24 - line 845, column 27): " + [v1.constructor.name]);
               }();
-
               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Type_DSum.withDSum(v.axis.x)(function (tX) {
                 return function (v1) {
                   return Type_DSum.withDSum(v.axis.y)(function (tY) {
@@ -31256,19 +26070,16 @@ var PS = {};
               }))(function () {
                 return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(generateUri(dictMonadAff))(function (uri) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                    var $147 = {};
-
-                    for (var $148 in v1) {
-                      if ({}.hasOwnProperty.call(v1, $148)) {
-                        $147[$148] = v1[$148];
+                    var $148 = {};
+                    for (var $149 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $149)) {
+                        $148[$149] = v1[$149];
                       }
-
                       ;
                     }
-
                     ;
-                    $147.permalink = new Data_Maybe.Just(uri.permalink);
-                    return $147;
+                    $148.permalink = new Data_Maybe.Just(uri.permalink);
+                    return $148;
                   }))(function () {
                     return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(function __do() {
                       var hist = Effect_Class.liftEffect(Effect_Class.monadEffectEffect)(Control_Bind.bindFlipped(Effect.bindEffect)(Web_HTML_Window.history)(Web_HTML.window))();
@@ -31283,81 +26094,63 @@ var PS = {};
       });
     };
   };
-
   var loadRegions = function loadRegions(dictMonadAff) {
     return function (dspec) {
       return function (ctys) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $154 = {};
-
-          for (var $155 in st) {
-            if ({}.hasOwnProperty.call(st, $155)) {
-              $154[$155] = st[$155];
+          var $155 = {};
+          for (var $156 in st) {
+            if ({}.hasOwnProperty.call(st, $156)) {
+              $155[$156] = st[$156];
             }
-
             ;
           }
-
           ;
-
-          $154.regionState = function () {
-            var $151 = {};
-
-            for (var $152 in st.regionState) {
-              if ({}.hasOwnProperty.call(st.regionState, $152)) {
-                $151[$152] = st["regionState"][$152];
+          $155.regionState = function () {
+            var $152 = {};
+            for (var $153 in st.regionState) {
+              if ({}.hasOwnProperty.call(st.regionState, $153)) {
+                $152[$153] = st["regionState"][$153];
               }
-
               ;
             }
-
             ;
-            $151.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(ctys)(st.regionState.selected);
-
-            $151.unselected = function () {
-              var $150 = Data_Eq.eq(Corona_Data.eqDataset)(st.datasetSpec)(dspec);
-
-              if ($150) {
+            $152.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(ctys)(st.regionState.selected);
+            $152.unselected = function () {
+              var $151 = Data_Eq.eq(Corona_Data.eqDataset)(st.datasetSpec)(dspec);
+              if ($151) {
                 return Data_Set.difference(Data_Ord.ordString)(st.regionState.allRegions)(ctys);
               }
-
               ;
               return st.regionState.unselected;
             }();
-
-            return $151;
+            return $152;
           }();
-
-          return $154;
+          return $155;
         }))(function () {
           return reRender(dictMonadAff)(new Data_Maybe.Just(ARegions.value));
         });
       };
     };
   };
-
   var loadModels = function loadModels(dictMonadAff) {
     return function (models) {
       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-        var $157 = {};
-
-        for (var $158 in st) {
-          if ({}.hasOwnProperty.call(st, $158)) {
-            $157[$158] = st[$158];
+        var $158 = {};
+        for (var $159 in st) {
+          if ({}.hasOwnProperty.call(st, $159)) {
+            $158[$159] = st[$159];
           }
-
           ;
         }
-
         ;
-        $157.modelStates = models;
-        return $157;
+        $158.modelStates = models;
+        return $158;
       }))(function () {
         return reRender(dictMonadAff)(new Data_Maybe.Just(AModels.value));
       });
     };
   };
-
   var loadDataset = function loadDataset(dictMonadAff) {
     return function (dspec) {
       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (st0) {
@@ -31372,49 +26165,38 @@ var PS = {};
               if (v instanceof Data_Either.Left) {
                 return Effect_Class_Console.warn(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))("warning: dataset failed to load -- " + v.value0);
               }
-
               ;
-
               if (v instanceof Data_Either.Right) {
                 return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
                   var allRegs = Data_Set.fromFoldable(Data_Foldable.foldableArray)(Data_Ord.ordString)(Foreign_Object.keys(v.value0.dat));
-                  var $165 = {};
-
-                  for (var $166 in st) {
-                    if ({}.hasOwnProperty.call(st, $166)) {
-                      $165[$166] = st[$166];
+                  var $166 = {};
+                  for (var $167 in st) {
+                    if ({}.hasOwnProperty.call(st, $167)) {
+                      $166[$167] = st[$167];
                     }
-
                     ;
                   }
-
                   ;
-                  $165.datasetSpec = dspec;
-                  $165.dataset = new Data_Maybe.Just(v.value0);
-
-                  $165.regionState = function () {
-                    var $162 = {};
-
-                    for (var $163 in st.regionState) {
-                      if ({}.hasOwnProperty.call(st.regionState, $163)) {
-                        $162[$163] = st["regionState"][$163];
+                  $166.datasetSpec = dspec;
+                  $166.dataset = new Data_Maybe.Just(v.value0);
+                  $166.regionState = function () {
+                    var $163 = {};
+                    for (var $164 in st.regionState) {
+                      if ({}.hasOwnProperty.call(st.regionState, $164)) {
+                        $163[$164] = st["regionState"][$164];
                       }
-
                       ;
                     }
-
                     ;
-                    $162.allRegions = allRegs;
-                    $162.unselected = Data_Set.difference(Data_Ord.ordString)(allRegs)(lookupRegions(dspec)(st.regionState.selected));
-                    return $162;
+                    $163.allRegions = allRegs;
+                    $163.unselected = Data_Set.difference(Data_Ord.ordString)(allRegs)(lookupRegions(dspec)(st.regionState.selected));
+                    return $163;
                   }();
-
-                  return $165;
+                  return $166;
                 });
               }
-
               ;
-              throw new Error("Failed pattern match at Corona.Chart.UI (line 756, column 59 - line 767, column 17): " + [v.constructor.name]);
+              throw new Error("Failed pattern match at Corona.Chart.UI (line 780, column 59 - line 791, column 17): " + [v.constructor.name]);
             })))(function () {
               return reRender(dictMonadAff)(new Data_Maybe.Just(ADataset.value));
             });
@@ -31423,7 +26205,6 @@ var PS = {};
       });
     };
   };
-
   var generateUri = function generateUri(dictMonadAff) {
     return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (st) {
       return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(function __do() {
@@ -31439,22 +26220,17 @@ var PS = {};
         var srchHistPush = Web_URLSearchParams.toString(uspHistPush)();
         var srchPerma = Web_URLSearchParams.toString(uspPerma)();
         var bn = $foreign.fullPagename();
-
         var genStr = function genStr(str) {
           if (Data_String_Common["null"](str)) {
             return "";
           }
-
           ;
-
           if (Data_Boolean.otherwise) {
             return "?" + str;
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Chart.UI (line 794, column 11 - line 796, column 43): " + [str.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Chart.UI (line 818, column 11 - line 820, column 43): " + [str.constructor.name]);
         };
-
         return {
           historyPush: bn + genStr(srchHistPush),
           permalink: bn + genStr(srchPerma)
@@ -31462,7 +26238,6 @@ var PS = {};
       });
     });
   };
-
   var handleAction = function handleAction(dictMonadAff) {
     var loadUriString = function loadUriString(useDef) {
       return function (str) {
@@ -31473,40 +26248,31 @@ var PS = {};
                 if (useDef) {
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(new Data_Maybe.Just(new Data_Tuple.Tuple(uspec.waiter, res.value0)));
                 }
-
                 ;
-
                 if (Data_Boolean.otherwise) {
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Maybe.Nothing.value);
                 }
-
                 ;
               }
-
               ;
-
               if (res instanceof Data_Either.Right) {
                 return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(new Data_Maybe.Just(new Data_Tuple.Tuple(uspec.waiter, res.value0)));
               }
-
               ;
-              throw new Error("Failed pattern match at Corona.Chart.UI (line 634, column 10 - line 638, column 57): " + [res.constructor.name]);
+              throw new Error("Failed pattern match at Corona.Chart.UI (line 658, column 10 - line 662, column 57): " + [res.constructor.name]);
             });
           })))(function (launches) {
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-              var $173 = {};
-
-              for (var $174 in st) {
-                if ({}.hasOwnProperty.call(st, $174)) {
-                  $173[$174] = st[$174];
+              var $174 = {};
+              for (var $175 in st) {
+                if ({}.hasOwnProperty.call(st, $175)) {
+                  $174[$175] = st[$175];
                 }
-
                 ;
               }
-
               ;
-              $173.waiting = Data_Semigroup.append(Data_Set.semigroupSet(ordAspect))(Data_Set.fromFoldable(Data_Foldable.foldableArray)(ordAspect)(Data_Functor.map(Data_Functor.functorArray)(Data_Tuple.fst)(launches)))(st.waiting);
-              return $173;
+              $174.waiting = Data_Semigroup.append(Data_Set.semigroupSet(ordAspect))(Data_Set.fromFoldable(Data_Foldable.foldableArray)(ordAspect)(Data_Functor.map(Data_Functor.functorArray)(Data_Tuple.fst)(launches)))(st.waiting);
+              return $174;
             }))(function () {
               return Data_Foldable.traverse_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableArray)(Data_Tuple.snd)(launches);
             });
@@ -31514,7 +26280,6 @@ var PS = {};
         });
       };
     };
-
     var loadUri = Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Control_Bind.bindFlipped(Effect.bindEffect)(Web_HTML_Location.search)(Control_Bind.bindFlipped(Effect.bindEffect)(Web_HTML_Window.location)(Web_HTML.window))))(function (str) {
       return loadUriString(true)(str);
     });
@@ -31522,336 +26287,251 @@ var PS = {};
       if (v instanceof SetRegions) {
         return loadRegions(dictMonadAff)(v.value0)(v.value1);
       }
-
       ;
-
       if (v instanceof AddRegion) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $182 = {};
-
-          for (var $183 in st) {
-            if ({}.hasOwnProperty.call(st, $183)) {
-              $182[$183] = st[$183];
+          var $183 = {};
+          for (var $184 in st) {
+            if ({}.hasOwnProperty.call(st, $184)) {
+              $183[$184] = st[$184];
             }
-
             ;
           }
-
           ;
-
-          $182.regionState = function () {
-            var $179 = {};
-
-            for (var $180 in st.regionState) {
-              if ({}.hasOwnProperty.call(st.regionState, $180)) {
-                $179[$180] = st["regionState"][$180];
+          $183.regionState = function () {
+            var $180 = {};
+            for (var $181 in st.regionState) {
+              if ({}.hasOwnProperty.call(st.regionState, $181)) {
+                $180[$181] = st["regionState"][$181];
               }
-
               ;
             }
-
             ;
-            $179.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(Data_Set.insert(Data_Ord.ordString)(v.value0)(lookupRegions(st.datasetSpec)(st.regionState.selected)))(st.regionState.selected);
-            $179.unselected = Data_Set["delete"](Data_Ord.ordString)(v.value0)(st.regionState.unselected);
-            return $179;
+            $180.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(Data_Set.insert(Data_Ord.ordString)(v.value0)(lookupRegions(st.datasetSpec)(st.regionState.selected)))(st.regionState.selected);
+            $180.unselected = Data_Set["delete"](Data_Ord.ordString)(v.value0)(st.regionState.unselected);
+            return $180;
           }();
-
-          return $182;
+          return $183;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof RemoveRegion) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $189 = {};
-
-          for (var $190 in st) {
-            if ({}.hasOwnProperty.call(st, $190)) {
-              $189[$190] = st[$190];
+          var $190 = {};
+          for (var $191 in st) {
+            if ({}.hasOwnProperty.call(st, $191)) {
+              $190[$191] = st[$191];
             }
-
             ;
           }
-
           ;
-
-          $189.regionState = function () {
-            var $186 = {};
-
-            for (var $187 in st.regionState) {
-              if ({}.hasOwnProperty.call(st.regionState, $187)) {
-                $186[$187] = st["regionState"][$187];
+          $190.regionState = function () {
+            var $187 = {};
+            for (var $188 in st.regionState) {
+              if ({}.hasOwnProperty.call(st.regionState, $188)) {
+                $187[$188] = st["regionState"][$188];
               }
-
               ;
             }
-
             ;
-            $186.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(Data_Set["delete"](Data_Ord.ordString)(v.value0)(lookupRegions(st.datasetSpec)(st.regionState.selected)))(st.regionState.selected);
-            $186.unselected = Data_Set.insert(Data_Ord.ordString)(v.value0)(st.regionState.unselected);
-            return $186;
+            $187.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(Data_Set["delete"](Data_Ord.ordString)(v.value0)(lookupRegions(st.datasetSpec)(st.regionState.selected)))(st.regionState.selected);
+            $187.unselected = Data_Set.insert(Data_Ord.ordString)(v.value0)(st.regionState.unselected);
+            return $187;
           }();
-
-          return $189;
+          return $190;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof ClearRegions) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $196 = {};
-
-          for (var $197 in st) {
-            if ({}.hasOwnProperty.call(st, $197)) {
-              $196[$197] = st[$197];
+          var $197 = {};
+          for (var $198 in st) {
+            if ({}.hasOwnProperty.call(st, $198)) {
+              $197[$198] = st[$198];
             }
-
             ;
           }
-
           ;
-
-          $196.regionState = function () {
-            var $193 = {};
-
-            for (var $194 in st.regionState) {
-              if ({}.hasOwnProperty.call(st.regionState, $194)) {
-                $193[$194] = st["regionState"][$194];
+          $197.regionState = function () {
+            var $194 = {};
+            for (var $195 in st.regionState) {
+              if ({}.hasOwnProperty.call(st.regionState, $195)) {
+                $194[$195] = st["regionState"][$195];
               }
-
               ;
             }
-
             ;
-            $193.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(Data_Set.empty)(st.regionState.selected);
-            $193.unselected = st.regionState.allRegions;
-            return $193;
+            $194.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(Data_Set.empty)(st.regionState.selected);
+            $194.unselected = st.regionState.allRegions;
+            return $194;
           }();
-
-          return $196;
+          return $197;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof DumpRegions) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $202 = {};
-
-          for (var $203 in st) {
-            if ({}.hasOwnProperty.call(st, $203)) {
-              $202[$203] = st[$203];
+          var $203 = {};
+          for (var $204 in st) {
+            if ({}.hasOwnProperty.call(st, $204)) {
+              $203[$204] = st[$204];
             }
-
             ;
           }
-
           ;
-
-          $202.regionState = function () {
-            var $199 = {};
-
-            for (var $200 in st.regionState) {
-              if ({}.hasOwnProperty.call(st.regionState, $200)) {
-                $199[$200] = st["regionState"][$200];
+          $203.regionState = function () {
+            var $200 = {};
+            for (var $201 in st.regionState) {
+              if ({}.hasOwnProperty.call(st.regionState, $201)) {
+                $200[$201] = st["regionState"][$201];
               }
-
               ;
             }
-
             ;
-            $199.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(st.regionState.allRegions)(st.regionState.selected);
-            $199.unselected = Data_Set.empty;
-            return $199;
+            $200.selected = Data_Map_Internal.insert(Corona_Data.ordDataset)(st.datasetSpec)(st.regionState.allRegions)(st.regionState.selected);
+            $200.unselected = Data_Set.empty;
+            return $200;
           }();
-
-          return $202;
+          return $203;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof ResetRegions) {
         return resetRegions(dictMonadAff);
       }
-
       ;
-
       if (v instanceof SetProjection) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $205 = {};
-
-          for (var $206 in st) {
-            if ({}.hasOwnProperty.call(st, $206)) {
-              $205[$206] = st[$206];
+          var $206 = {};
+          for (var $207 in st) {
+            if ({}.hasOwnProperty.call(st, $207)) {
+              $206[$207] = st[$207];
             }
-
             ;
           }
-
           ;
-          $205.axis = Data_Lens_Setter.set(v4Lens(v.value0)(Data_Profunctor_Strong.strongFn))(v.value1)(st.axis);
-          return $205;
+          $206.axis = Data_Lens_Setter.set(v4Lens(v.value0)(Data_Profunctor_Strong.strongFn))(v.value1)(st.axis);
+          return $206;
         }))(function () {
           return reRender(dictMonadAff)(new Data_Maybe.Just(new AAxis(v.value0)));
         });
       }
-
       ;
-
       if (v instanceof LoadDataset) {
         return loadDataset(dictMonadAff)(v.value0);
       }
-
       ;
-
       if (v instanceof SetModel) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $211 = {};
-
-          for (var $212 in st) {
-            if ({}.hasOwnProperty.call(st, $212)) {
-              $211[$212] = st[$212];
+          var $212 = {};
+          for (var $213 in st) {
+            if ({}.hasOwnProperty.call(st, $213)) {
+              $212[$213] = st[$213];
             }
-
             ;
           }
-
           ;
-          $211.modelStates = Data_Lens_Setter.set(modelFitLens(v.value0)(Data_Profunctor_Strong.strongFn))(v.value1)(st.modelStates);
-          return $211;
+          $212.modelStates = Data_Lens_Setter.set(modelFitLens(v.value0)(Data_Profunctor_Strong.strongFn))(v.value1)(st.modelStates);
+          return $212;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof SetModelTail) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $219 = {};
-
-          for (var $220 in st) {
-            if ({}.hasOwnProperty.call(st, $220)) {
-              $219[$220] = st[$220];
+          var $220 = {};
+          for (var $221 in st) {
+            if ({}.hasOwnProperty.call(st, $221)) {
+              $220[$221] = st[$221];
             }
-
             ;
           }
-
           ;
-
-          $219.modelStates = function () {
-            var $216 = {};
-
-            for (var $217 in st.modelStates) {
-              if ({}.hasOwnProperty.call(st.modelStates, $217)) {
-                $216[$217] = st["modelStates"][$217];
+          $220.modelStates = function () {
+            var $217 = {};
+            for (var $218 in st.modelStates) {
+              if ({}.hasOwnProperty.call(st.modelStates, $218)) {
+                $217[$218] = st["modelStates"][$218];
               }
-
               ;
             }
-
             ;
-            $216.tail = v.value0;
-            return $216;
+            $217.tail = v.value0;
+            return $217;
           }();
-
-          return $219;
+          return $220;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof SetModelForecast) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $226 = {};
-
-          for (var $227 in st) {
-            if ({}.hasOwnProperty.call(st, $227)) {
-              $226[$227] = st[$227];
+          var $227 = {};
+          for (var $228 in st) {
+            if ({}.hasOwnProperty.call(st, $228)) {
+              $227[$228] = st[$228];
             }
-
             ;
           }
-
           ;
-
-          $226.modelStates = function () {
-            var $223 = {};
-
-            for (var $224 in st.modelStates) {
-              if ({}.hasOwnProperty.call(st.modelStates, $224)) {
-                $223[$224] = st["modelStates"][$224];
+          $227.modelStates = function () {
+            var $224 = {};
+            for (var $225 in st.modelStates) {
+              if ({}.hasOwnProperty.call(st.modelStates, $225)) {
+                $224[$225] = st["modelStates"][$225];
               }
-
               ;
             }
-
             ;
-            $223.forecast = v.value0;
-            return $223;
+            $224.forecast = v.value0;
+            return $224;
           }();
-
-          return $226;
+          return $227;
         }))(function () {
           return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
         });
       }
-
       ;
-
       if (v instanceof Highlight) {
         return Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.query()(new Data_Symbol.IsSymbol(function () {
           return "scatter";
         }))(Data_Ord.ordUnit)(_scatter)(Data_Unit.unit)(Halogen_Query.tell(Halogen_Scatter.Highlight.create(v.value0))));
       }
-
       ;
-
       if (v instanceof Unhighlight) {
         return Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.query()(new Data_Symbol.IsSymbol(function () {
           return "scatter";
         }))(Data_Ord.ordUnit)(_scatter)(Data_Unit.unit)(Halogen_Query.tell(Halogen_Scatter.Unhighlight.create)));
       }
-
       ;
-
       if (v instanceof LoadHelptip) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(dictMonadAff))(Halogen_Aff_Util.selectElement(v.value0)))(function (tip) {
           if (tip instanceof Data_Maybe.Nothing) {
             return Effect_Class_Console.warn(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))("helptip not found for " + v.value0);
           }
-
           ;
-
           if (tip instanceof Data_Maybe.Just) {
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-              var $232 = {};
-
-              for (var $233 in v1) {
-                if ({}.hasOwnProperty.call(v1, $233)) {
-                  $232[$233] = v1[$233];
+              var $233 = {};
+              for (var $234 in v1) {
+                if ({}.hasOwnProperty.call(v1, $234)) {
+                  $233[$234] = v1[$234];
                 }
-
                 ;
               }
-
               ;
-              $232.helptip = new Data_Maybe.Just(tip.value0);
-              return $232;
+              $233.helptip = new Data_Maybe.Just(tip.value0);
+              return $233;
             }))(function () {
               return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(function __do() {
                 Web_HTML_HTMLElement.setClassName("helptip helptip-active")(tip.value0)();
@@ -31862,30 +26542,24 @@ var PS = {};
               });
             });
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Chart.UI (line 563, column 7 - line 569, column 51): " + [tip.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Chart.UI (line 587, column 7 - line 593, column 51): " + [tip.constructor.name]);
         });
       }
-
       ;
-
       if (v instanceof UnloadHelptip) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.state(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
           return new Data_Tuple.Tuple(st.helptip, function () {
-            var $238 = {};
-
-            for (var $239 in st) {
-              if ({}.hasOwnProperty.call(st, $239)) {
-                $238[$239] = st[$239];
+            var $239 = {};
+            for (var $240 in st) {
+              if ({}.hasOwnProperty.call(st, $240)) {
+                $239[$240] = st[$240];
               }
-
               ;
             }
-
             ;
-            $238.helptip = Data_Maybe.Nothing.value;
-            return $238;
+            $239.helptip = Data_Maybe.Nothing.value;
+            return $239;
           }());
         }))(function (tip) {
           return Data_Foldable.for_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(tip)(function (tp) {
@@ -31893,58 +26567,45 @@ var PS = {};
           });
         });
       }
-
       ;
-
       if (v instanceof SaveFile) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.query()(new Data_Symbol.IsSymbol(function () {
           return "scatter";
         }))(Data_Ord.ordUnit)(_scatter)(Data_Unit.unit)(Halogen_Query.request(Halogen_Scatter.Export.create("coronavirus-plot.png"))))(function (r) {
           return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))($foreign.toast(function () {
-            var $241 = Data_Foldable.or(Data_Foldable.foldableMaybe)(Data_HeytingAlgebra.heytingAlgebraBoolean)(r);
-
-            if ($241) {
+            var $242 = Data_Foldable.or(Data_Foldable.foldableMaybe)(Data_HeytingAlgebra.heytingAlgebraBoolean)(r);
+            if ($242) {
               return "Exported file!";
             }
-
             ;
             return "No chart to export!";
           }()));
         });
       }
-
       ;
-
       if (v instanceof Redraw) {
         return reRender(dictMonadAff)(Data_Maybe.Nothing.value);
       }
-
       ;
-
       if (v instanceof Reset) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-          var $242 = {};
-
-          for (var $243 in st) {
-            if ({}.hasOwnProperty.call(st, $243)) {
-              $242[$243] = st[$243];
+          var $243 = {};
+          for (var $244 in st) {
+            if ({}.hasOwnProperty.call(st, $244)) {
+              $243[$244] = st[$244];
             }
-
             ;
           }
-
           ;
-          $242.waiting = Data_Semigroup.append(Data_Set.semigroupSet(ordAspect))(Data_Set.fromFoldable(Data_Foldable.foldableArray)(ordAspect)(Data_Functor.map(Data_Functor.functorArray)(AAxis.create)(D3_Scatter_Type.allAxis)))(st.waiting);
-          return $242;
+          $243.waiting = Data_Semigroup.append(Data_Set.semigroupSet(ordAspect))(Data_Set.fromFoldable(Data_Foldable.foldableArray)(ordAspect)(Data_Functor.map(Data_Functor.functorArray)(AAxis.create)(D3_Scatter_Type.allAxis)))(st.waiting);
+          return $243;
         }))(function () {
           return Data_Foldable.for_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableArray)(D3_Scatter_Type.allAxis)(function (a) {
             return loadProj(dictMonadAff.MonadEffect0())(a)(Data_Lens_Getter.viewOn(defaultProjections)(v4Lens(a)(Data_Lens_Internal_Forget.strongForget)));
           });
         });
       }
-
       ;
-
       if (v instanceof CopyURI) {
         return Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Control_Monad_Maybe_Trans.runMaybeT(Control_Bind.bind(Control_Monad_Maybe_Trans.bindMaybeT(Halogen_Query_HalogenM.monadHalogenM))(Control_Monad_Maybe_Trans.MaybeT(Halogen_Query.getHTMLElementRef(loaduriRef)))(function (e) {
           return Control_Bind.bind(Control_Monad_Maybe_Trans.bindMaybeT(Halogen_Query_HalogenM.monadHalogenM))(Data_Maybe.maybe(Control_Plus.empty(Control_Monad_Maybe_Trans.plusMaybeT(Halogen_Query_HalogenM.monadHalogenM)))(Control_Applicative.pure(Control_Monad_Maybe_Trans.applicativeMaybeT(Halogen_Query_HalogenM.monadHalogenM)))(Web_HTML_HTMLInputElement.fromHTMLElement(e)))(function (ie) {
@@ -31959,9 +26620,7 @@ var PS = {};
           });
         })));
       }
-
       ;
-
       if (v instanceof Linkify) {
         return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.subscribe(Halogen_Query_EventSource.effectEventSource(dictMonadAff)(function (e) {
           return function __do() {
@@ -31983,33 +26642,26 @@ var PS = {};
           })));
         });
       }
-
       ;
-
       if (v instanceof LoadURIString) {
         return loadUriString(false)(v.value0);
       }
-
       ;
-
       if (v instanceof Initialize) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(dictMonadAff))(Halogen_Aff_Util.selectElement("#welcome-text")))(function (welcome) {
           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Foldable.for_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(welcome)(function (wcm) {
             return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))($foreign.cutInnerHTML(wcm)))(function (welcomeText) {
               return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                var $246 = {};
-
-                for (var $247 in v1) {
-                  if ({}.hasOwnProperty.call(v1, $247)) {
-                    $246[$247] = v1[$247];
+                var $247 = {};
+                for (var $248 in v1) {
+                  if ({}.hasOwnProperty.call(v1, $248)) {
+                    $247[$248] = v1[$248];
                   }
-
                   ;
                 }
-
                 ;
-                $246.welcomeText = new Data_Maybe.Just(welcomeText);
-                return $246;
+                $247.welcomeText = new Data_Maybe.Just(welcomeText);
+                return $247;
               });
             });
           }))(function () {
@@ -32023,148 +26675,146 @@ var PS = {};
           });
         });
       }
-
       ;
-      throw new Error("Failed pattern match at Corona.Chart.UI (line 501, column 16 - line 627, column 14): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Corona.Chart.UI (line 525, column 16 - line 651, column 14): " + [v.constructor.name]);
     };
   };
-
   var render = function render(dictMonadAff) {
     return function (st) {
       var title = Corona_Chart_UI_Projection.outLabel(st.axis.y) + (" vs. " + Corona_Chart_UI_Projection.outLabel(st.axis.x));
-
+      var recomendedLabel = function recomendedLabel(v) {
+        if (v instanceof D3_Scatter_Type.LinFit) {
+          return " recomended!";
+        }
+        ;
+        if (v instanceof D3_Scatter_Type.ExpFit) {
+          return "";
+        }
+        ;
+        if (v instanceof D3_Scatter_Type.LogFit) {
+          return "";
+        }
+        ;
+        if (v instanceof D3_Scatter_Type.DecFit) {
+          return "";
+        }
+        ;
+        if (v instanceof D3_Scatter_Type.QuadFit) {
+          return "";
+        }
+        ;
+        throw new Error("Failed pattern match at Corona.Chart.UI (line 455, column 23 - line 460, column 20): " + [v.constructor.name]);
+      };
       var parsePosInt = function () {
-        var $281 = Data_Functor.map(Data_Maybe.functorMaybe)(function () {
-          var $283 = Data_Ord.max(Data_Ord.ordInt)(1);
-          var $284 = Data_Ord.abs(Data_Ord.ordInt)(Data_Ring.ringInt);
-          return function ($285) {
-            return $283($284(Data_Int.round($285)));
+        var $283 = Data_Functor.map(Data_Maybe.functorMaybe)(function () {
+          var $285 = Data_Ord.max(Data_Ord.ordInt)(1);
+          var $286 = Data_Ord.abs(Data_Ord.ordInt)(Data_Ring.ringInt);
+          return function ($287) {
+            return $285($286(Data_Int.round($287)));
           };
         }());
-        return function ($282) {
-          return $281(Data_Number.fromString($282));
+        return function ($284) {
+          return $283(Data_Number.fromString($284));
         };
       }();
-
       var modelColor = function modelColor(v) {
         if (v instanceof D3_Scatter_Type.LinFit) {
           return "p-primary";
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.ExpFit) {
           return "p-success";
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.LogFit) {
           return "p-info";
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.DecFit) {
           return "p-warning";
         }
-
         ;
-
         if (v instanceof D3_Scatter_Type.QuadFit) {
           return "p-danger";
         }
-
         ;
-        throw new Error("Failed pattern match at Corona.Chart.UI (line 431, column 18 - line 436, column 28): " + [v.constructor.name]);
+        throw new Error("Failed pattern match at Corona.Chart.UI (line 449, column 18 - line 454, column 28): " + [v.constructor.name]);
       };
-
       var hw = {
         height: 666.6,
         width: 1000.0
       };
-
       var datasetLabel = function datasetLabel(v) {
         if (v instanceof Corona_Data.WorldData) {
           return "World";
         }
-
         ;
-
         if (v instanceof Corona_Data.USData) {
           return "United States";
         }
-
         ;
-        throw new Error("Failed pattern match at Corona.Chart.UI (line 427, column 20 - line 429, column 39): " + [v.constructor.name]);
+        if (v instanceof Corona_Data.SouthAmerica) {
+          return "South America";
+        }
+        ;
+        throw new Error("Failed pattern match at Corona.Chart.UI (line 444, column 20 - line 447, column 45): " + [v.constructor.name]);
       };
-
       var anyModelsActive = Data_Foldable.any(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)(function (mfit) {
         return Data_Lens_Getter.viewOn(st.modelStates)(modelFitLens(mfit)(Data_Lens_Internal_Forget.strongForget));
       })(D3_Scatter_Type.allModelFit);
       var modelPicker = Data_Foldable.fold(Data_Foldable.foldableArray)(Data_Monoid.monoidArray)([[Halogen_HTML_Elements.h3_([Halogen_HTML_Core.text("Analysis")]), Halogen_HTML_Elements.ul([Halogen_Util.classProp("model-picker-list")])(Data_Functor.mapFlipped(Data_Functor.functorArray)(D3_Scatter_Type.allModelFit)(function (mfit) {
         return Halogen_HTML_Elements.li([Halogen_Util.classProp("model-picker-fit")])([Halogen_HTML_Elements.div([Halogen_Util.classProp("pretty p-switch p-fill")])([Halogen_HTML_Elements.input([Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputCheckbox.value), Halogen_HTML_Properties.checked(Data_Lens_Getter.viewOn(st.modelStates)(modelFitLens(mfit)(Data_Lens_Internal_Forget.strongForget))), Halogen_HTML_Events.onChecked(function () {
-          var $286 = SetModel.create(mfit);
-          return function ($287) {
-            return Data_Maybe.Just.create($286($287));
+          var $288 = SetModel.create(mfit);
+          return function ($289) {
+            return Data_Maybe.Just.create($288($289));
           };
-        }())]), Halogen_HTML_Elements.div([Halogen_Util.classProp("state " + modelColor(mfit))])([Halogen_HTML_Elements.label_([Halogen_HTML_Core.text(D3_Scatter_Type.modelFitLabel(mfit))])])]), helptipLink(function () {
+        }())]), Halogen_HTML_Elements.div([Halogen_Util.classProp("state " + modelColor(mfit))])([Halogen_HTML_Elements.label_([Halogen_HTML_Core.text(D3_Scatter_Type.modelFitLabel(mfit) + recomendedLabel(mfit))])])]), helptipLink(function () {
           if (mfit instanceof D3_Scatter_Type.LinFit) {
             return "linear-fit";
           }
-
           ;
-
           if (mfit instanceof D3_Scatter_Type.ExpFit) {
             return "exponential-growth-fit";
           }
-
           ;
-
           if (mfit instanceof D3_Scatter_Type.LogFit) {
             return "logistic-fit";
           }
-
           ;
-
           if (mfit instanceof D3_Scatter_Type.DecFit) {
             return "exponential-decay-fit";
           }
-
           ;
-
           if (mfit instanceof D3_Scatter_Type.QuadFit) {
             return "quadratic-fit";
           }
-
           ;
-          throw new Error("Failed pattern match at Corona.Chart.UI (line 453, column 29 - line 458, column 43): " + [mfit.constructor.name]);
+          throw new Error("Failed pattern match at Corona.Chart.UI (line 477, column 29 - line 482, column 43): " + [mfit.constructor.name]);
         }())]);
       }))], function () {
         if (anyModelsActive) {
           return [Halogen_HTML_Elements.div([Halogen_Util.classProp("model-pick-lookback")])([Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Lookback")]), Halogen_HTML_Elements.input([Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputNumber.value), Halogen_HTML_Properties.value(Data_Show.show(Data_Show.showInt)(st.modelStates.tail)), Halogen_HTML_Events.onValueChange(function () {
-            var $288 = Data_Functor.map(Data_Maybe.functorMaybe)(SetModelTail.create);
-            return function ($289) {
-              return $288(parsePosInt($289));
-            };
-          }())])]), Halogen_HTML_Elements.div([Halogen_Util.classProp("model-pick-forecast")])([Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Forecast")]), Halogen_HTML_Elements.input([Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputNumber.value), Halogen_HTML_Properties.value(Data_Show.show(Data_Show.showInt)(st.modelStates.forecast)), Halogen_HTML_Events.onValueChange(function () {
-            var $290 = Data_Functor.map(Data_Maybe.functorMaybe)(SetModelForecast.create);
+            var $290 = Data_Functor.map(Data_Maybe.functorMaybe)(SetModelTail.create);
             return function ($291) {
               return $290(parsePosInt($291));
             };
+          }())])]), Halogen_HTML_Elements.div([Halogen_Util.classProp("model-pick-forecast")])([Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Forecast")]), Halogen_HTML_Elements.input([Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputNumber.value), Halogen_HTML_Properties.value(Data_Show.show(Data_Show.showInt)(st.modelStates.forecast)), Halogen_HTML_Events.onValueChange(function () {
+            var $292 = Data_Functor.map(Data_Maybe.functorMaybe)(SetModelForecast.create);
+            return function ($293) {
+              return $292(parsePosInt($293));
+            };
           }())])])];
         }
-
         ;
         return [];
       }()]);
-      var allDatasets = [Corona_Data.WorldData.value, Corona_Data.USData.value];
+      var allDatasets = [Corona_Data.WorldData.value, Corona_Data.USData.value, Corona_Data.SouthAmerica.value];
       return Halogen_HTML_Elements.div([Halogen_Util.classProp("ui-wrapper")])([Halogen_HTML_Elements.div([Halogen_Util.classProp("grid__col grid__col--1-of-5 left-column")])([Halogen_HTML_Elements.h2_([Halogen_HTML_Core.text("Coronavirus Data Plotter")]), Halogen_HTML_Elements.div([Halogen_Util.classProp("dataset-picker dialog")])([Halogen_HTML_Elements.span_([Halogen_HTML_Core.text("Dataset")]), Halogen_HTML_Elements.select([Halogen_HTML_Events.onSelectedIndexChange(function () {
-        var $292 = Data_Functor.map(Data_Maybe.functorMaybe)(LoadDataset.create);
-        return function ($293) {
-          return $292(function (v) {
+        var $294 = Data_Functor.map(Data_Maybe.functorMaybe)(LoadDataset.create);
+        return function ($295) {
+          return $294(function (v) {
             return Data_Array.index(allDatasets)(v);
-          }($293));
+          }($295));
         };
       }())])(Data_Functor.mapFlipped(Data_Functor.functorArray)(allDatasets)(function (ds) {
         var isSelected = Data_Eq.eq(Corona_Data.eqDataset)(ds)(st.datasetSpec);
@@ -32187,12 +26837,10 @@ var PS = {};
         return new Data_Maybe.Just(new AddRegion(v.value0));
       })]), Halogen_HTML_Elements.div([Halogen_Util.classProp("grid__col grid__col--2-of-4 region-picker-select")])([Halogen_HTML_Elements.ul([Halogen_Util.classProp("picked-regions")])(Data_Functor.mapFlipped(Data_Functor.functorArray)(Data_Array.fromFoldable(Data_Set.foldableSet)(lookupRegions(st.datasetSpec)(st.regionState.selected)))(function (c) {
         return Halogen_HTML_Elements.li([Halogen_HTML_Events.onClick(function (e) {
-          var $257 = Web_UIEvent_MouseEvent.buttons(e) === 0;
-
-          if ($257) {
+          var $259 = Web_UIEvent_MouseEvent.buttons(e) === 0;
+          if ($259) {
             return new Data_Maybe.Just(new RemoveRegion(c));
           }
-
           ;
           return Data_Maybe.Nothing.value;
         }), Halogen_HTML_Events.onMouseOver(function (v) {
@@ -32212,9 +26860,7 @@ var PS = {};
         if (st.welcomeText instanceof Data_Maybe.Nothing) {
           return [];
         }
-
         ;
-
         if (st.welcomeText instanceof Data_Maybe.Just) {
           return [Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
             return "welcomeFrame";
@@ -32223,9 +26869,8 @@ var PS = {};
             elRef: "welcome-ref"
           })(Data_Void.absurd)];
         }
-
         ;
-        throw new Error("Failed pattern match at Corona.Chart.UI (line 398, column 9 - line 405, column 14): " + [st.welcomeText.constructor.name]);
+        throw new Error("Failed pattern match at Corona.Chart.UI (line 415, column 9 - line 422, column 14): " + [st.welcomeText.constructor.name]);
       }()), Halogen_HTML_Elements.div([Halogen_Util.classProp("grid__col grid__col--1-of-5 axis-z"), Halogen_HTML_Properties.id_("axis-z")])([Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
         return "projection";
       }))(D3_Scatter_Type.ordAxis)(_projection)(D3_Scatter_Type.ZAxis.value)(Corona_Chart_UI_Projection.component(dictMonadAff.MonadEffect0())(D3_Scatter_Type.ZAxis.value))(st.axis.z)(function (v) {
@@ -32245,7 +26890,6 @@ var PS = {};
       })]);
     };
   };
-
   var component = function component(dictMonadAff) {
     return Halogen_Component.mkComponent({
       initialState: function initialState(v) {
@@ -32275,10 +26919,8 @@ var PS = {};
       })
     });
   };
-
   exports["component"] = component;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -32294,7 +26936,6 @@ var PS = {};
   var Unsafe_Coerce = $PS["Unsafe.Coerce"];
   var unRenderStateX = Unsafe_Coerce.unsafeCoerce;
   var unDriverStateX = Unsafe_Coerce.unsafeCoerce;
-
   var renderStateX_ = function renderStateX_(dictApplicative) {
     return function (f) {
       return unDriverStateX(function (st) {
@@ -32302,9 +26943,7 @@ var PS = {};
       });
     };
   };
-
   var mkRenderStateX = Unsafe_Coerce.unsafeCoerce;
-
   var renderStateX = function renderStateX(dictFunctor) {
     return function (f) {
       return unDriverStateX(function (st) {
@@ -32312,15 +26951,12 @@ var PS = {};
       });
     };
   };
-
   var mkDriverStateXRef = Unsafe_Coerce.unsafeCoerce;
-
   var mapDriverState = function mapDriverState(f) {
     return function (v) {
       return f(v);
     };
   };
-
   var initDriverState = function initDriverState(component) {
     return function (input) {
       return function (handler) {
@@ -32361,7 +26997,6 @@ var PS = {};
       };
     };
   };
-
   exports["mapDriverState"] = mapDriverState;
   exports["unDriverStateX"] = unDriverStateX;
   exports["renderStateX"] = renderStateX;
@@ -32369,7 +27004,6 @@ var PS = {};
   exports["unRenderStateX"] = unRenderStateX;
   exports["initDriverState"] = initDriverState;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -32379,7 +27013,6 @@ var PS = {};
     };
   };
 })(PS["Unsafe.Reference"] = PS["Unsafe.Reference"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -32390,7 +27023,6 @@ var PS = {};
   var unsafeRefEq = $foreign.reallyUnsafeRefEq;
   exports["unsafeRefEq"] = unsafeRefEq;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -32431,7 +27063,6 @@ var PS = {};
   var Halogen_Query_HalogenQ = $PS["Halogen.Query.HalogenQ"];
   var Halogen_Query_Input = $PS["Halogen.Query.Input"];
   var Unsafe_Reference = $PS["Unsafe.Reference"];
-
   var unsubscribe = function unsubscribe(sid) {
     return function (ref) {
       return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v) {
@@ -32441,26 +27072,21 @@ var PS = {};
       });
     };
   };
-
   var queueOrRun = function queueOrRun(ref) {
     return function (au) {
       return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v) {
         if (v instanceof Data_Maybe.Nothing) {
           return au;
         }
-
         ;
-
         if (v instanceof Data_Maybe.Just) {
           return Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.write(new Data_Maybe.Just(new Data_List_Types.Cons(au, v.value0)))(ref));
         }
-
         ;
         throw new Error("Failed pattern match at Halogen.Aff.Driver.Eval (line 195, column 33 - line 197, column 57): " + [v.constructor.name]);
       });
     };
   };
-
   var handleLifecycle = function handleLifecycle(lchs) {
     return function (f) {
       return Control_Bind.discard(Control_Bind.discardUnit)(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.write({
@@ -32479,7 +27105,6 @@ var PS = {};
       });
     };
   };
-
   var fresh = function fresh(f) {
     return function (ref) {
       return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v) {
@@ -32492,7 +27117,6 @@ var PS = {};
       });
     };
   };
-
   var evalQ = function evalQ(render) {
     return function (ref) {
       return function (q) {
@@ -32502,7 +27126,6 @@ var PS = {};
       };
     };
   };
-
   var evalM = function evalM(render) {
     return function (initRef) {
       return function (v) {
@@ -32517,25 +27140,20 @@ var PS = {};
                     })(dsx);
                   }));
                 };
-
                 return Data_Functor.map(Effect_Aff.functorAff)(v2.value2)(Control_Parallel_Class.sequential(Effect_Aff.parallelAff)(v2.value0(Effect_Aff.applicativeParAff)(evalChild)(v1.children)));
               })(cqb);
             });
           };
         };
-
         var go = function go(ref) {
           return function (v1) {
             if (v1 instanceof Halogen_Query_HalogenM.State) {
               return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v2) {
                 var v3 = v1.value0(v2.state);
-
                 if (Unsafe_Reference.unsafeRefEq(v2.state)(v3.value1)) {
                   return Control_Applicative.pure(Effect_Aff.applicativeAff)(v3.value0);
                 }
-
                 ;
-
                 if (Data_Boolean.otherwise) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.write({
                     component: v2.component,
@@ -32560,14 +27178,11 @@ var PS = {};
                     });
                   });
                 }
-
                 ;
                 throw new Error("Failed pattern match at Halogen.Aff.Driver.Eval (line 85, column 7 - line 91, column 21): " + [v3.constructor.name]);
               });
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Subscribe) {
               return Control_Bind.bind(Effect_Aff.bindAff)(fresh(Halogen_Query_HalogenM.SubscriptionId)(ref))(function (sid) {
                 var v2 = v1.value0(sid);
@@ -32596,29 +27211,21 @@ var PS = {};
                 });
               });
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Unsubscribe) {
               return Control_Bind.discard(Control_Bind.discardUnit)(Effect_Aff.bindAff)(unsubscribe(v1.value0)(ref))(function () {
                 return Control_Applicative.pure(Effect_Aff.applicativeAff)(v1.value1);
               });
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Lift) {
               return v1.value0;
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.ChildQuery) {
               return evalChildQuery(ref)(v1.value0);
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Raise) {
               return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v2) {
                 return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(v2.handlerRef)))(function (handler) {
@@ -32628,9 +27235,7 @@ var PS = {};
                 });
               });
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Par) {
               return Control_Parallel_Class.sequential(Effect_Aff.parallelAff)(Control_Applicative_Free.retractFreeAp(Effect_Aff.applicativeParAff)(Control_Applicative_Free.hoistFreeAp(function () {
                 var $85 = Control_Parallel_Class.parallel(Effect_Aff.parallelAff);
@@ -32640,9 +27245,7 @@ var PS = {};
                 };
               }())(v1.value0)));
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Fork) {
               return Control_Bind.bind(Effect_Aff.bindAff)(fresh(Halogen_Query_HalogenM.ForkId)(ref))(function (fid) {
                 return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v2) {
@@ -32659,9 +27262,7 @@ var PS = {};
                 });
               });
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.Kill) {
               return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v2) {
                 return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(v2.forks)))(function (forkMap) {
@@ -32671,25 +27272,20 @@ var PS = {};
                 });
               });
             }
-
             ;
-
             if (v1 instanceof Halogen_Query_HalogenM.GetRef) {
               return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v2) {
                 return Control_Applicative.pure(Effect_Aff.applicativeAff)(v1.value1(Data_Map_Internal.lookup(Data_Ord.ordString)(v1.value0)(v2.refs)));
               });
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.Aff.Driver.Eval (line 82, column 12 - line 146, column 33): " + [v1.constructor.name]);
           };
         };
-
         return Control_Monad_Free.foldFree(Effect_Aff.monadRecAff)(go(initRef))(v);
       };
     };
   };
-
   var evalF = function evalF(render) {
     return function (ref) {
       return function (v) {
@@ -32715,28 +27311,23 @@ var PS = {};
             };
           })));
         }
-
         ;
-
         if (v instanceof Halogen_Query_Input.Action) {
           return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (v1) {
             return evalM(render)(ref)(v1["component"]["eval"](new Halogen_Query_HalogenQ.Action(v.value0, Data_Unit.unit)));
           });
         }
-
         ;
         throw new Error("Failed pattern match at Halogen.Aff.Driver.Eval (line 51, column 20 - line 57, column 62): " + [v.constructor.name]);
       };
     };
   };
-
   exports["evalF"] = evalF;
   exports["evalQ"] = evalQ;
   exports["evalM"] = evalM;
   exports["handleLifecycle"] = handleLifecycle;
   exports["queueOrRun"] = queueOrRun;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -32780,7 +27371,6 @@ var PS = {};
     finalizers: Data_List_Types.Nil.value
   });
   var handleAff = Effect_Aff.runAff_(Data_Either.either(Effect_Exception.throwException)(Data_Function["const"](Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit))));
-
   var handlePending = function handlePending(ref) {
     return function __do() {
       var queue = Effect_Ref.read(ref)();
@@ -32793,7 +27383,6 @@ var PS = {};
       }())();
     };
   };
-
   var cleanupSubscriptionsAndForks = function cleanupSubscriptionsAndForks(v) {
     return function __do() {
       Control_Bind.bindFlipped(Effect.bindEffect)(Data_Foldable.traverse_(Effect.applicativeEffect)(Data_Foldable.foldableMaybe)(function () {
@@ -32817,7 +27406,6 @@ var PS = {};
       return Effect_Ref.write(Data_Map_Internal.empty)(v.forks)();
     };
   };
-
   var runUI = function runUI(renderSpec) {
     return function (component) {
       return function (i) {
@@ -32844,7 +27432,6 @@ var PS = {};
             };
           };
         };
-
         var rootHandler = function rootHandler(ref) {
           return function (message) {
             return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref.read(ref)))(function (listeners) {
@@ -32852,7 +27439,6 @@ var PS = {};
             });
           };
         };
-
         var squashChildInitializers = function squashChildInitializers(lchs) {
           return function (preInits) {
             return Halogen_Aff_Driver_State.unDriverStateX(function (st) {
@@ -32873,7 +27459,6 @@ var PS = {};
             });
           };
         };
-
         var runComponent = function runComponent(lchs) {
           return function (handler) {
             return function (j) {
@@ -32901,7 +27486,6 @@ var PS = {};
             };
           };
         };
-
         var renderChild = function renderChild(lchs) {
           return function (handler) {
             return function (childrenInRef) {
@@ -32909,7 +27493,6 @@ var PS = {};
                 return Halogen_Component.unComponentSlot(function (slot) {
                   return function __do() {
                     var childrenIn = Data_Functor.map(Effect.functorEffect)(slot.pop)(Effect_Ref.read(childrenInRef))();
-
                     var $$var = function () {
                       if (childrenIn instanceof Data_Maybe.Just) {
                         Effect_Ref.write(childrenIn.value0.value1)(childrenInRef)();
@@ -32927,9 +27510,7 @@ var PS = {};
                         })(dsx)();
                         return childrenIn.value0.value0;
                       }
-
                       ;
-
                       if (childrenIn instanceof Data_Maybe.Nothing) {
                         return runComponent(lchs)(function () {
                           var $37 = Data_Maybe.maybe(Control_Applicative.pure(Effect_Aff.applicativeAff)(Data_Unit.unit))(handler);
@@ -32938,11 +27519,9 @@ var PS = {};
                           };
                         }())(slot.input)(slot.component)();
                       }
-
                       ;
                       throw new Error("Failed pattern match at Halogen.Aff.Driver (line 236, column 14 - line 245, column 98): " + [childrenIn.constructor.name]);
                     }();
-
                     var isDuplicate = Data_Functor.map(Effect.functorEffect)(function ($39) {
                       return Data_Maybe.isJust(slot.get($39));
                     })(Effect_Ref.read(childrenOutRef))();
@@ -32952,13 +27531,10 @@ var PS = {};
                       if (v instanceof Data_Maybe.Nothing) {
                         return Effect_Exception["throw"]("Halogen internal error: child was not initialized in renderChild");
                       }
-
                       ;
-
                       if (v instanceof Data_Maybe.Just) {
                         return Control_Applicative.pure(Effect.applicativeEffect)(renderSpec.renderChild(v.value0));
                       }
-
                       ;
                       throw new Error("Failed pattern match at Halogen.Aff.Driver (line 250, column 37 - line 252, column 50): " + [v.constructor.name]);
                     }))();
@@ -32968,7 +27544,6 @@ var PS = {};
             };
           };
         };
-
         var render = function render(lchs) {
           return function ($$var) {
             return function __do() {
@@ -32980,7 +27555,6 @@ var PS = {};
               var selfRef = Control_Category.identity(Control_Category.categoryFn)(v.selfRef);
               var pendingQueries = Control_Category.identity(Control_Category.categoryFn)(v.pendingQueries);
               var pendingHandlers = Control_Category.identity(Control_Category.categoryFn)(v.pendingHandlers);
-
               var handler = function () {
                 var $40 = Halogen_Aff_Driver_Eval.queueOrRun(pendingHandlers);
                 var $41 = Data_Functor["void"](Effect_Aff.functorAff);
@@ -32989,14 +27563,12 @@ var PS = {};
                   return $40($41($42($43)));
                 };
               }();
-
               var childHandler = function () {
                 var $44 = Halogen_Aff_Driver_Eval.queueOrRun(pendingQueries);
                 return function ($45) {
                   return $44(handler(Halogen_Query_Input.Action.create($45)));
                 };
               }();
-
               var rendering = renderSpec.render(function ($46) {
                 return handleAff(handler($46));
               })(renderChild(lchs)(childHandler)(v.childrenIn)(v.childrenOut))(v.component.render(v.state))(v.rendering)();
@@ -33041,11 +27613,9 @@ var PS = {};
                   }())(handlers)();
                   var mmore = Effect_Ref.read(pendingHandlers)();
                   var $21 = Data_Maybe.maybe(false)(Data_List["null"])(mmore);
-
                   if ($21) {
                     return Data_Functor.voidLeft(Effect.functorEffect)(Effect_Ref.write(Data_Maybe.Nothing.value)(pendingHandlers))(new Control_Monad_Rec_Class.Done(Data_Unit.unit))();
                   }
-
                   ;
                   return new Control_Monad_Rec_Class.Loop(Data_Unit.unit);
                 };
@@ -33053,7 +27623,6 @@ var PS = {};
             };
           };
         };
-
         var finalize = function finalize(lchs) {
           return Halogen_Aff_Driver_State.unDriverStateX(function (st) {
             return function __do() {
@@ -33074,7 +27643,6 @@ var PS = {};
             };
           });
         };
-
         var evalDriver = function evalDriver(disposed) {
           return function (ref) {
             return function (q) {
@@ -33082,25 +27650,21 @@ var PS = {};
                 if (v) {
                   return Control_Applicative.pure(Effect_Aff.applicativeAff)(Data_Maybe.Nothing.value);
                 }
-
                 ;
                 return Halogen_Aff_Driver_Eval.evalQ(render)(ref)(q);
               });
             };
           };
         };
-
         var dispose = function dispose(disposed) {
           return function (lchs) {
             return function (dsx) {
               return function (subsRef) {
                 return Halogen_Aff_Driver_Eval.handleLifecycle(lchs)(function __do() {
                   var v = Effect_Ref.read(disposed)();
-
                   if (v) {
                     return Data_Unit.unit;
                   }
-
                   ;
                   Effect_Ref.write(true)(disposed)();
                   Control_Bind.bindFlipped(Effect.bindEffect)(Data_Foldable.traverse_(Effect.applicativeEffect)(Data_Map_Internal.foldableMap)(function () {
@@ -33123,7 +27687,6 @@ var PS = {};
             };
           };
         };
-
         return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(newLifecycleHandlers))(function (lchs) {
           return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref["new"](0)))(function (fresh) {
             return Control_Bind.bind(Effect_Aff.bindAff)(Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Ref["new"](false)))(function (disposed) {
@@ -33144,10 +27707,8 @@ var PS = {};
       };
     };
   };
-
   exports["runUI"] = runUI;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -33158,7 +27719,6 @@ var PS = {};
   var toNode = Unsafe_Coerce.unsafeCoerce;
   exports["toNode"] = toNode;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -33174,18 +27734,14 @@ var PS = {};
   var Halogen_VDom_Types = $PS["Halogen.VDom.Types"];
   var Halogen_VDom_Util = $PS["Halogen.VDom.Util"];
   var Web_DOM_Element = $PS["Web.DOM.Element"];
-
   var haltWidget = function haltWidget(v) {
     return Halogen_VDom_Machine.halt(v.widget);
   };
-
   var patchWidget = function patchWidget(state, vdom) {
     if (vdom instanceof Halogen_VDom_Types.Grafted) {
       return patchWidget(state, Halogen_VDom_Types.runGraft(vdom.value0));
     }
-
     ;
-
     if (vdom instanceof Halogen_VDom_Types.Widget) {
       var res = Halogen_VDom_Machine.step(state.widget, vdom.value0);
       var res$prime = Halogen_VDom_Machine.unStep(function (v) {
@@ -33196,31 +27752,24 @@ var PS = {};
       })(res);
       return res$prime;
     }
-
     ;
     haltWidget(state);
     return state.build(vdom);
   };
-
   var haltText = function haltText(v) {
     var parent = Halogen_VDom_Util.parentNode(v.node);
     return Halogen_VDom_Util.removeChild(v.node, parent);
   };
-
   var patchText = function patchText(state, vdom) {
     if (vdom instanceof Halogen_VDom_Types.Grafted) {
       return patchText(state, Halogen_VDom_Types.runGraft(vdom.value0));
     }
-
     ;
-
     if (vdom instanceof Halogen_VDom_Types.Text) {
       if (state.value === vdom.value0) {
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(state.node, state, patchText, haltText));
       }
-
       ;
-
       if (Data_Boolean.otherwise) {
         var nextState = {
           build: state.build,
@@ -33230,15 +27779,12 @@ var PS = {};
         Halogen_VDom_Util.setTextContent(vdom.value0, state.node);
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(state.node, nextState, patchText, haltText));
       }
-
       ;
     }
-
     ;
     haltText(state);
     return state.build(vdom);
   };
-
   var haltKeyed = function haltKeyed(v) {
     var parent = Halogen_VDom_Util.parentNode(v.node);
     Halogen_VDom_Util.removeChild(v.node, parent);
@@ -33247,47 +27793,36 @@ var PS = {};
     });
     return Halogen_VDom_Machine.halt(v.attrs);
   };
-
   var haltElem = function haltElem(v) {
     var parent = Halogen_VDom_Util.parentNode(v.node);
     Halogen_VDom_Util.removeChild(v.node, parent);
     Halogen_VDom_Util.forEachE(v.children, Halogen_VDom_Machine.halt);
     return Halogen_VDom_Machine.halt(v.attrs);
   };
-
   var eqElemSpec = function eqElemSpec(ns1, v, ns2, v1) {
     var $56 = v === v1;
-
     if ($56) {
       if (ns1 instanceof Data_Maybe.Just && ns2 instanceof Data_Maybe.Just && ns1.value0 === ns2.value0) {
         return true;
       }
-
       ;
-
       if (ns1 instanceof Data_Maybe.Nothing && ns2 instanceof Data_Maybe.Nothing) {
         return true;
       }
-
       ;
       return false;
     }
-
     ;
     return false;
   };
-
   var patchElem = function patchElem(state, vdom) {
     if (vdom instanceof Halogen_VDom_Types.Grafted) {
       return patchElem(state, Halogen_VDom_Types.runGraft(vdom.value0));
     }
-
     ;
-
     if (vdom instanceof Halogen_VDom_Types.Elem && eqElemSpec(state.ns, state.name, vdom.value0, vdom.value1)) {
       var v = Data_Array.length(vdom.value3);
       var v1 = Data_Array.length(state.children);
-
       if (v1 === 0 && v === 0) {
         var attrs2 = Halogen_VDom_Machine.step(state.attrs, vdom.value2);
         var nextState = {
@@ -33300,25 +27835,20 @@ var PS = {};
         };
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(state.node, nextState, patchElem, haltElem));
       }
-
       ;
-
       var onThis = function onThis(ix, s) {
         return Halogen_VDom_Machine.halt(s);
       };
-
       var onThese = function onThese(ix, s, v2) {
         var res = Halogen_VDom_Machine.step(s, v2);
         Halogen_VDom_Util.insertChildIx(ix, Halogen_VDom_Machine.extract(res), state.node);
         return res;
       };
-
       var onThat = function onThat(ix, v2) {
         var res = state.build(v2);
         Halogen_VDom_Util.insertChildIx(ix, Halogen_VDom_Machine.extract(res), state.node);
         return res;
       };
-
       var children2 = Halogen_VDom_Util.diffWithIxE(state.children, vdom.value3, onThese, onThis, onThat);
       var attrs2 = Halogen_VDom_Machine.step(state.attrs, vdom.value2);
       var nextState = {
@@ -33331,22 +27861,17 @@ var PS = {};
       };
       return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(state.node, nextState, patchElem, haltElem));
     }
-
     ;
     haltElem(state);
     return state.build(vdom);
   };
-
   var patchKeyed = function patchKeyed(state, vdom) {
     if (vdom instanceof Halogen_VDom_Types.Grafted) {
       return patchKeyed(state, Halogen_VDom_Types.runGraft(vdom.value0));
     }
-
     ;
-
     if (vdom instanceof Halogen_VDom_Types.Keyed && eqElemSpec(state.ns, state.name, vdom.value0, vdom.value1)) {
       var v = Data_Array.length(vdom.value3);
-
       if (state.length === 0 && v === 0) {
         var attrs2 = Halogen_VDom_Machine.step(state.attrs, vdom.value2);
         var nextState = {
@@ -33360,25 +27885,20 @@ var PS = {};
         };
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(state.node, nextState, patchKeyed, haltKeyed));
       }
-
       ;
-
       var onThis = function onThis(v2, s) {
         return Halogen_VDom_Machine.halt(s);
       };
-
       var onThese = function onThese(v2, ix$prime, s, v3) {
         var res = Halogen_VDom_Machine.step(s, v3.value1);
         Halogen_VDom_Util.insertChildIx(ix$prime, Halogen_VDom_Machine.extract(res), state.node);
         return res;
       };
-
       var onThat = function onThat(v2, ix, v3) {
         var res = state.build(v3.value1);
         Halogen_VDom_Util.insertChildIx(ix, Halogen_VDom_Machine.extract(res), state.node);
         return res;
       };
-
       var children2 = Halogen_VDom_Util.diffWithKeyAndIxE(state.children, vdom.value3, Data_Tuple.fst, onThese, onThis, onThat);
       var attrs2 = Halogen_VDom_Machine.step(state.attrs, vdom.value2);
       var nextState = {
@@ -33392,12 +27912,10 @@ var PS = {};
       };
       return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(state.node, nextState, patchKeyed, haltKeyed));
     }
-
     ;
     haltKeyed(state);
     return state.build(vdom);
   };
-
   var buildWidget = function buildWidget(v, build, w) {
     var res = v.buildWidget(v)(w);
     var res$prime = Halogen_VDom_Machine.unStep(function (v1) {
@@ -33408,7 +27926,6 @@ var PS = {};
     })(res);
     return res$prime;
   };
-
   var buildText = function buildText(v, build, s) {
     var node = Halogen_VDom_Util.createTextNode(s, v.document);
     var state = {
@@ -33418,17 +27935,14 @@ var PS = {};
     };
     return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(node, state, patchText, haltText));
   };
-
   var buildKeyed = function buildKeyed(v, build, ns1, name1, as1, ch1) {
     var el = Halogen_VDom_Util.createElement(Data_Nullable.toNullable(ns1), name1, v.document);
     var node = Web_DOM_Element.toNode(el);
-
     var onChild = function onChild(k, ix, v1) {
       var res = build(v1.value1);
       Halogen_VDom_Util.insertChildIx(ix, Halogen_VDom_Machine.extract(res), node);
       return res;
     };
-
     var children = Halogen_VDom_Util.strMapWithIxE(ch1, Data_Tuple.fst, onChild);
     var attrs = v.buildAttributes(el)(as1);
     var state = {
@@ -33442,17 +27956,14 @@ var PS = {};
     };
     return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(node, state, patchKeyed, haltKeyed));
   };
-
   var buildElem = function buildElem(v, build, ns1, name1, as1, ch1) {
     var el = Halogen_VDom_Util.createElement(Data_Nullable.toNullable(ns1), name1, v.document);
     var node = Web_DOM_Element.toNode(el);
-
     var onChild = function onChild(ix, child) {
       var res = build(child);
       Halogen_VDom_Util.insertChildIx(ix, Halogen_VDom_Machine.extract(res), node);
       return res;
     };
-
     var children = Halogen_VDom_Util.forE(ch1, onChild);
     var attrs = v.buildAttributes(el)(as1);
     var state = {
@@ -33465,47 +27976,34 @@ var PS = {};
     };
     return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(node, state, patchElem, haltElem));
   };
-
   var buildVDom = function buildVDom(spec) {
     var build = function build(v) {
       if (v instanceof Halogen_VDom_Types.Text) {
         return buildText(spec, build, v.value0);
       }
-
       ;
-
       if (v instanceof Halogen_VDom_Types.Elem) {
         return buildElem(spec, build, v.value0, v.value1, v.value2, v.value3);
       }
-
       ;
-
       if (v instanceof Halogen_VDom_Types.Keyed) {
         return buildKeyed(spec, build, v.value0, v.value1, v.value2, v.value3);
       }
-
       ;
-
       if (v instanceof Halogen_VDom_Types.Widget) {
         return buildWidget(spec, build, v.value0);
       }
-
       ;
-
       if (v instanceof Halogen_VDom_Types.Grafted) {
         return build(Halogen_VDom_Types.runGraft(v.value0));
       }
-
       ;
       throw new Error("Failed pattern match at Halogen.VDom.DOM (line 58, column 27 - line 63, column 52): " + [v.constructor.name]);
     };
-
     return build;
   };
-
   exports["buildVDom"] = buildVDom;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -33515,7 +28013,6 @@ var PS = {};
   var Halogen_VDom_DOM = $PS["Halogen.VDom.DOM"];
   var Halogen_VDom_Machine = $PS["Halogen.VDom.Machine"];
   var Halogen_VDom_Util = $PS["Halogen.VDom.Util"];
-
   var Thunk = function () {
     function Thunk(value0, value1, value2, value3) {
       this.value0 = value0;
@@ -33523,9 +28020,7 @@ var PS = {};
       this.value2 = value2;
       this.value3 = value3;
     }
-
     ;
-
     Thunk.create = function (value0) {
       return function (value1) {
         return function (value2) {
@@ -33535,34 +28030,26 @@ var PS = {};
         };
       };
     };
-
     return Thunk;
   }();
-
   var unsafeEqThunk = function unsafeEqThunk(v, v1) {
     return Halogen_VDom_Util.refEq(v.value0, v1.value0) && Halogen_VDom_Util.refEq(v.value1, v1.value1) && v.value1(v.value3, v1.value3);
   };
-
   var thunk = function thunk(tid, eqFn, f, a) {
     return new Thunk(tid, eqFn, f, a);
   };
-
   var runThunk = function runThunk(v) {
     return v.value2(v.value3);
   };
-
   var buildThunk = function buildThunk(toVDom) {
     var haltThunk = function haltThunk(state) {
       return Halogen_VDom_Machine.halt(state.vdom);
     };
-
     var patchThunk = function patchThunk(state, t2) {
       var $43 = unsafeEqThunk(state.thunk, t2);
-
       if ($43) {
         return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(Halogen_VDom_Machine.extract(state.vdom), state, patchThunk, haltThunk));
       }
-
       ;
       var vdom = Halogen_VDom_Machine.step(state.vdom, toVDom(runThunk(t2)));
       return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(Halogen_VDom_Machine.extract(vdom), {
@@ -33570,7 +28057,6 @@ var PS = {};
         thunk: t2
       }, patchThunk, haltThunk));
     };
-
     var renderThunk = function renderThunk(spec) {
       return function (t) {
         var vdom = Halogen_VDom_DOM.buildVDom(spec)(toVDom(runThunk(t)));
@@ -33580,13 +28066,10 @@ var PS = {};
         }, patchThunk, haltThunk));
       };
     };
-
     return renderThunk;
   };
-
   exports["buildThunk"] = buildThunk;
 })(PS);
-
 (function (exports) {
   "use strict";
 
@@ -33597,10 +28080,8 @@ var PS = {};
       };
     };
   };
-
   exports._parentNode = getEffProp("parentNode");
   exports._nextSibling = getEffProp("nextSibling");
-
   exports.insertBefore = function (node1) {
     return function (node2) {
       return function (parent) {
@@ -33610,7 +28091,6 @@ var PS = {};
       };
     };
   };
-
   exports.appendChild = function (node) {
     return function (parent) {
       return function () {
@@ -33618,7 +28098,6 @@ var PS = {};
       };
     };
   };
-
   exports.removeChild = function (node) {
     return function (parent) {
       return function () {
@@ -33627,7 +28106,6 @@ var PS = {};
     };
   };
 })(PS["Web.DOM.Node"] = PS["Web.DOM.Node"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -33638,28 +28116,24 @@ var PS = {};
   var Data_Functor = $PS["Data.Functor"];
   var Data_Nullable = $PS["Data.Nullable"];
   var Effect = $PS["Effect"];
-
   var parentNode = function () {
     var $3 = Data_Functor.map(Effect.functorEffect)(Data_Nullable.toMaybe);
     return function ($4) {
       return $3($foreign["_parentNode"]($4));
     };
   }();
-
   var nextSibling = function () {
     var $14 = Data_Functor.map(Effect.functorEffect)(Data_Nullable.toMaybe);
     return function ($15) {
       return $14($foreign["_nextSibling"]($15));
     };
   }();
-
   exports["parentNode"] = parentNode;
   exports["nextSibling"] = nextSibling;
   exports["insertBefore"] = $foreign.insertBefore;
   exports["appendChild"] = $foreign.appendChild;
   exports["removeChild"] = $foreign.removeChild;
 })(PS);
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -33693,26 +28167,21 @@ var PS = {};
   var Web_HTML_HTMLDocument = $PS["Web.HTML.HTMLDocument"];
   var Web_HTML_HTMLElement = $PS["Web.HTML.HTMLElement"];
   var Web_HTML_Window = $PS["Web.HTML.Window"];
-
   var substInParent = function substInParent(v) {
     return function (v1) {
       return function (v2) {
         if (v1 instanceof Data_Maybe.Just && v2 instanceof Data_Maybe.Just) {
           return Data_Functor["void"](Effect.functorEffect)(Web_DOM_Node.insertBefore(v)(v1.value0)(v2.value0));
         }
-
         ;
-
         if (v1 instanceof Data_Maybe.Nothing && v2 instanceof Data_Maybe.Just) {
           return Data_Functor["void"](Effect.functorEffect)(Web_DOM_Node.appendChild(v)(v2.value0));
         }
-
         ;
         return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
       };
     };
   };
-
   var removeChild = function removeChild(v) {
     return function __do() {
       var npn = Web_DOM_Node.parentNode(v.node)();
@@ -33721,74 +28190,58 @@ var PS = {};
       })(npn)();
     };
   };
-
   var mkSpec = function mkSpec(handler) {
     return function (renderChildRef) {
       return function (document) {
         var getNode = Halogen_Aff_Driver_State.unRenderStateX(function (v) {
           return v.node;
         });
-
         var done = function done(st) {
           if (st instanceof Data_Maybe.Just) {
             return Halogen_VDom_Machine.halt(st.value0);
           }
-
           ;
           return Data_Unit.unit;
         };
-
         var buildWidget = function buildWidget(spec) {
           var buildThunk = Halogen_VDom_Thunk.buildThunk(Data_Newtype.unwrap(Halogen_HTML_Core.newtypeHTML))(spec);
-
           var renderComponentSlot = function renderComponentSlot(cs) {
             var renderChild = Effect_Ref.read(renderChildRef)();
             var rsx = renderChild(cs)();
             var node = getNode(rsx);
             return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(node, Data_Maybe.Nothing.value, patch, done));
           };
-
           var render = function render(slot) {
             if (slot instanceof Halogen_Component.ComponentSlot) {
               return renderComponentSlot(slot.value0);
             }
-
             ;
-
             if (slot instanceof Halogen_Component.ThunkSlot) {
               var step = buildThunk(slot.value0);
               return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(Halogen_VDom_Machine.extract(step), new Data_Maybe.Just(step), patch, done));
             }
-
             ;
             throw new Error("Failed pattern match at Halogen.VDom.Driver (line 85, column 7 - line 90, column 75): " + [slot.constructor.name]);
           };
-
           var patch = function patch(st, slot) {
             if (st instanceof Data_Maybe.Just) {
               if (slot instanceof Halogen_Component.ComponentSlot) {
                 Halogen_VDom_Machine.halt(st.value0);
                 return renderComponentSlot(slot.value0);
               }
-
               ;
-
               if (slot instanceof Halogen_Component.ThunkSlot) {
                 var step$prime = Halogen_VDom_Machine.step(st.value0, slot.value0);
                 return Halogen_VDom_Machine.mkStep(new Halogen_VDom_Machine.Step(Halogen_VDom_Machine.extract(step$prime), new Data_Maybe.Just(step$prime), patch, done));
               }
-
               ;
               throw new Error("Failed pattern match at Halogen.VDom.Driver (line 98, column 22 - line 104, column 79): " + [slot.constructor.name]);
             }
-
             ;
             return render(slot);
           };
-
           return render;
         };
-
         var buildAttributes = Halogen_VDom_DOM_Prop.buildProp(handler);
         return {
           buildWidget: buildWidget,
@@ -33798,7 +28251,6 @@ var PS = {};
       };
     };
   };
-
   var renderSpec = function renderSpec(document) {
     return function (container) {
       var render = function render(handler) {
@@ -33819,9 +28271,7 @@ var PS = {};
                   };
                 };
               }
-
               ;
-
               if (v1 instanceof Data_Maybe.Just) {
                 return function __do() {
                   Effect_Ref.write(child)(v1.value0.renderChildRef)();
@@ -33837,14 +28287,12 @@ var PS = {};
                   };
                 };
               }
-
               ;
               throw new Error("Failed pattern match at Halogen.VDom.Driver (line 159, column 5 - line 175, column 80): " + [v1.constructor.name]);
             };
           };
         };
       };
-
       return {
         render: render,
         renderChild: Control_Category.identity(Control_Category.categoryFn),
@@ -33853,7 +28301,6 @@ var PS = {};
       };
     };
   };
-
   var runUI = function runUI(component) {
     return function (i) {
       return function (element) {
@@ -33863,22 +28310,20 @@ var PS = {};
       };
     };
   };
-
   exports["runUI"] = runUI;
 })(PS);
-
 (function (exports) {
-  "use strict"; // exports.testRec = function(rec) {
+  "use strict";
+
+  // exports.testRec = function(rec) {
   //   return rec.foo;
   // }
-
   exports.logMe = function (x) {
     return function () {
       console.log(x);
     };
   };
 })(PS["Main"] = PS["Main"] || {});
-
 (function ($PS) {
   // Generated by purs version 0.13.8
   "use strict";
@@ -33901,13 +28346,10 @@ var PS = {};
       if (container instanceof Data_Maybe.Nothing) {
         return Effect_Class.liftEffect(Effect_Aff.monadEffectAff)(Effect_Exception.throwException(Effect_Exception.error("#ui not found")));
       }
-
       ;
-
       if (container instanceof Data_Maybe.Just) {
         return Halogen_VDom_Driver.runUI(Corona_Chart_UI.component(Effect_Aff_Class.monadAffAff))(Data_Unit.unit)(container.value0);
       }
-
       ;
       throw new Error("Failed pattern match at Main (line 22, column 3 - line 24, column 46): " + [container.constructor.name]);
     });
@@ -33915,6 +28357,5 @@ var PS = {};
   exports["main"] = main;
   exports["logMe"] = $foreign.logMe;
 })(PS);
-
 PS["Main"].main();
-},{"process":"pBGv"}]},{},["EcpK"], null)
+},{"process":"c3ax"}]},{},["EcpK"], null)
