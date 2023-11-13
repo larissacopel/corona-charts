@@ -733,6 +733,13 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
         // i tried using lines here instead of a path but it was slower for
         // some reason, who knew
         const datalines = subplot.append("g");
+        const colors = ["#eb4034", "#eba834", "#80eb34", "#34ebe2", "#3486eb", "#6e34eb", "#b734eb", "#eb34c9", "#eb3468"];
+        var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+            .key(function(d) { return d.name;})
+            .entries(flatSegments(series));
+        var res = sumstat.map(function(d){ return d.key });
+        var new_color = d3.scaleOrdinal().domain(res).range(colors);
+
         datalines
              .selectAll("g")
              .data(flatSegments(series))
@@ -742,7 +749,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
              .attr("stroke-width", 2)
              .attr("stroke-linejoin", "round")
              .attr("stroke-linecap", "round")
-             .attr("stroke", d => z(d.pair[1].z))
+             .attr("stroke", d => new_color(d.name))
              .attr("d", d => line(d.pair))
              .attr("opacity",0)
              .transition()
