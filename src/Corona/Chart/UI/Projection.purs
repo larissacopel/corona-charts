@@ -1,29 +1,63 @@
 
-module Corona.Chart.UI.Projection where
+module Corona.Chart.UI.Projection
+  ( Action(..)
+  , ChildSlots
+  , NumScaleType(..)
+  , OpIx
+  , Out
+  , Output(..)
+  , Query(..)
+  , State
+  , allNST
+  , assembleScale
+  , chainPicker
+  , component
+  , decorateOpChain
+  , defaultLZ
+  , handleAction
+  , handleQuery
+  , helptipLink
+  , nstLabel
+  , nstToScale
+  , outLabel
+  , outParser
+  , outScale
+  , outSerialize
+  , render
+  , scaleToNST
+  , updateProjection
+  )
+  where
 
-import Prelude
-
-import Control.Monad.State.Class as State
 import Control.Alternative
 import Corona.Chart
-import Corona.Chart.UI.Op as Op
 import Corona.Data
-import Corona.Marshal as Marshal
-import D3.Scatter.Type (SType(..), NType(..), Scale(..), NScale(..))
-import D3.Scatter.Type as D3
-import Data.Array as A
 import Data.Either
 import Data.Exists
 import Data.Foldable
 import Data.Functor.Compose
 import Data.Functor.Product
 import Data.Maybe
-import Data.Set (Set)
-import Data.Set as S
-import Data.Symbol (SProxy(..))
 import Data.Tuple
 import Effect.Class
 import Effect.Class.Console
+import Prelude
+import Type.Ap
+import Type.DProd
+import Type.DSum
+import Type.Equiv
+import Type.GCompare
+import Undefined
+
+import Control.Monad.State.Class as State
+import Corona.Chart.UI.Op as Op
+import Corona.Marshal as Marshal
+import D3.Scatter.Type (SType(..), NType(..), Scale(..), NScale(..))
+import D3.Scatter.Type as D3
+import Data.Array as A
+import Data.Set (Set)
+import Data.Set as S
+import Data.Symbol (SProxy(..))
 import Foreign.Object as O
 import Halogen as H
 import Halogen.ChainPicker as ChainPicker
@@ -32,18 +66,15 @@ import Halogen.HTML.Core as HH
 import Halogen.HTML.Elements as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Halogen.HTML.Properties.ARIA (label)
 import Halogen.Scatter as Scatter
 import Halogen.Util as HU
 import Text.Parsing.StringParser as P
-import Type.Ap
 import Type.Chain as C
-import Type.DProd
-import Type.DSum
-import Type.Equiv
-import Type.GCompare
-import Undefined
+import Web.File.FileReader (abort)
+import Web.HTML.Event.EventTypes (offline)
 
-data NumScaleType = NSTLinear | NSTLog | NSTSymLog
+data NumScaleType =  NSTLinear | NSTLog | NSTSymLog
 
 derive instance eqNST :: Eq NumScaleType
 derive instance ordNST :: Ord NumScaleType
@@ -363,6 +394,15 @@ outSerialize p = withDSum p (\t (Product (Tuple proj sc)) ->
 outLabel :: Out -> String
 outLabel p = withDSum p (\_ (Product (Tuple proj _)) -> projectionLabel proj)
 
+
+-- type Out = DSum SType (Product Projection Scale)
+-- st.axis -> tipo Out
+
+outScale :: Out -> String
+outScale p = withDSum p (\_ (Product (Tuple proj scale)) -> case (scaleToNST scale).numScaleType of
+                  Nothing -> ""
+                  Just t -> nstLabel t
+)
 
 _opselect :: SProxy "opselect"
 _opselect = SProxy

@@ -1,26 +1,15 @@
 module Corona.Chart.UI where
 
-import Prelude
-
 import Control.Monad.Except
 import Control.Monad.Maybe.Trans
 import Control.Monad.State
-import Control.Monad.State.Class as State
 import Control.Monad.Writer
-import Control.MonadZero as MZ
 import Corona.Chart
 import Corona.Chart.Assemble
 import Corona.Chart.Model
-import Corona.Chart.UI.Projection as Projection
-import Corona.Data as Corona
 import Corona.Data.Type
-import Corona.Marshal as Marshal
-import D3.Scatter.Type (SType(..), NType(..), Scale(..), NScale(..), Axis(..), ModelFit(..), allAxis)
-import D3.Scatter.Type as D3
-import Data.Array as A
 import Data.Bifunctor
 import Data.Const
-import Data.Date as Date
 import Data.Either
 import Data.Exists
 import Data.Foldable
@@ -29,22 +18,11 @@ import Data.Function.Uncurried
 import Data.Functor.Compose
 import Data.Functor.Product
 import Data.FunctorWithIndex
-import Data.Identity as Identity
 import Data.Int
 import Data.Lens
-import Data.Lens.Record as LR
-import Data.Map (Map)
-import Data.Map as M
 import Data.Maybe
-import Data.ModifiedJulianDay as MJD
-import Data.Number as N
 import Data.Ord
 import Data.Point
-import Data.Set (Set)
-import Data.Set as S
-import Data.String as String
-import Data.String.Pattern as Pattern
-import Data.Symbol (SProxy(..))
 import Data.Traversable
 import Data.Tuple
 import Effect
@@ -52,6 +30,35 @@ import Effect.Aff
 import Effect.Aff.Class
 import Effect.Class
 import Effect.Class.Console
+import Prelude
+import Type.Ap
+import Type.DProd
+import Type.DSum
+import Type.Equiv
+import Type.GCompare
+import Undefined
+
+import Control.Monad.State.Class as State
+import Control.MonadZero as MZ
+import Corona.Chart.UI.Projection as Projection
+import Corona.Data as Corona
+import Corona.Marshal as Marshal
+import D3.Scatter.Type (SType(..), NType(..), Scale(..), NScale(..), Axis(..), ModelFit(..), allAxis)
+import D3.Scatter.Type as D3
+import Data.Array as A
+import Data.Date as Date
+import Data.Identity as Identity
+import Data.Lens.Record as LR
+import Data.Map (Map)
+import Data.Map as M
+import Data.ModifiedJulianDay as MJD
+import Data.Number as N
+import Data.Set (Set)
+import Data.Set as S
+import Data.String as String
+import Data.String.Common (toLower)
+import Data.String.Pattern as Pattern
+import Data.Symbol (SProxy(..))
 import Foreign as Foreign
 import Foreign.Object as O
 import Halogen as H
@@ -71,17 +78,12 @@ import Halogen.Scatter as Scatter
 import Halogen.Util as HU
 import Text.Parsing.StringParser as P
 import Text.Parsing.StringParser.CodeUnits as P
-import Type.Ap
 import Type.Chain as C
-import Type.DProd
-import Type.DSum
-import Type.Equiv
-import Type.GCompare
-import Undefined
 import Web.DOM.Element as Element
 import Web.DOM.Node as Node
 import Web.DOM.ParentNode as DOM
 import Web.HTML as Web
+import Web.HTML.Event.EventTypes (offline)
 import Web.HTML.HTMLElement as HTMLElement
 import Web.HTML.HTMLInputElement as HTMLInputElement
 import Web.HTML.History as History
@@ -359,6 +361,7 @@ render st = HH.div [HU.classProp "ui-wrapper"] [
             , HP.prop (HH.PropName "hidden") true
             ]
           ]
+        , HH.h4_ [HH.text subtitle]
         , HH.slot _scatter unit (Scatter.component hw) unit absurd
         , HH.div [HU.classProp "region-picker"] [
             HH.div [HU.classProp "grid__col grid__col--1-of-4 grid__col--m-1-of-2 region-picker-input"] [
@@ -439,6 +442,10 @@ render st = HH.div [HU.classProp "ui-wrapper"] [
     ]
   where
     title = Projection.outLabel st.axis.y <> " vs. " <> Projection.outLabel st.axis.x
+    scaleLabel = case (Projection.outScale st.axis.y) of
+      "" -> ""
+      x -> " in " <> toLower x <> " scale" 
+    subtitle = datasetLabel st.datasetSpec <> " coronavirus " <> toLower (Projection.outLabel st.axis.y) <> scaleLabel
     hw = { height: 666.6, width: 1000.0 }
     allDatasets = [ Corona.WorldData, Corona.USData, Corona.SouthAmerica ]
     datasetLabel = case _ of
