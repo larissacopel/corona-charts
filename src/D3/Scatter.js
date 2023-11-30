@@ -735,11 +735,10 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
         // some reason, who knew
         const datalines = subplot.append("g");
         const colors = ["#eb4034", "#eba834", "#80eb34", "#34ebe2", "#3486eb", "#6e34eb", "#b734eb", "#eb34c9", "#eb3468"];
-        var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+        var dataSeries = d3.nest()
             .key(function(d) { return d.name;})
             .entries(flatSegments(series));
-        var res = sumstat.map(function(d){ return d.key });
-        var new_color = d3.scaleOrdinal().domain(res).range(colors);
+        var new_color = d3.scaleOrdinal().domain(dataSeries).range(colors);
 
         datalines
              .selectAll("g")
