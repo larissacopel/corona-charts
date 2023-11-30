@@ -85,7 +85,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
     const fmt = tp =>
         handleType(tp)(
             // { day:     (() => val => val.toLocaleDateString(undefined, {month:"numeric",day:"numeric"}))
-            { day:     (() => d3.timeFormat("%b %d"))
+            { day:     (() => d3.timeFormat("%b %d %Y"))
             , days:    (() => d3.format(".3~s"))
             , "int":   (() => d3.format(".3~s"))
             , number:  (() => n => isNaN(n) ? "NaN"
@@ -101,7 +101,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
     const fmtT = fmt(typeT);
     const axisTicker = tp =>
         handleType(tp)(
-            { day:     (() => (a,n) => a.ticks(n).tickFormat(d3.timeFormat("%b %d")))
+            { day:     (() => (a,n) => a.ticks(n).tickFormat(d3.timeFormat("%b %d, %Y")))
             , days:    (() => (a,n) => a.ticks(n ? n : 10, ".3~s"))
             , "int":   (() => (a,n) => a.ticks(n ? n : 10, ".3~s"))
             , number:  (() => (a,n) => a.ticks(n ? n : 10, ".3~s"))
