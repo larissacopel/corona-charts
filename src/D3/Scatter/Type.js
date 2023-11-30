@@ -7,7 +7,7 @@ const fromMJD = mjd => new Date((mjd - mjdShift) * msPerDay);
 
 exports._formatSType = (handleType,tp) =>
     handleType(tp)(
-        { day:     (() => val => d3.timeFormat("%b %d, %Y")(fromMJD(val)))
+        { day:     (() => val => d3.timeFormat("%b %d")(fromMJD(val)))
         , days:    (() => d3.format(".3~s"))
         , "int":   (() => d3.format(".3~s"))
         , number:  (() => d3.format(".3~s"))
