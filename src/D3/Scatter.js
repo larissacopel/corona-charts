@@ -710,8 +710,9 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
             .call(xAxis);
         mainplot.append("g")
             .call(yAxis);
-        mainplot.append("g")
-            .call(zLegend);
+        
+        // mainplot.append("g")
+        //     .call(zLegend);
 
         const subplot = mainplot.append("g")
         const endDots = mainplot.append("g");
@@ -746,7 +747,7 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
              .join("g")
              .append("path")
              .attr("fill", "none")
-             .attr("stroke-width", 2)
+             .attr("stroke-width", 1.6)
              .attr("stroke-linejoin", "round")
              .attr("stroke-linecap", "round")
              .attr("stroke", d => new_color(d.name))
@@ -756,18 +757,18 @@ exports._drawData = function(handleType, handleScale, handleModelFit, typeX, typ
              .delay(d => t(d.pair[0].t)*0.33)
              .duration(333)
              .attr("opacity",1);
-        datalines
-            .selectAll("circle")
-            .data(flatDots(series))
-            .join("circle")
-            .attr("r",2.1)
-            .attr("fill",d => z(d.point.z))
-            .attr("transform", d => `translate(${x(d.point.x)},${y(d.point.y)})`)
-            .attr("opacity",0)
-            .transition()
-            .delay(d => t(d.point.t)*0.33)
-            .duration(333)
-            .attr("opacity",1);
+        // datalines
+        //     .selectAll("circle")
+        //     .data(flatDots(series))
+        //     .join("circle")
+        //     .attr("r",2.1)
+        //     .attr("fill",d => z(d.point.z))
+        //     .attr("transform", d => `translate(${x(d.point.x)},${y(d.point.y)})`)
+        //     .attr("opacity",0)
+        //     .transition()
+        //     .delay(d => t(d.point.t)*0.33)
+        //     .duration(333)
+        //     .attr("opacity",1);
 
         svg.call(hover, highlight(datalines),unhighlight(datalines));
 
